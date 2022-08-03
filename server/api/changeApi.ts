@@ -1,0 +1,56 @@
+import { ChangeToken, ChangeEligibility } from "~~/types/types";
+
+export default defineEventHandler(async (event) => {
+	// const body = useBody(event); only for POST requests will throw an error for get requests
+	// const query = useQuery(event);
+	const elig: ChangeEligibility = {
+		controlNumber: "123456789",
+		tradingPartnerServiceId: "00003",
+		provider: {
+			organizationName: "happy doctors group",
+			npi: "1760854442",
+		},
+		subscriber: {
+			memberId: "0000000000",
+			firstName: "johnOne",
+			lastName: "doeOne",
+			gender: "M",
+			dateOfBirth: "18800102",
+			ssn: "555443333",
+		},
+		dependents: [
+			{
+				firstName: "janeOne",
+				lastName: "doeone",
+				gender: "F",
+				dateOfBirth: "18160421",
+				groupNumber: "1111111111",
+			},
+		],
+		encounter: {
+			beginningDateOfService: "20100101",
+			endDateOfService: "20100102",
+			serviceTypeCodes: ["98"],
+		},
+	};
+
+	let changeTokenRes: {
+		data: ChangeToken;
+	} = await $fetch("/api/changeAuth");
+	const changeToken = changeTokenRes.data;
+	try {
+		const changeEligibilityUrl = `https://sandbox.apigw.changehealthcare.com/medicalnetwork/eligibility/v3/"`;
+		const eligibilityRes: any = await $fetch(changeEligibilityUrl, {
+			headers: {
+				Authorization: `Bearer ${changeToken.access_token}`,
+				"Content-Type": "application/json",
+			},
+			method: "POST",
+			body: elig,
+		});
+		const data = eligibilityRes;
+		return { data };
+	} catch (e) {
+		console.log(e);
+	}
+});

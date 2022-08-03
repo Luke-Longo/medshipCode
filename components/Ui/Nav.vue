@@ -1,0 +1,74 @@
+<script setup lang="ts">
+import { useUiStore } from "../../stores/ui";
+import { useAuthStore } from "../../stores/auth";
+import IconMoon from "~icons/fa-solid/moon";
+import IconSun from "~icons/fa-solid/sun";
+import IconBars from "~icons/fa-solid/bars";
+const uiStore = useUiStore();
+const authStore = useAuthStore();
+const handleSignOut = async () => {
+	uiStore.toggleFunctionLoading(true);
+	await authStore.signOut();
+	uiStore.toggleSidebar();
+	uiStore.toggleFunctionLoading(false);
+};
+const handleSidebar = () => {
+	if (authStore.isLoggedIn) {
+		uiStore.toggleSidebar();
+	}
+};
+</script>
+
+<template>
+	<nav class="h-16">
+		<div class="flex items-center nav">
+			<NuxtLink class="logo px-5 text-xl" to="/">iDispense</NuxtLink>
+			<div class="flex flex-auto">
+				<icon-bars class="icon" @click="handleSidebar" />
+				<ul id="nav-mobile" class="nav-ul flex-auto justify-end">
+					<transition name="fade" mode="out-in">
+						<icon-moon
+							class="icon"
+							v-if="uiStore.theme === 'light'"
+							@click="uiStore.toggleTheme"
+						/>
+						<icon-sun class="icon" v-else @click="uiStore.toggleTheme" />
+					</transition>
+					<li class="nav-li">
+						<NuxtLink to="/contact">Contact</NuxtLink>
+					</li>
+					<li class="nav-li">
+						<NuxtLink to="/settings">Settings</NuxtLink>
+					</li>
+					<li class="nav-li" @click="handleSignOut">
+						<NuxtLink to="/auth" v-if="authStore.isLoggedIn">Sign Out</NuxtLink>
+						<NuxtLink to="/auth" v-else>Sign In</NuxtLink>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+</template>
+
+<style scoped>
+.logo {
+	font-size: 2rem;
+	@apply cursor-pointer mr-2 text-primary dark:text-darkSecondary hover:dark:text-darkPrimary trans;
+}
+.nav {
+	@apply text-primary dark:text-darkSecondary;
+}
+.nav-wrapper {
+	height: 50px;
+}
+
+.nav-ul {
+	display: flex;
+	list-style: none;
+}
+
+.nav-li {
+	padding: 20px;
+	@apply hover:text-hover hover:dark:text-darkPrimary cursor-pointer trans;
+}
+</style>

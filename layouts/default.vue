@@ -1,0 +1,143 @@
+<template>
+	<div class="dark:bg-black h-screen">
+		<teleport to="body">
+			<transition name="modal-fade">
+				<div v-if="uiStore.functionLoading" class="modal-backdrop">
+					<UiBaseSpinner></UiBaseSpinner>
+				</div>
+			</transition>
+		</teleport>
+		<UiNav class="dark:bg-darkBg dark:text-darkSecondary" />
+		<div class="flex dark:bg-black">
+			<transition name="sidebar" mode="out-in">
+				<UiSideNav v-if="uiStore.sidebar" />
+			</transition>
+			<transition name="fade" mode="out-in">
+				<div
+					v-if="!uiStore.appLoading"
+					class="flex-grow max-w-full max-h-full dark:bg-black trans"
+				>
+					<transition name="route-fade" mode="out-in" appear>
+						<div :key="$route.path">
+							<slot />
+						</div>
+					</transition>
+				</div>
+				<div v-else class="flex flex-grow mt-40 justify-center trans">
+					<UiBaseSpinner />
+				</div>
+			</transition>
+		</div>
+		<UiFooter class="fixed bottom-0" />
+	</div>
+</template>
+
+<script setup lang="ts">
+import { onMounted } from "vue";
+import { useUiStore } from "../stores/ui";
+import { useAuthStore } from "../stores/auth";
+import { usePatientStore } from "~~/stores/patients";
+import { useDoctorsStore } from "~~/stores/doctors";
+const { $supabase } = useNuxtApp();
+const uiStore = useUiStore();
+const authStore = useAuthStore();
+const patientStore = usePatientStore();
+const doctorsStore = useDoctorsStore();
+
+onMounted(async () => {
+	uiStore.toggleAppLoading(true);
+	if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+		uiStore.setTheme("dark");
+		document.body.classList.add("dark:bg-black");
+	} else {
+		uiStore.setTheme("light");
+		document.body.classList.remove("dark:bg-black");
+	}
+	await authStore.checkRefresh();
+	if (authStore.isLoggedIn) {
+		await authStore.user;
+		uiStore.toggleSidebar();
+		// load all the data, load some in background
+	}
+	uiStore.toggleAppLoading(false);
+});
+
+$supabase.auth.onAuthStateChange(async (event, session) => {
+	console.log(event, session);
+	if (event === "SIGNED_OUT") {
+		patientStore.clear();
+		authStore.clear();
+		doctorsStore.clear();
+	}
+});
+
+String.prototype.toTitle = function () {
+	return this.replace(/(^|\s)\S/g, function (t) {
+		return t.toUpperCase();
+	});
+};
+</script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+	opacity: 0;
+}
+.route-fade-enter-active,
+.route-fade-leave-active {
+	transition: opacity 0.15s ease;
+}
+
+.route-fade-enter-from,
+.route-fade-leave-to {
+	opacity: 0;
+}
+.sidebar-enter-active {
+	animation: slide 0.3s;
+}
+.sidebar-leave-active {
+	animation: slide 0.3s reverse;
+}
+
+@keyframes slide {
+	from {
+		opacity: 0;
+		transform: translateX(-220px) scale(1);
+	}
+	to {
+		opacity: 100;
+		transform: translateX(0) scale(1);
+	}
+}
+
+.modal-backdrop {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: rgba(0, 0, 0, 0.3);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.modal {
+	overflow-x: auto;
+}
+
+.modal-fade-enter-from,
+.modal-fade-leave-to {
+	opacity: 0;
+}
+
+.modal-fade-enter-active,
+.modal-fade-leave-active {
+	transition: opacity 0.5s ease;
+}
+</style>

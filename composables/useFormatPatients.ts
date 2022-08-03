@@ -68,12 +68,12 @@ const useFormatPatients = (type: "csv" | "xlsx", patients: Patient[]) => {
 			// Check if ID has already been used
 			for (let i = 0; i < newPatients.length; i++) {
 				const patient = newPatients[i];
-				if (patient.id === patientId) {
+				if (patient.patient_id === patientId) {
 					patientId = useUuid();
 				}
 			}
-			newPat.id = patientId;
-			newPat.date_added = new Date();
+			newPat.patient_id = patientId;
+			newPat.created_at = new Date();
 			newPatients.push(newPat);
 		}
 
@@ -150,18 +150,18 @@ const useFormatPatients = (type: "csv" | "xlsx", patients: Patient[]) => {
 				primary: null,
 				isValid: false,
 			};
-			newPat.date_added = new Date();
+			newPat.created_at = new Date();
 			const user_id = authStore.user_id;
 			newPat.user_id = user_id;
 			let patientId = useUuid();
 			// Check if ID has already been used
 			for (let i = 0; i < newPatients.length; i++) {
 				const patient = newPatients[i];
-				if (patient.id === patientId) {
+				if (patient.patient_id === patientId) {
 					patientId = useUuid();
 				}
 			}
-			newPat.id = patientId;
+			newPat.patient_id = patientId;
 			newPatients.push(newPat);
 		}
 

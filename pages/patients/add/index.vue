@@ -288,8 +288,8 @@ const addPatient = async () => {
 			gender: input.gender.val,
 			insurance: input.insurance,
 			user_id: authStore.user_id,
-			id: useUuid(),
-			date_added: new Date(),
+			patient_id: useUuid(),
+			created_at: new Date(),
 		});
 
 		await patientStore.addPatient(patient);

@@ -24,9 +24,10 @@ export interface Patient {
 	phone: string;
 	gender: string;
 	user_id: string;
-	id: string;
+	patient_id: string;
 	insurance: Insurance;
-	date_added: Date;
+	created_at: Date;
+	modified_at: Date;
 }
 
 export interface PatientInput {

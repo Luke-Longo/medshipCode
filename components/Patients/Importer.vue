@@ -43,7 +43,6 @@
 </template>
 
 <script setup lang="ts">
-import * as XLSX from "xlsx";
 import { usePatientStore } from "~~/stores/patients";
 import { Patient } from "~~/types/types";
 import { useUiStore } from "~~/stores/ui";
@@ -102,14 +101,16 @@ const dropFile = (e) => {
 	const file = e.dataTransfer.files[0];
 	if (e.dataTransfer.files.length === 1) {
 		const type = file.type;
-		if (
-			type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-		) {
-			fileType.value = "xlsx";
-			selectedFile.value = file;
-			fileWasImported.value = true;
-			fileName.value = file.name;
-		} else if (type === "text/csv") {
+		// if (
+		// 	type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+		// ) {
+		// 	fileType.value = "xlsx";
+		// 	selectedFile.value = file;
+		// 	fileWasImported.value = true;
+		// 	fileName.value = file.name;
+
+		// } else
+		if (type === "text/csv") {
 			fileType.value = "csv";
 			selectedFile.value = file;
 			fileWasImported.value = true;
@@ -150,23 +151,24 @@ const uploadData = async () => {
 			uiStore.toggleAppLoading(false);
 		};
 		reader.readAsText(selectedFile.value);
-	} else if (fileType.value === "xlsx") {
-		const data = await selectedFile.value.arrayBuffer();
-		const wb = XLSX.read(data);
-		const wsName = wb.SheetNames[0];
-		if (wb.SheetNames.length > 1) {
-			msg.value = "Error there are too many worksheets in the excel file";
-			modalActive.value = true;
-		}
-
-		const ws = wb.Sheets[wsName];
-
-		const aoa: Patient[] = XLSX.utils.sheet_to_json(ws);
-
-		const formattedPatients = useFormatPatients("xlsx", aoa);
-
-		await patientsStore.uploadPatients(formattedPatients);
 	}
+	// else if (fileType.value === "xlsx") {
+	// 	const data = await selectedFile.value.arrayBuffer();
+	// 	const wb = XLSX.read(data);
+	// 	const wsName = wb.SheetNames[0];
+	// 	if (wb.SheetNames.length > 1) {
+	// 		msg.value = "Error there are too many worksheets in the excel file";
+	// 		modalActive.value = true;
+	// 	}
+
+	// 	const ws = wb.Sheets[wsName];
+
+	// 	const aoa: Patient[] = XLSX.utils.sheet_to_json(ws);
+
+	// 	const formattedPatients = useFormatPatients("xlsx", aoa);
+
+	// 	await patientsStore.uploadPatients(formattedPatients);
+	// }
 	clearFile();
 };
 </script>

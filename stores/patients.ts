@@ -58,8 +58,9 @@ export const usePatientStore = defineStore("patients", {
 					}
 				} else {
 					console.log("upserting patient");
-					patient.id = data[0].id;
-					patient.date_added = data[0].date_added;
+					patient.patient_id = data[0].patient_id;
+					patient.modified_at = new Date();
+					patient.created_at = data[0].created_at;
 					const { error } = await $supabase.from("patients").upsert(patient);
 					if (error) {
 						throw error;
@@ -114,14 +115,19 @@ export const usePatientStore = defineStore("patients", {
 		setSelectedPatient(patient: Patient) {
 			this.selectedPatient = patient;
 		},
-		async deletePatient(id: string) {
+		async deletePatient(patient_id: string) {
 			const { $supabase } = useNuxtApp();
 			try {
-				const { error } = await $supabase.from("patients").delete().eq("id", id);
+				const { error } = await $supabase
+					.from("patients")
+					.delete()
+					.eq("patient_id", patient_id);
 				if (error) {
 					throw error;
 				}
-				const index = this.patients.findIndex((patient) => patient.id === id);
+				const index = this.patients.findIndex(
+					(patient) => patient.patient_id === patient_id
+				);
 				if (index > -1) {
 					this.patients.splice(index, 1);
 				}

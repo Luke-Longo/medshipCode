@@ -149,7 +149,7 @@
 </template>
 
 <script setup lang="ts">
-import { PatientInput, Insurance } from "~~/types/types";
+import { PatientInput, Insurance, Patient } from "~~/types/types";
 import { usePatientStore } from "~~/stores/patients";
 import { useUiStore } from "~~/stores/ui";
 import { useAuthStore } from "~~/stores/auth";
@@ -304,7 +304,6 @@ const insLookup = async () => {
 		checkedIns.value = true;
 	}
 };
-const formatDob = (dob) => {};
 const addPatient = async () => {
 	validateInput();
 	// if (!checkedIns.value) {
@@ -325,8 +324,9 @@ const addPatient = async () => {
 			gender: input.gender.val,
 			insurance: input.insurance,
 			user_id: authStore.user_id,
-			id: useUuid(),
-			date_added: new Date(),
+			patient_id: useUuid(),
+			created_at: new Date(),
+			modified_at: new Date(),
 		});
 
 		await patientStore.addPatient(patient);

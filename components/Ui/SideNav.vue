@@ -3,18 +3,7 @@
 		<ul class="">
 			<li class="sidebar-li"><NuxtLink to="/">Home</NuxtLink></li>
 			<li class="sidebar-li"><NuxtLink to="/patients">Patients</NuxtLink></li>
-			<li class="sidebar-li"><NuxtLink to="/dispense">Dispense</NuxtLink></li>
-			<li class="sidebar-li">
-				<NuxtLink to="/formulary">Formulary</NuxtLink>
-			</li>
-			<li class="sidebar-li">
-				<NuxtLink to="/prescription-log">Prescription Log</NuxtLink>
-			</li>
 			<li class="sidebar-li"><NuxtLink to="/customers">Customers</NuxtLink></li>
-			<li class="sidebar-li">
-				<NuxtLink to="/credentialing">Credentialing</NuxtLink>
-			</li>
-			<li class="sidebar-li"><NuxtLink to="/doctors">Doctors</NuxtLink></li>
 			<li class="sidebar-li"><NuxtLink to="/help">Help</NuxtLink></li>
 		</ul>
 	</nav>

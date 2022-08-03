@@ -37,12 +37,10 @@ import { onMounted } from "vue";
 import { useUiStore } from "../stores/ui";
 import { useAuthStore } from "../stores/auth";
 import { usePatientStore } from "~~/stores/patients";
-import { useDoctorsStore } from "~~/stores/doctors";
 const { $supabase } = useNuxtApp();
 const uiStore = useUiStore();
 const authStore = useAuthStore();
 const patientStore = usePatientStore();
-const doctorsStore = useDoctorsStore();
 
 onMounted(async () => {
 	uiStore.toggleAppLoading(true);
@@ -67,7 +65,6 @@ $supabase.auth.onAuthStateChange(async (event, session) => {
 	if (event === "SIGNED_OUT") {
 		patientStore.clear();
 		authStore.clear();
-		doctorsStore.clear();
 	}
 });
 

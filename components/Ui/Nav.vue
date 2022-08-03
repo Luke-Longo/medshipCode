@@ -22,7 +22,7 @@ const handleSidebar = () => {
 <template>
 	<nav class="h-16">
 		<div class="flex items-center nav">
-			<NuxtLink class="logo px-5 text-xl" to="/">iDispense</NuxtLink>
+			<NuxtLink class="logo px-5 text-xl" to="/">MedShip</NuxtLink>
 			<div class="flex flex-auto">
 				<icon-bars class="icon" @click="handleSidebar" />
 				<ul id="nav-mobile" class="nav-ul flex-auto justify-end">

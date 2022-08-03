@@ -20,9 +20,11 @@ const handleSidebar = () => {
 </script>
 
 <template>
-	<nav class="h-16">
+	<nav class="">
 		<div class="flex items-center nav">
-			<NuxtLink class="logo px-5 text-xl" to="/">MedShip</NuxtLink>
+			<NuxtLink class="logo px-5 text-xl" to="/"
+				><img class="h-32 w-32 top-0" src="~/assets/images/dark-svg.svg" alt=""
+			/></NuxtLink>
 			<div class="flex flex-auto">
 				<icon-bars class="icon" @click="handleSidebar" />
 				<ul id="nav-mobile" class="nav-ul flex-auto justify-end">
@@ -57,9 +59,6 @@ const handleSidebar = () => {
 }
 .nav {
 	@apply text-primary dark:text-darkSecondary;
-}
-.nav-wrapper {
-	height: 50px;
 }
 
 .nav-ul {

@@ -5,12 +5,6 @@
 /*
  * Base styles
  */
-:root {
-	--primary: #045cd6;
-	--secondary: #5ca0ff;
-	--tertiary: #3c80df;
-	--hover: #1d72e9;
-}
 @font-face {
 	font-family: MyFont;
 	src: url("../fonts/OpenSans-Regular.ttf");

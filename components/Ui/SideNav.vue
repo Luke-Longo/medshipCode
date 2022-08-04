@@ -3,6 +3,9 @@
 		<ul class="">
 			<li class="sidebar-li"><NuxtLink to="/">Home</NuxtLink></li>
 			<li class="sidebar-li"><NuxtLink to="/patients">Patients</NuxtLink></li>
+			<li class="sidebar-li"><NuxtLink to="/patients">Orders</NuxtLink></li>
+			<li class="sidebar-li"><NuxtLink to="/patients">Verifications</NuxtLink></li>
+			<li class="sidebar-li"><NuxtLink to="/patients">Payments</NuxtLink></li>
 			<li class="sidebar-li"><NuxtLink to="/customers">Customers</NuxtLink></li>
 			<li class="sidebar-li"><NuxtLink to="/help">Help</NuxtLink></li>
 		</ul>

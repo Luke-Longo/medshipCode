@@ -83,20 +83,38 @@ export interface ActionProps {
 	icon: ActionIcon;
 }
 
+export interface Address {
+	street: string;
+	street2?: string;
+	city: string;
+	state: string;
+	zip: string;
+}
+
 export interface Doctor {
 	firstName: string;
 	lastName: string;
 	npi: string;
 	dea: string;
 	dob: string;
-	street: string;
-	city: string;
-	state: string;
-	zip: string;
+	address: Address;
 	phone: string;
 	date_added: Date;
 	user_id: string;
 	doctor_id: string;
+	practice_id: string;
+}
+
+export interface Practice {
+	practice_id: string;
+	user_id: string;
+	legalName: string;
+	dbaName: string;
+	npi: string;
+	address: Address;
+	doctors: string[];
+	created_at: Date;
+	modified_at: Date;
 }
 
 export interface DoctorInput {
@@ -147,103 +165,6 @@ export interface DoctorInput {
 	};
 }
 
-export interface Template {
-	user_id: string;
-	template_id: string;
-	name: string;
-	sigCode: string;
-	qty: number;
-	daySupply: number;
-	refills?: number;
-	ndcs?: string[];
-	date_added: Date;
-}
-export interface Automation {
-	automation_id: string;
-	name: string;
-	ndc: NDC;
-	template: Template;
-}
-
-export interface Prescription {
-	prescription_id: string;
-	rxNumber: string;
-	refills?: number;
-	patient: Patient;
-	doctor: Doctor;
-	ndc: NDC;
-	strength: string;
-	form: string;
-	sigCode: string;
-	qty: number;
-	daySupply: number;
-	datePrescribed: Date;
-	daw: string;
-	originCode: string;
-	date_added: Date;
-	user_id: string;
-
-	template?: Template;
-}
-
-export interface PackageNDC {
-	description: string;
-	marketing_start_date: string;
-	package_ndc: string;
-	sample: boolean;
-}
-export interface ActiveIngredient {
-	name: string;
-	strength: string;
-}
-export interface OpenFDA {
-	is_original_packager: boolean[];
-	manufacturer_name: string[];
-	nui: string[];
-	pharm_class_cs: string[];
-	pharm_class_epc: string[];
-	rxcui: string[];
-	spl_set_id: string[];
-	unii: string[];
-	upc: string[];
-}
-export interface OpenNDC {
-	active_ingredients: ActiveIngredient[];
-	application_number: string;
-	brand_name: string;
-	brand_name_base: string;
-	dosage_form: string;
-	finished: true;
-	generic_name: string;
-	labeler_name: string;
-	listing_expiration_date: string;
-	marketing_category: string;
-	marketing_start_date: string;
-	openfda: {};
-	packaging: PackageNDC[];
-	pharm_class: string[];
-	product_id: string;
-	product_ndc: string;
-	product_type: string;
-	route: string[];
-	spl_id: string;
-}
-
-export interface NDC {
-	ndc_id: string;
-	name: string;
-	manufacturer: string;
-	lotNumber: string;
-	expDate: string;
-	cost: number;
-	inventory: number;
-	awp: number;
-	genericName: string;
-	doseForm: string;
-	date_added: Date;
-	user_id: string;
-}
-
 export interface ChangeToken {
 	access_token: string;
 	token_type: string;
@@ -267,7 +188,7 @@ export interface Provider {
 	providerType?: string;
 }
 
-export interface Address {
+export interface ChangeAddress {
 	address1: string;
 	address2?: string;
 	city: string;
@@ -293,7 +214,7 @@ export interface InformationReceiverName {
 	socialSecurityNumber: string;
 	federalTaxpayerIdentificationNumber: string;
 	informationReceiverAdditionalIdentifierState: string;
-	address: Address;
+	address: ChangeAddress;
 }
 
 export interface Subscriber {
@@ -325,7 +246,7 @@ export interface Subscriber {
 	healthCareCodeInformation?: [
 		{ diagnosisTypeCode: string; diagnosisCode: string }
 	];
-	address?: Address;
+	address?: ChangeAddress;
 	additionalIdentification?: {
 		planNumber: string;
 		policyNumber: string;
@@ -367,7 +288,7 @@ export interface Dependent {
 	healthCareCodeInformation?: [
 		{ diagnosisTypeCode: string; diagnosisCode: string }
 	];
-	address?: Address;
+	address?: ChangeAddress;
 	additionalIdentification?: {
 		planNumber: string;
 		policyNumber: string;

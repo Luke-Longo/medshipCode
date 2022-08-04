@@ -1,5 +1,5 @@
 <template>
-	<nav class="w-48 min-h-screen flex flex-col bg-primary dark:bg-black">
+	<nav class="w-48 min-h-screen flex flex-col bg-darkBg dark:bg-black">
 		<ul class="">
 			<li class="sidebar-li"><NuxtLink to="/">Home</NuxtLink></li>
 			<li class="sidebar-li"><NuxtLink to="/patients">Patients</NuxtLink></li>

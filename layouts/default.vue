@@ -8,7 +8,7 @@
 			</transition>
 		</teleport>
 		<UiNav class="dark:bg-darkBg dark:text-darkSecondary" />
-		<div class="flex dark:bg-black">
+		<div class="flex dark:bg-black h-full">
 			<transition name="sidebar" mode="out-in">
 				<UiSideNav v-if="uiStore.sidebar" />
 			</transition>
@@ -28,7 +28,7 @@
 				</div>
 			</transition>
 		</div>
-		<UiFooter class="fixed bottom-0" />
+		<UiFooter class="relative w-full bottom-0 h-10" />
 	</div>
 </template>
 

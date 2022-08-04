@@ -23,7 +23,15 @@ const handleSidebar = () => {
 	<nav class="">
 		<div class="flex items-center nav">
 			<NuxtLink class="logo px-5 text-xl" to="/"
-				><img class="h-32 w-32 top-0" src="~/assets/images/dark-svg.svg" alt=""
+				><img
+					v-if="uiStore.theme === 'light'"
+					class="h-32 w-32 top-0 trans"
+					src="~/assets/images/light-svg.svg"
+					alt="" /><img
+					v-else
+					class="h-32 w-32 top-0 trans"
+					src="~/assets/images/dark-svg.svg"
+					alt=""
 			/></NuxtLink>
 			<div class="flex flex-auto">
 				<icon-bars class="icon" @click="handleSidebar" />
@@ -68,6 +76,6 @@ const handleSidebar = () => {
 
 .nav-li {
 	padding: 20px;
-	@apply hover:text-hover hover:dark:text-darkPrimary cursor-pointer trans;
+	@apply hover:text-secondary hover:dark:text-darkPrimary cursor-pointer trans;
 }
 </style>

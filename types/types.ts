@@ -164,3 +164,34 @@ export interface DoctorInput {
 		isValid: boolean;
 	};
 }
+
+export interface Delivery {
+	delivery_id: string;
+}
+
+export interface OrderDetails {
+	to: Date;
+	from: Date;
+	placeOfService: string;
+	hcpcs: string;
+	modifier: string;
+	charges: number;
+	units: number;
+	provider_id: string;
+}
+
+export interface Order {
+	user_id: string;
+	patient_id: string;
+	order_id: string;
+	orderNumber: number;
+	doctor_id: string;
+	insurance_id: string;
+	trackingNumber: string;
+	status: "Ready" | "Not Ready" | "Payment Due" | "Completed" | "Held Orders";
+	notes: string;
+	delivery: Delivery;
+	orderDetails: OrderDetails[];
+	created_at: Date;
+	modified_at: Date;
+}

@@ -31,8 +31,12 @@ export default defineEventHandler(async () => {
 		}
 	};
 	if (token.access_token === "") {
+		console.log("Getting token");
 		await getToken();
-		setInterval(getToken, 1000 * 60 * 60 - 1000);
+		setInterval(async () => {
+			console.log("Refreshing token");
+			await getToken();
+		}, token.expires_in * 1000 - 1000);
 	}
 
 	return { data: token };

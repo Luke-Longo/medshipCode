@@ -1,4 +1,4 @@
-import { ChangeToken, ChangeEligibility } from "~~/types/types";
+import { ChangeToken, ChangeEligibility } from "~~/types/change";
 
 export default defineEventHandler(async (event) => {
 	// const body = useBody(event); only for POST requests will throw an error for get requests
@@ -38,8 +38,9 @@ export default defineEventHandler(async (event) => {
 		data: ChangeToken;
 	} = await $fetch("/api/changeAuth");
 	const changeToken = changeTokenRes.data;
+	console.log(changeToken.access_token);
 	try {
-		const changeEligibilityUrl = `https://sandbox.apigw.changehealthcare.com/medicalnetwork/eligibility/v3/"`;
+		const changeEligibilityUrl = `https://sandbox.apigw.changehealthcare.com/medicalnetwork/eligibility/v3`;
 		const eligibilityRes: any = await $fetch(changeEligibilityUrl, {
 			headers: {
 				Authorization: `Bearer ${changeToken.access_token}`,

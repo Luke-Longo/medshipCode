@@ -1,11 +1,12 @@
-import { ChangeToken } from "~~/types/types";
+import { ChangeToken } from "~~/types/change";
 
 export default defineEventHandler(async () => {
 	// const body = useBody(event); only for POST requests will throw an error for get requests
+	const config = useRuntimeConfig();
 	try {
 		const changeCredentials = {
-			client_id: "KcZmDzrWG1kDSfIVik54OO4XBM0DtXnk",
-			client_secret: "ZkhfIJvGc03xDnCs",
+			client_id: config.private.CHANGE_CLIENT_ID,
+			client_secret: config.private.CHANGE_CLIENT_SECRET,
 			grant_type: "client_credentials",
 		};
 		const accessToken: ChangeToken = await $fetch(

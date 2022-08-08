@@ -10,7 +10,7 @@
 			<div
 				v-if="paginatedPatients.length > 0"
 				v-for="patient in paginatedPatients"
-				:key="patient.id"
+				:key="patient.patient_id"
 				class="text-primary dark:text-darkSecondary grid grid-cols-4 rounded hover:bg-darkSecondary dark:hover:bg-black w-full p-2 cursor-pointer"
 				@click="emits('selected', patient)"
 			>

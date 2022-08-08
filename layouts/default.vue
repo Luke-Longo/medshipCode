@@ -8,7 +8,7 @@
 			</transition>
 		</teleport>
 		<UiNav class="dark:bg-darkBg dark:text-darkSecondary" />
-		<div class="flex dark:bg-black h-full">
+		<div class="flex dark:bg-black h-full" id="page-container">
 			<transition name="sidebar" mode="out-in">
 				<UiSideNav v-if="uiStore.sidebar" />
 			</transition>
@@ -16,6 +16,7 @@
 				<div
 					v-if="!uiStore.appLoading"
 					class="flex-grow max-w-full max-h-full dark:bg-black trans"
+					id="content-wrap"
 				>
 					<transition name="route-fade" mode="out-in" appear>
 						<div :key="$route.path">
@@ -27,8 +28,8 @@
 					<UiBaseSpinner />
 				</div>
 			</transition>
+			<UiFooter class="footer" id="footer" />
 		</div>
-		<UiFooter class="relative w-full bottom-0 h-10" />
 	</div>
 </template>
 
@@ -76,6 +77,22 @@ String.prototype.toTitle = function () {
 </script>
 
 <style scoped>
+#page-container {
+	position: relative;
+	min-height: 100vh;
+}
+
+#content-wrap {
+	padding-bottom: 2.5rem; /* Footer height */
+}
+
+#footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 2.5rem; /* Footer height */
+}
+
 .fade-enter-active,
 .fade-leave-active {
 	transition: opacity 0.3s ease;

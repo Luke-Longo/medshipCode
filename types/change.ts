@@ -66,7 +66,7 @@ export interface Subscriber {
 	dateOfBirth: string;
 	ssn: string;
 	groupNumber?: string;
-	idCard: string;
+	idCard?: string;
 	providerCode?: string;
 	referenceIdentificationQualifier?: string;
 	providerIdentifier?: string;

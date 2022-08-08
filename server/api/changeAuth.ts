@@ -23,8 +23,7 @@ export default defineEventHandler(async () => {
 			db.changeToken.access_token = accessToken.access_token;
 			db.changeToken.expires_in = accessToken.expires_in;
 			db.changeToken.token_type = accessToken.token_type;
-			db.changeToken.expires_at =
-				Date.now() + accessToken.expires_in * 1000 - 1000;
+			db.changeToken.expires_at = Date.now() + accessToken.expires_in * 1000;
 		} catch (e) {
 			console.log(e);
 		}

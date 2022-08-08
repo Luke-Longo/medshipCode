@@ -1,8 +1,7 @@
-import { ChangeToken, ChangeEligibility } from "~~/types/change";
+import { ChangeEligibility } from "~~/types/change";
 import { db } from "~/server/db/index";
 
 export default defineEventHandler(async (event) => {
-	// const body = useBody(event); only for POST requests will throw an error for get requests
 	// const query = useQuery(event);
 
 	const elig: ChangeEligibility = {
@@ -35,13 +34,10 @@ export default defineEventHandler(async (event) => {
 			serviceTypeCodes: ["98"],
 		},
 	};
-	if (db.changeToken) {
+	if (db.changeToken.expires_at < Date.now()) {
+		await $fetch("/api/changeAuth");
 	}
-	let changeTokenRes: {
-		data: ChangeToken;
-	} = await $fetch("/api/changeAuth");
-	const changeToken = changeTokenRes.data;
-	console.log(changeToken.access_token);
+	const changeToken = db.changeToken;
 	try {
 		const changeEligibilityUrl = `https://sandbox.apigw.changehealthcare.com/medicalnetwork/eligibility/v3`;
 		const eligibilityRes: any = await $fetch(changeEligibilityUrl, {

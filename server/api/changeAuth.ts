@@ -23,19 +23,18 @@ export default defineEventHandler(async () => {
 			db.changeToken.access_token = accessToken.access_token;
 			db.changeToken.expires_in = accessToken.expires_in;
 			db.changeToken.token_type = accessToken.token_type;
+			db.changeToken.expires_at =
+				Date.now() + accessToken.expires_in * 1000 - 1000;
 		} catch (e) {
 			console.log(e);
 		}
 	};
-	if (db.changeToken.access_token === "") {
+	if (
+		db.changeToken.access_token === "" ||
+		db.changeToken.expires_at < Date.now()
+	) {
 		console.log("Getting token");
-		// await getToken();
-		// setInterval(async () => {
-		// 	console.log("Refreshing token");
-		// 	await getToken();
-		// }, token.expires_in * 1000 - 1000);
+		await getToken();
 	}
-	let token = db.changeToken;
-
-	return { data: token };
+	return { data: db.changeToken };
 });

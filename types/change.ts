@@ -21,7 +21,7 @@ export interface Provider {
 	providerType?: string;
 }
 
-export interface ChangeAddress {
+export interface Address {
 	address1: string;
 	address2?: string;
 	city: string;
@@ -57,16 +57,16 @@ export interface Subscriber {
 	spendDownAmount?: string;
 	spendDownTotalBilledAmount?: string;
 	coverageLevelCode?: string;
-	memberId?: string;
+	memberId: string;
 	firstName: string;
 	middleName?: string;
 	lastName: string;
 	suffix?: string;
-	gender?: string;
+	gender: string;
 	dateOfBirth: string;
-	ssn?: string;
+	ssn: string;
 	groupNumber?: string;
-	idCard?: string;
+	idCard: string;
 	providerCode?: string;
 	referenceIdentificationQualifier?: string;
 	providerIdentifier?: string;
@@ -170,4 +170,45 @@ export interface ChangeEligibility {
 	subscriber: Subscriber;
 	dependents?: Dependent[];
 	encounter: Encounter;
+}
+export interface ProfessionalService {
+	procedureIdentifier: "";
+	lineItemChargeAmount: "";
+	procedureCode: "";
+	measurementUnit: "";
+	serviceUnitCount: "";
+	compositeDiagnosisCodePointers: {
+		diagnosisCodePointers: string[];
+	};
+}
+export interface ServiceLine {
+	serviceDate: "";
+	professionalService: ProfessionalService;
+}
+
+export interface HealthCareCodeInformation {
+	diagnosisTypeCode: "";
+	diagnosisCode: "";
+}
+
+export interface ClaimInformation {
+	claimFilingCode: "";
+	patientControlNumber: "";
+	claimChargeAmount: "";
+	placeOfServiceCode: "";
+	claimFrequencyCode: "";
+	signatureIndicator: "";
+	planParticipationCode: "";
+	benefitsAssignmentCertificationIndicator: "";
+	releaseInformationCode: "";
+	claimSupplementalInformation: {
+		repricedClaimNumber: "";
+		claimNumber: "";
+	};
+	healthCareCodeInformation: HealthCareCodeInformation[];
+	serviceFacilityLocation: {
+		organizationName: "";
+		address: Address;
+	};
+	serviceLines: ServiceLine[];
 }

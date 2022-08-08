@@ -20,6 +20,7 @@ const eligibility = ref({});
 const benefitsInformation = ref([]);
 
 const searchChangeHealth = async () => {
+	// looking for medical service type codes 12 or DM
 	const res = await $fetch("/api/changeApi");
 	const data = res.data;
 	eligibility.value = data;

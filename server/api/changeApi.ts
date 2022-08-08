@@ -1,8 +1,10 @@
 import { ChangeToken, ChangeEligibility } from "~~/types/change";
+import { db } from "~/server/db/index";
 
 export default defineEventHandler(async (event) => {
 	// const body = useBody(event); only for POST requests will throw an error for get requests
 	// const query = useQuery(event);
+
 	const elig: ChangeEligibility = {
 		controlNumber: "123456789",
 		tradingPartnerServiceId: "00003",
@@ -33,7 +35,8 @@ export default defineEventHandler(async (event) => {
 			serviceTypeCodes: ["98"],
 		},
 	};
-
+	if (db.changeToken) {
+	}
 	let changeTokenRes: {
 		data: ChangeToken;
 	} = await $fetch("/api/changeAuth");

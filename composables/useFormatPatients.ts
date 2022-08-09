@@ -10,34 +10,52 @@ const useFormatPatients = (type: "csv" | "xlsx", patients: Patient[]) => {
 	// Need to format all the inputs properly
 	if (type === "csv") {
 		patients.forEach((patient) => {
-			const newPat = <Patient>{};
+			const newPat: Patient = {
+				firstName: "",
+				lastName: "",
+				dob: "",
+				address: {
+					address1: "",
+					address2: "",
+					city: "",
+					state: "",
+					postalCode: "",
+				},
+				phone: "",
+				gender: "",
+				user_id: "",
+				patient_id: "",
+				insurance: {
+					memberId: patient.insurance?.memberId,
+					primary: null,
+					secondary: null,
+					isValid: false,
+				},
+				created_at: undefined,
+				modified_at: undefined,
+			};
 			for (let key in patient) {
-				console.log(key);
 				let value = patient[key];
 				value = value.toString().toLowerCase();
 				key = key.toLowerCase();
 				if (key.includes("first")) {
-					newPat.firstName = value;
+					newPat.firstName = value ? value : "";
 				} else if (key.includes("last")) {
-					newPat.lastName = value;
+					newPat.lastName = value ? value : "";
 				} else if (key.includes("address" || "street")) {
-					console.log(value);
-					let isAddress2 = false;
 					if (key.includes("2")) {
-						isAddress2 = true;
-						newPat.address.address2 = value;
-					}
-					if (!isAddress2) {
-						newPat.address.address1 = value;
+						newPat.address.address2 = value ? value : "";
+					} else {
+						newPat.address.address1 = value ? value : "";
 					}
 				} else if (key.includes("city")) {
-					newPat.address.city = value;
+					newPat.address.city = value ? value : "";
 				} else if (key.includes("state")) {
-					newPat.address.state = value;
-				} else if (key.includes("zip")) {
-					newPat.address.postalCode = value;
+					newPat.address.state = value ? value : "";
+				} else if (key.includes("zip" || "postal")) {
+					newPat.address.postalCode = value ? value : "";
 				} else if (key.includes("phone")) {
-					newPat.phone = value;
+					newPat.phone = value ? value : "";
 				} else if (key.includes("dob")) {
 					// you need to format date of birth so that you can know if either 19 or 20 is being used if they only put the last two digits of the year
 					if (value.includes("/")) {
@@ -57,15 +75,9 @@ const useFormatPatients = (type: "csv" | "xlsx", patients: Patient[]) => {
 						newPat.dob = value;
 					}
 				} else if (key.includes("gender" || "sex")) {
-					newPat.gender = value.charAt(0);
+					newPat.gender = value ? value.charAt(0) : "";
 				}
 			}
-			newPat.insurance = {
-				memberId: "",
-				primary: null,
-				secondary: null,
-				isValid: false,
-			};
 			const user_id = authStore.user_id;
 			newPat.user_id = user_id;
 			let patientId = useUuid();
@@ -78,6 +90,7 @@ const useFormatPatients = (type: "csv" | "xlsx", patients: Patient[]) => {
 			}
 			newPat.patient_id = patientId;
 			newPat.created_at = new Date();
+			newPat.modified_at = new Date();
 			newPatients.push(newPat);
 		});
 		return newPatients;

@@ -134,19 +134,21 @@ const uploadData = async () => {
 			// turn data into JSON
 			const CSVToJSON = (data, delimiter = ",") => {
 				const titles = data.slice(0, data.indexOf("\n")).split(delimiter);
+
 				return data
 					.slice(data.indexOf("\n") + 1)
 					.split("\n")
 					.map((v) => {
 						const values = v.split(delimiter);
 						return titles.reduce(
-							(obj, title, index) => ((obj[title] = values[index]), obj),
+							(obj, title, index) => ((obj[title.toLowerCase()] = values[index]), obj),
 							{}
 						);
 					});
 			};
 			const aoa = CSVToJSON(data);
 			const formattedPatients = await useFormatPatients("csv", aoa);
+			console.log("formattedPatients", formattedPatients);
 			await patientsStore.uploadPatients(formattedPatients);
 			uiStore.toggleAppLoading(false);
 		};

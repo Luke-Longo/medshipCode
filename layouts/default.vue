@@ -1,5 +1,5 @@
 <template>
-	<div class="dark:bg-black h-screen">
+	<div class="dark:bg-black">
 		<teleport to="body">
 			<transition name="modal-fade">
 				<div v-if="uiStore.functionLoading" class="modal-backdrop">
@@ -8,7 +8,7 @@
 			</transition>
 		</teleport>
 		<UiNav class="dark:bg-darkBg dark:text-darkSecondary" />
-		<div class="flex dark:bg-black h-full" id="page-container">
+		<div class="flex dark:bg-black h-full">
 			<transition name="sidebar" mode="out-in">
 				<UiSideNav v-if="uiStore.sidebar" />
 			</transition>
@@ -16,7 +16,6 @@
 				<div
 					v-if="!uiStore.appLoading"
 					class="flex-grow max-w-full max-h-full dark:bg-black trans"
-					id="content-wrap"
 				>
 					<transition name="route-fade" mode="out-in" appear>
 						<div :key="$route.path">
@@ -28,7 +27,7 @@
 					<UiBaseSpinner />
 				</div>
 			</transition>
-			<UiFooter class="footer" id="footer" />
+			<!-- <UiFooter class="footer" id="footer" /> -->
 		</div>
 	</div>
 </template>

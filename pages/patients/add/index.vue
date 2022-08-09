@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<h2 class="header">Add Patient</h2>
-		<div class="flex flex-col gap-4">
+		<div class="flex flex-col gap-2">
 			<div class="form-group">
 				<label for="">First Name</label>
 				<input
@@ -296,7 +296,11 @@ const insLookup = async () => {
 	validateInput();
 	if (formIsValid.value) {
 		console.log("looking up ins");
-
+		const res = await $fetch("/api/changeApi");
+		const data = res.data;
+		input.insurance.benefitsInformation = data.benefitsInformation;
+		input.insurance.planStatus = data.planStatus;
+		console.log(data);
 		checkedIns.value = true;
 	}
 };
@@ -346,13 +350,13 @@ const addPatient = async () => {
 	color: rgb(255, 108, 108);
 }
 .form-group {
-	@apply flex flex-col gap-2 justify-center  ml-7 lg:w-2/3 lg:mx-auto text-primary dark:text-darkSecondary;
+	@apply flex flex-col gap-1 justify-center  ml-7 lg:w-2/3 lg:mx-auto text-primary dark:text-darkSecondary;
 }
 .row {
 	@apply flex lg:w-2/3 lg:mx-auto lg:gap-4;
 }
 .form-group label {
-	@apply text-lg font-semibold items-start;
+	@apply font-semibold items-start;
 }
 .form-group input {
 	padding: 0.4rem;
@@ -361,6 +365,6 @@ const addPatient = async () => {
 	@apply border shadow-sm border-slate-300 placeholder-slate-400 dark:bg-darkBg dark:focus:outline-darkPrimary;
 }
 p {
-	@apply text-center mb-2 text-lg;
+	@apply text-center mb-2 text-sm;
 }
 </style>

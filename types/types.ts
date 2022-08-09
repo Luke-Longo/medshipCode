@@ -4,9 +4,32 @@ export interface InsurancePlan {
 	serviceTypeCodes: string[];
 }
 
+export interface BenefitsInformation {
+	benefitsAdditionalInformation: {
+		planNumber: "";
+		drugFormularyNumber: "";
+		planNetworkIdNumber: "";
+	};
+	benefitsDateInformation: { plan: "" };
+	code: "";
+	name: "";
+	planCoverage: "";
+	serviceTypeCodes: string[];
+	serviceTypes: string[];
+}
+
+export interface PlanStatus {
+	planDetails: "";
+	serviceTypeCodes: string[];
+	status: "";
+	statusCode: "";
+}
+
 export interface Insurance {
 	memberId: string;
 	isValid: boolean;
+	benefitsInformation?: BenefitsInformation[];
+	planStatus?: PlanStatus[];
 	primary: InsurancePlan;
 	secondary?: InsurancePlan;
 	tertiary?: InsurancePlan;

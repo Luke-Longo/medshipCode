@@ -3,14 +3,14 @@
 		<transition name="modal-fade">
 			<div class="modal-backdrop" v-if="show" @click.self="handleClose">
 				<div
-					class="mx-auto flex justify-center w-full h-5/6"
+					class="mx-auto flex justify-center w-full h-fit"
 					role="dialog"
 					v-if="show"
 					@click.self="handleClose"
 				>
 					<UiCard class="modal">
 						<header
-							class="text-center text-2xl mt-4 mb-8 px-4 mx-auto text-primary dark:text-darkSecondary flex justify-center items-center"
+							class="text-center text-2xl mt-4 mb-6 px-4 mx-auto text-primary dark:text-darkSecondary flex justify-center items-center"
 						>
 							<h2>{{ title }}</h2>
 						</header>

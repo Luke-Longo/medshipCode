@@ -11,7 +11,7 @@
 				v-if="paginatedPatients.length > 0"
 				v-for="patient in paginatedPatients"
 				:key="patient.patient_id"
-				class="text-primary dark:text-darkSecondary grid grid-cols-4 rounded hover:bg-darkSecondary dark:hover:bg-black w-full p-2 cursor-pointer"
+				class="text-primary dark:text-darkSecondary grid grid-cols-4 rounded hover:bg-darkSecondary dark:hover:bg-black w-full p-2 cursor-pointer trans"
 				@click="emits('selected', patient)"
 			>
 				<div class="">{{ patient.lastName.toTitle() }}</div>
@@ -28,8 +28,7 @@
 		</div>
 		<div class="flex justify-center gap-2" v-if="checkPatients">
 			<p
-				v-if="page > 1"
-				class="rounded-3xl hover:bg-darkSecondary hover:cursor-pointer dark:hover:bg-black p-2 px-3"
+				class="rounded-3xl hover:bg-darkSecondary hover:cursor-pointer dark:hover:bg-black p-2 px-3 trans"
 				@click="backPage"
 			>
 				Back
@@ -37,7 +36,7 @@
 			<p class="p-2">{{ page }} ... {{ totalPages == 1 ? "" : totalPages }}</p>
 			<p
 				v-if="totalPages > 1"
-				class="rounded-3xl hover:bg-darkSecondary hover:cursor-pointer dark:hover:bg-black py-2 px-3"
+				class="rounded-3xl hover:bg-darkSecondary hover:cursor-pointer dark:hover:bg-black py-2 px-3 trans"
 				@click="nextPage"
 			>
 				Next
@@ -81,9 +80,13 @@ const paginatedPatients = computed(() => {
 	return props.patients.slice(start, end);
 });
 const backPage = () => {
-	page.value--;
+	if (page.value > 1) {
+		page.value--;
+	}
 };
 const nextPage = () => {
-	page.value++;
+	if (page.value < totalPages.value) {
+		page.value++;
+	}
 };
 </script>

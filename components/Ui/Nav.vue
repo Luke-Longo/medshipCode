@@ -25,11 +25,11 @@ const handleSidebar = () => {
 			<NuxtLink class="logo px-5 text-xl" to="/"
 				><img
 					v-if="uiStore.theme === 'light'"
-					class="h-28 w-32 top-0 trans"
+					class="h-fit w-28 top-0 trans p-2"
 					src="~/assets/images/light-svg.svg"
 					alt="" /><img
 					v-else
-					class="h-28 w-32 top-0 trans"
+					class="h-fit w-28 top-0 trans p-2"
 					src="~/assets/images/dark-svg.svg"
 					alt=""
 			/></NuxtLink>
@@ -62,7 +62,6 @@ const handleSidebar = () => {
 
 <style scoped>
 .logo {
-	font-size: 2rem;
 	@apply cursor-pointer mr-2 text-primary dark:text-darkSecondary hover:dark:text-darkPrimary trans;
 }
 .nav {

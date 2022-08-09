@@ -3,13 +3,13 @@
 		<h2 class="header">Patient Profile</h2>
 		<div class="flex justify-center">
 			<p
-				class="w-1/3 mr-4 rounded-full hover:bg-darkSecondary hover:cursor-pointer dark:hover:bg-darkBg p-2"
-				@click="viewPrescriptions"
+				class="w-1/3 mr-4 rounded-full hover:bg-darkSecondary hover:cursor-pointer dark:hover:bg-darkBg p-2 trans"
+				@click="viewOrders"
 			>
-				View Prescriptions
+				View Orders
 			</p>
 		</div>
-		<div class="flex flex-col gap-4">
+		<div class="flex flex-col gap-2">
 			<div class="form-group">
 				<label for="">First Name</label>
 				<input
@@ -337,13 +337,22 @@ const validateInput = async () => {
 const resetValidity = (key) => {
 	input[key].isValid = true;
 };
+
 const insLookup = async () => {
 	validateInput();
 	if (formIsValid.value) {
+		uiStore.toggleFunctionLoading(true);
 		console.log("looking up ins");
+		const res = await $fetch("/api/changeApi");
+		const data = res.data;
+		input.insurance.benefitsInformation = data.benefitsInformation;
+		input.insurance.planStatus = data.planStatus;
+		console.log(data);
 		checkedIns.value = true;
+		uiStore.toggleFunctionLoading(false);
 	}
 };
+
 const addPatient = async () => {
 	validateInput();
 	if (formIsValid.value) {
@@ -377,9 +386,9 @@ const addPatient = async () => {
 	}
 };
 
-const viewPrescriptions = async () => {
+const viewOrders = async () => {
 	// probably best to use a modal pop up and show a list of prescriptions referencing the patient id this would allow for me to reuse the ui for the prescription log
-	console.log("view prescriptions");
+	console.log("view orders");
 };
 </script>
 
@@ -394,21 +403,21 @@ const viewPrescriptions = async () => {
 	color: rgb(255, 108, 108);
 }
 .form-group {
-	@apply flex flex-col gap-2 justify-center  ml-7 lg:w-2/3 lg:mx-auto text-primary dark:text-darkSecondary;
+	@apply flex flex-col gap-1 justify-center  ml-7 lg:w-2/3 lg:mx-auto text-primary dark:text-darkSecondary;
 }
 .row {
 	@apply flex lg:w-2/3 lg:mx-auto lg:gap-4;
 }
 .form-group label {
-	@apply text-lg font-semibold items-start;
+	@apply font-semibold items-start;
 }
 .form-group input {
-	padding: 0.5rem;
+	padding: 0.4rem;
 	border: 1px solid #ccc;
 	border-radius: 3px;
 	@apply border shadow-sm border-slate-300 placeholder-slate-400 dark:bg-darkBg dark:focus:outline-darkPrimary;
 }
 p {
-	@apply text-center mb-2 text-lg;
+	@apply text-center mb-2 text-sm;
 }
 </style>

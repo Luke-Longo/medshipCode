@@ -202,6 +202,12 @@ const setInput = () => {
 			};
 		}
 	}
+	input.address1.val = patient.address.address1;
+	input.address2.val = patient.address.address2;
+	input.city.val = patient.address.city;
+	input.state.val = patient.address.state;
+	input.postalCode.val = patient.address.postalCode;
+	input.memberId.val = patient.insurance.memberId;
 };
 onMounted(() => {
 	setInput();
@@ -342,7 +348,7 @@ const addPatient = async () => {
 	validateInput();
 	if (formIsValid.value) {
 		uiStore.toggleFunctionLoading(true);
-		console.log("adding patient");
+		input.insurance.memberId = input.memberId.val;
 		let patient: Patient = reactive({
 			firstName: input.firstName.val,
 			lastName: input.lastName.val,

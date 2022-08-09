@@ -305,7 +305,7 @@ const addPatient = async () => {
 	validateInput();
 	if (formIsValid.value) {
 		uiStore.toggleFunctionLoading(true);
-		console.log("adding patient");
+		input.insurance.memberId = input.memberId.val;
 		let patient: Patient = reactive({
 			firstName: input.firstName.val,
 			lastName: input.lastName.val,

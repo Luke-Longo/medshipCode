@@ -9,10 +9,10 @@ const useFormatPatients = (type: "csv" | "xlsx", patients: Patient[]) => {
 	const newPatients: Patient[] = [];
 	// Need to format all the inputs properly
 	if (type === "csv") {
-		for (let i = 0; i < patients.length; i++) {
-			const patient = patients[i];
+		patients.forEach((patient) => {
 			const newPat = <Patient>{};
 			for (let key in patient) {
+				console.log(key);
 				let value = patient[key];
 				value = value.toString().toLowerCase();
 				key = key.toLowerCase();
@@ -21,9 +21,13 @@ const useFormatPatients = (type: "csv" | "xlsx", patients: Patient[]) => {
 				} else if (key.includes("last")) {
 					newPat.lastName = value;
 				} else if (key.includes("address" || "street")) {
-					if (key.includes("address2")) {
+					console.log(value);
+					let isAddress2 = false;
+					if (key.includes("2")) {
+						isAddress2 = true;
 						newPat.address.address2 = value;
-					} else {
+					}
+					if (!isAddress2) {
 						newPat.address.address1 = value;
 					}
 				} else if (key.includes("city")) {
@@ -59,6 +63,7 @@ const useFormatPatients = (type: "csv" | "xlsx", patients: Patient[]) => {
 			newPat.insurance = {
 				memberId: "",
 				primary: null,
+				secondary: null,
 				isValid: false,
 			};
 			const user_id = authStore.user_id;
@@ -74,8 +79,7 @@ const useFormatPatients = (type: "csv" | "xlsx", patients: Patient[]) => {
 			newPat.patient_id = patientId;
 			newPat.created_at = new Date();
 			newPatients.push(newPat);
-		}
-
+		});
 		return newPatients;
 	} else if (type === "xlsx") {
 		for (let i = 0; i < patients.length; i++) {

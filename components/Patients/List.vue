@@ -5,7 +5,7 @@
 				<div class="">Last Name</div>
 				<div class="">First Name</div>
 				<div class="">DOB</div>
-				<div class="">BIN</div>
+				<div class="">Member Id</div>
 			</div>
 			<div
 				v-if="paginatedPatients.length > 0"
@@ -17,7 +17,7 @@
 				<div class="">{{ patient.lastName.toTitle() }}</div>
 				<div class="">{{ patient.firstName.toTitle() }}</div>
 				<div class="">{{ patient.dob }}</div>
-				<div class="">{{ patient.insurance.primary?.bin }}</div>
+				<div class="">{{ patient.insurance.memberId }}</div>
 			</div>
 			<div
 				v-else

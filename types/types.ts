@@ -1,12 +1,11 @@
+import { Address } from "~/types/change";
 export interface InsurancePlan {
-	name: string;
-	bin: string;
-	group: string;
-	pcn: string;
-	memberId: string;
+	planName: string;
+	serviceTypeCodes: string[];
 }
 
 export interface Insurance {
+	memberId: string;
 	isValid: boolean;
 	primary: InsurancePlan;
 	secondary?: InsurancePlan;
@@ -17,10 +16,7 @@ export interface Patient {
 	firstName: string;
 	lastName: string;
 	dob: string;
-	street: string;
-	city: string;
-	state: string;
-	zip: string;
+	address: Address;
 	phone: string;
 	gender: string;
 	user_id: string;
@@ -39,7 +35,11 @@ export interface PatientInput {
 		val: string;
 		isValid: boolean;
 	};
-	street: {
+	address1: {
+		val: string;
+		isValid: boolean;
+	};
+	address2?: {
 		val: string;
 		isValid: boolean;
 	};
@@ -51,7 +51,7 @@ export interface PatientInput {
 		val: string;
 		isValid: boolean;
 	};
-	zip: {
+	postalCode: {
 		val: string;
 		isValid: boolean;
 	};
@@ -64,6 +64,10 @@ export interface PatientInput {
 		isValid: boolean;
 	};
 	phone: {
+		val: string;
+		isValid: boolean;
+	};
+	memberId: {
 		val: string;
 		isValid: boolean;
 	};
@@ -81,14 +85,6 @@ export interface ActionProps {
 	id: string;
 	name: string;
 	icon: ActionIcon;
-}
-
-export interface Address {
-	street: string;
-	street2?: string;
-	city: string;
-	state: string;
-	zip: string;
 }
 
 export interface Doctor {

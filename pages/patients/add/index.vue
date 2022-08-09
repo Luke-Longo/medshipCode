@@ -24,16 +24,29 @@
 					@blur="resetValidity('lastName')"
 				/>
 			</div>
-			<div class="form-group">
-				<label for="">Street</label>
-				<input
-					class="w-2/3"
-					:class="{ 'invalid-input': !input.street.isValid }"
-					:type="'text'"
-					:placeholder="'Street Address'"
-					v-model.trim="input.street.val"
-					@blur="resetValidity('street')"
-				/>
+			<div class="row">
+				<div class="form-group">
+					<label for="">Address 1</label>
+					<input
+						class=""
+						:class="{ 'invalid-input': !input.address1.isValid }"
+						:type="'text'"
+						:placeholder="'Address 1'"
+						v-model.trim="input.address1.val"
+						@blur="resetValidity('address1')"
+					/>
+				</div>
+				<div class="form-group">
+					<label for="">Address 2</label>
+					<input
+						class="w-2/3"
+						:class="{ 'invalid-input': !input.address2.isValid }"
+						:type="'text'"
+						:placeholder="'ex: Suite 101'"
+						v-model.trim="input.address2.val"
+						@blur="resetValidity('address2')"
+					/>
+				</div>
 			</div>
 			<div class="row">
 				<div class="form-group">
@@ -62,11 +75,11 @@
 				<div class="form-group">
 					<label for="">Zip</label>
 					<input
-						:class="{ 'invalid-input': !input.zip.isValid }"
+						:class="{ 'invalid-input': !input.postalCode.isValid }"
 						:type="'text'"
 						:placeholder="'Zip'"
-						v-model.trim="input.zip.val"
-						@blur="resetValidity('zip')"
+						v-model.trim="input.postalCode.val"
+						@blur="resetValidity('postalCode')"
 					/>
 				</div>
 			</div>
@@ -111,6 +124,18 @@
 					</p>
 				</div>
 			</div>
+			<div class="form-group justify-center mx-auto">
+				<label for="">Member Id</label>
+				<input
+					type="text"
+					class="lg:w-1/3"
+					:class="{ 'invalid-input': !input.memberId.isValid }"
+					:type="'text'"
+					:placeholder="'ex: 0001FQ2'"
+					v-model.trim="input.memberId.val"
+					@blur="resetValidity('memberId')"
+				/>
+			</div>
 		</div>
 		<div class="flex my-8">
 			<button class="mx-auto w-3/4 reverse" @click="insLookup">
@@ -118,17 +143,13 @@
 			</button>
 		</div>
 		<div class="flex gap-16 justify-center">
-			<div class="flex flex-col">
+			<div class="flex flex-col" v-if="input.insurance.primary">
 				<p>Primary:</p>
-				<p>{{ input.insurance.primary?.bin }}</p>
+				<p>{{ input.insurance.primary?.planName }}</p>
 			</div>
-			<div class="flex flex-col">
+			<div class="flex flex-col" v-if="input.insurance.secondary">
 				<p>Secondary:</p>
-				<p>{{ input.insurance.primary?.bin }}</p>
-			</div>
-			<div class="flex flex-col">
-				<p>Tertiary:</p>
-				<p>{{ input.insurance.primary?.bin }}</p>
+				<p>{{ input.insurance.secondary?.planName }}</p>
 			</div>
 		</div>
 		<div class="flex justify-end my-4">
@@ -158,7 +179,11 @@ const input: PatientInput = reactive({
 		val: "",
 		isValid: true,
 	},
-	street: {
+	address1: {
+		val: "",
+		isValid: true,
+	},
+	address2: {
 		val: "",
 		isValid: true,
 	},
@@ -170,7 +195,7 @@ const input: PatientInput = reactive({
 		val: "",
 		isValid: true,
 	},
-	zip: {
+	postalCode: {
 		val: "",
 		isValid: true,
 	},
@@ -186,7 +211,12 @@ const input: PatientInput = reactive({
 		val: "",
 		isValid: true,
 	},
+	memberId: {
+		val: "",
+		isValid: true,
+	},
 	insurance: <Insurance>{
+		memberId: "",
 		isValid: false,
 		primary: null,
 		secondary: null,
@@ -279,10 +309,12 @@ const addPatient = async () => {
 		let patient: Patient = reactive({
 			firstName: input.firstName.val,
 			lastName: input.lastName.val,
-			street: input.street.val,
-			city: input.city.val,
-			state: input.state.val,
-			zip: input.zip.val,
+			address: {
+				address1: input.street.val,
+				city: input.city.val,
+				state: input.state.val,
+				postalCode: input.zip.val,
+			},
 			phone: getPhoneDigits(input.phone.val),
 			dob: input.dob.val,
 			gender: input.gender.val,
@@ -290,6 +322,7 @@ const addPatient = async () => {
 			user_id: authStore.user_id,
 			patient_id: useUuid(),
 			created_at: new Date(),
+			modified_at: new Date(),
 		});
 
 		await patientStore.addPatient(patient);
@@ -323,7 +356,7 @@ const addPatient = async () => {
 	@apply text-lg font-semibold items-start;
 }
 .form-group input {
-	padding: 0.5rem;
+	padding: 0.4rem;
 	border: 1px solid #ccc;
 	border-radius: 3px;
 	@apply border shadow-sm border-slate-300 placeholder-slate-400 dark:bg-darkBg dark:focus:outline-darkPrimary;

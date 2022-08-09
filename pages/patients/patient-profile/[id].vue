@@ -70,10 +70,10 @@
 				<div class="form-group">
 					<label for="">Zip</label>
 					<input
-						:class="{ 'invalid-input': !input.zip.isValid }"
+						:class="{ 'invalid-input': !input.postalCode.isValid }"
 						:type="'text'"
 						:placeholder="'Zip'"
-						v-model.trim="input.zip.val"
+						v-model.trim="input.postalCode.val"
 						@blur="resetValidity('zip')"
 					/>
 				</div>

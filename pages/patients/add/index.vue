@@ -230,6 +230,7 @@ const clearInputs = () => {
 			input.insurance.primary = null;
 			input.insurance.secondary = null;
 			input.insurance.tertiary = null;
+			input.insurance.memberId = "";
 		} else {
 			input[key].val = "";
 		}
@@ -246,9 +247,11 @@ const validateInput = async () => {
 	for (let key in input) {
 		if (key !== "insurance") {
 			input[key].val = input[key].val?.toString().toLowerCase();
-			if (input[key].val?.length === 0) {
-				input[key].isValid = false;
-				formIsValid.value = false;
+			if (key !== "address2") {
+				if (input[key].val?.length === 0) {
+					input[key].isValid = false;
+					formIsValid.value = false;
+				}
 			}
 		}
 	}
@@ -256,8 +259,8 @@ const validateInput = async () => {
 		input.state.isValid = false;
 		formIsValid.value = false;
 	}
-	if (input.zip.val.length !== 5) {
-		input.zip.isValid = false;
+	if (input.postalCode.val.length !== 5) {
+		input.postalCode.isValid = false;
 		formIsValid.value = false;
 	}
 	const phoneIsValid = (p) => {
@@ -280,7 +283,6 @@ const validateInput = async () => {
 		let dobRe = /[0-9]{2}\/[0-9]{2}\/[0-9]{4}/;
 		return dobRe.test(dob);
 	};
-
 	if (!dobIsValid(input.dob.val)) {
 		input.dob.isValid = false;
 		formIsValid.value = false;
@@ -294,15 +296,13 @@ const insLookup = async () => {
 	validateInput();
 	if (formIsValid.value) {
 		console.log("looking up ins");
+
 		checkedIns.value = true;
 	}
 };
 
 const addPatient = async () => {
 	validateInput();
-	// if (!checkedIns.value) {
-	// 	// build modal for user
-	// } else {
 	if (formIsValid.value) {
 		uiStore.toggleFunctionLoading(true);
 		console.log("adding patient");
@@ -310,10 +310,11 @@ const addPatient = async () => {
 			firstName: input.firstName.val,
 			lastName: input.lastName.val,
 			address: {
-				address1: input.street.val,
+				address1: input.address1.val,
+				address2: input.address2.val,
 				city: input.city.val,
 				state: input.state.val,
-				postalCode: input.zip.val,
+				postalCode: input.postalCode.val,
 			},
 			phone: getPhoneDigits(input.phone.val),
 			dob: input.dob.val,
@@ -330,8 +331,6 @@ const addPatient = async () => {
 		clearInputs();
 
 		uiStore.toggleFunctionLoading(false);
-
-		// }
 	}
 };
 </script>

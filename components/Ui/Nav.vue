@@ -25,11 +25,11 @@ const handleSidebar = () => {
 			<NuxtLink class="logo px-5 text-xl" to="/"
 				><img
 					v-if="uiStore.theme === 'light'"
-					class="h-32 w-32 top-0 trans"
+					class="h-28 w-32 top-0 trans"
 					src="~/assets/images/light-svg.svg"
 					alt="" /><img
 					v-else
-					class="h-32 w-32 top-0 trans"
+					class="h-28 w-32 top-0 trans"
 					src="~/assets/images/dark-svg.svg"
 					alt=""
 			/></NuxtLink>

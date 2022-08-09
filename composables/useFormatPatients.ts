@@ -21,19 +21,17 @@ const useFormatPatients = (type: "csv" | "xlsx", patients: Patient[]) => {
 				} else if (key.includes("last")) {
 					newPat.lastName = value;
 				} else if (key.includes("address" || "street")) {
-					let isAddress2 = false;
 					if (key.includes("address2")) {
-						isAddress2 = true;
-					}
-					if (!isAddress2) {
-						newPat.street = value;
+						newPat.address.address2 = value;
+					} else {
+						newPat.address.address1 = value;
 					}
 				} else if (key.includes("city")) {
-					newPat.city = value;
+					newPat.address.city = value;
 				} else if (key.includes("state")) {
-					newPat.state = value;
+					newPat.address.state = value;
 				} else if (key.includes("zip")) {
-					newPat.zip = value;
+					newPat.address.postalCode = value;
 				} else if (key.includes("phone")) {
 					newPat.phone = value;
 				} else if (key.includes("dob")) {
@@ -59,6 +57,7 @@ const useFormatPatients = (type: "csv" | "xlsx", patients: Patient[]) => {
 				}
 			}
 			newPat.insurance = {
+				memberId: "",
 				primary: null,
 				isValid: false,
 			};
@@ -91,19 +90,17 @@ const useFormatPatients = (type: "csv" | "xlsx", patients: Patient[]) => {
 				} else if (key.includes("last")) {
 					newPat.lastName = value;
 				} else if (key.includes("address" || "street")) {
-					let isAddress2 = false;
 					if (key.includes("address2")) {
-						isAddress2 = true;
-					}
-					if (!isAddress2) {
-						newPat.street = value;
+						newPat.address.address2 = value;
+					} else {
+						newPat.address.address1 = value;
 					}
 				} else if (key.includes("city")) {
-					newPat.city = value;
+					newPat.address.city = value;
 				} else if (key.includes("state")) {
-					newPat.state = value;
+					newPat.address.state = value;
 				} else if (key.includes("zip")) {
-					newPat.zip = value;
+					newPat.address.postalCode = value;
 				} else if (key.includes("phone")) {
 					newPat.phone = value;
 				} else if (key.includes("dob")) {
@@ -147,6 +144,7 @@ const useFormatPatients = (type: "csv" | "xlsx", patients: Patient[]) => {
 				}
 			}
 			newPat.insurance = {
+				memberId: "",
 				primary: null,
 				isValid: false,
 			};

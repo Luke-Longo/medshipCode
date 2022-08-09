@@ -3,7 +3,8 @@ import { db } from "~/server/db/index";
 
 export default defineEventHandler(async (event) => {
 	// const query = useQuery(event);
-
+	const body = useBody(event);
+	console.log(body);
 	const elig: ChangeEligibility = {
 		controlNumber: "123456789",
 		tradingPartnerServiceId: "00003",

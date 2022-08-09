@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ChangeToken } from "~~/types/types";
+import { ChangeToken } from "~~/types/change";
 
 export const useChangeStore = defineStore("change", {
 	state: () => ({

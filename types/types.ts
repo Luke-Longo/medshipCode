@@ -39,8 +39,9 @@ export interface Patient {
 	firstName: string;
 	lastName: string;
 	dob: string;
-	address: Address;
+	address?: Address;
 	phone: string;
+	ssn: string;
 	gender: string;
 	user_id: string;
 	patient_id: string;
@@ -58,7 +59,7 @@ export interface PatientInput {
 		val: string;
 		isValid: boolean;
 	};
-	address1: {
+	address1?: {
 		val: string;
 		isValid: boolean;
 	};
@@ -66,15 +67,15 @@ export interface PatientInput {
 		val: string;
 		isValid: boolean;
 	};
-	city: {
+	city?: {
 		val: string;
 		isValid: boolean;
 	};
-	state: {
+	state?: {
 		val: string;
 		isValid: boolean;
 	};
-	postalCode: {
+	postalCode?: {
 		val: string;
 		isValid: boolean;
 	};
@@ -86,11 +87,15 @@ export interface PatientInput {
 		val: string;
 		isValid: boolean;
 	};
-	phone: {
+	phone?: {
 		val: string;
 		isValid: boolean;
 	};
 	memberId: {
+		val: string;
+		isValid: boolean;
+	};
+	ssn: {
 		val: string;
 		isValid: boolean;
 	};

@@ -79,7 +79,7 @@ export interface Subscriber {
 	healthCareCodeInformation?: [
 		{ diagnosisTypeCode: string; diagnosisCode: string }
 	];
-	address?: ChangeAddress;
+	address?: Address;
 	additionalIdentification?: {
 		planNumber: string;
 		policyNumber: string;

@@ -211,6 +211,10 @@ const input: PatientInput = reactive({
 		val: "",
 		isValid: true,
 	},
+	ssn: {
+		val: "",
+		isValid: true,
+	},
 	memberId: {
 		val: "",
 		isValid: true,
@@ -323,6 +327,7 @@ const addPatient = async () => {
 			phone: getPhoneDigits(input.phone.val),
 			dob: input.dob.val,
 			gender: input.gender.val,
+			ssn: input.ssn.val,
 			insurance: input.insurance,
 			user_id: authStore.user_id,
 			patient_id: useUuid(),

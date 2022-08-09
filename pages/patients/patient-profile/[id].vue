@@ -250,6 +250,10 @@ const input: PatientInput = reactive({
 		val: "",
 		isValid: true,
 	},
+	ssn: {
+		val: "",
+		isValid: true,
+	},
 	gender: {
 		val: "",
 		isValid: true,
@@ -341,9 +345,19 @@ const resetValidity = (key) => {
 const insLookup = async () => {
 	validateInput();
 	if (formIsValid.value) {
+		let subscriber = {
+			memberId: input.memberId.val,
+			firstName: input.firstName.val,
+			lastName: input.lastName.val,
+			gender: input.gender.val,
+			dateOfBirth: input.dob.val,
+			ssn: input.ssn.val,
+		};
 		uiStore.toggleFunctionLoading(true);
-		console.log("looking up ins");
-		const res = await $fetch("/api/changeApi");
+		const res = await $fetch("/api/changeApi", {
+			method: "POST",
+			body: subscriber,
+		});
 		const data = res.data;
 		input.insurance.benefitsInformation = data.benefitsInformation;
 		input.insurance.planStatus = data.planStatus;

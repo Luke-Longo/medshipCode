@@ -145,7 +145,7 @@
 </template>
 
 <script setup lang="ts">
-import { PatientInput, Insurance, Patient } from "~~/types/types";
+import { Patient } from "~~/types/types";
 import { usePatientStore } from "~~/stores/patients";
 import { useUiStore } from "~~/stores/ui";
 import { useAuthStore } from "~~/stores/auth";
@@ -156,56 +156,6 @@ const authStore = useAuthStore();
 const checkedIns = ref(false);
 
 const { validateInput, input, formIsValid } = useValidatePatientInput();
-
-// const input: PatientInput = reactive({
-// 	firstName: {
-// 		val: "",
-// 		isValid: true,
-// 	},
-// 	lastName: {
-// 		val: "",
-// 		isValid: true,
-// 	},
-// 	address1: {
-// 		val: "",
-// 		isValid: true,
-// 	},
-// 	address2: {
-// 		val: "",
-// 		isValid: true,
-// 	},
-// 	city: {
-// 		val: "",
-// 		isValid: true,
-// 	},
-// 	state: {
-// 		val: "",
-// 		isValid: true,
-// 	},
-// 	postalCode: {
-// 		val: "",
-// 		isValid: true,
-// 	},
-// 	dob: {
-// 		val: "",
-// 		isValid: true,
-// 	},
-// 	gender: {
-// 		val: "",
-// 		isValid: true,
-// 	},
-// 	memberId: {
-// 		val: "",
-// 		isValid: true,
-// 	},
-// 	insurance: <Insurance>{
-// 		memberId: "",
-// 		isValid: false,
-// 		primary: null,
-// 		secondary: null,
-// 		tertiary: null,
-// 	},
-// });
 
 const clearInputs = () => {
 	for (let key in input) {
@@ -220,61 +170,10 @@ const clearInputs = () => {
 	}
 };
 
-const getPhoneDigits = (p) => {
-	let digits = p.replace(/\D/g, "");
-	return digits;
-};
-
-// const validateInput = async () => {
-// 	formIsValid.value = true;
-// 	for (let key in input) {
-// 		if (key !== "insurance") {
-// 			input[key].val = input[key].val?.toString().toLowerCase();
-// 			if (key !== "address2") {
-// 				if (input[key].val?.length === 0) {
-// 					input[key].isValid = false;
-// 					formIsValid.value = false;
-// 				}
-// 			}
-// 		}
-// 	}
-// 	if (input.state.val.length !== 2) {
-// 		input.state.isValid = false;
-// 		formIsValid.value = false;
-// 	}
-// 	if (input.postalCode.val.length !== 5) {
-// 		input.postalCode.isValid = false;
-// 		formIsValid.value = false;
-// 	}
-// 	const phoneIsValid = (p) => {
-// 		let phoneRe = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/;
-// 		let digits = getPhoneDigits(p);
-// 		return phoneRe.test(digits);
-// 	};
-// 	if (!phoneIsValid(input.phone.val)) {
-// 		input.phone.isValid = false;
-// 		formIsValid.value = false;
-// 	}
-// 	if (
-// 		input.gender.val.length !== 1 ||
-// 		!(input.gender.val === "m" || input.gender.val === "f")
-// 	) {
-// 		input.gender.isValid = false;
-// 		formIsValid.value = false;
-// 	}
-// 	const dobIsValid = (dob) => {
-// 		let dobRe = /[0-9]{2}\/[0-9]{2}\/[0-9]{4}/;
-// 		return dobRe.test(dob);
-// 	};
-// 	if (!dobIsValid(input.dob.val)) {
-// 		input.dob.isValid = false;
-// 		formIsValid.value = false;
-// 	}
-// };
-
 const resetValidity = (key) => {
 	input[key].isValid = true;
 };
+
 const insLookup = async () => {
 	validateInput();
 	if (formIsValid.value) {

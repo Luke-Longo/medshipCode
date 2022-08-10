@@ -147,7 +147,6 @@ const uploadData = async () => {
 			};
 			const aoa = CSVToJSON(data);
 			const formattedPatients = await useFormatPatients("csv", aoa);
-			console.log("formattedPatients", formattedPatients);
 			await patientsStore.uploadPatients(formattedPatients);
 			uiStore.toggleAppLoading(false);
 		};

@@ -2,7 +2,6 @@
 	<div>
 		<h2 class="header">Add Patient</h2>
 		<PatientsInput :input="input" />
-
 		<div class="flex my-8">
 			<button class="mx-auto w-3/4 reverse" @click="insLookup">
 				Find Insurance
@@ -20,6 +19,7 @@ import { Patient } from "~~/types/types";
 import { usePatientStore } from "~~/stores/patients";
 import { useUiStore } from "~~/stores/ui";
 import { useAuthStore } from "~~/stores/auth";
+import { EligibilityResponse } from "~~/types/change";
 
 const patientStore = usePatientStore();
 const uiStore = useUiStore();
@@ -32,9 +32,8 @@ const { validateInput, input, formIsValid } = useValidatePatientInput();
 const clearInputs = () => {
 	for (let key in input) {
 		if (key === "insurance") {
-			input.insurance.primary = null;
-			input.insurance.secondary = null;
-			input.insurance.tertiary = null;
+			input.insurance.benefitsInformation = [];
+			input.insurance.planStatus = [];
 			input.insurance.memberId = "";
 		} else {
 			input[key].val = "";
@@ -42,19 +41,14 @@ const clearInputs = () => {
 	}
 };
 
-const resetValidity = (key) => {
-	input[key].isValid = true;
-};
-
 const insLookup = async () => {
 	validateInput();
 	if (formIsValid.value) {
 		console.log("looking up ins");
-		const res = await $fetch("/api/changeApi");
-		const data = res.data;
-		input.insurance.benefitsInformation = data.benefitsInformation;
-		input.insurance.planStatus = data.planStatus;
-		console.log(data);
+		const res: EligibilityResponse = await $fetch("/api/changeEligibility");
+		input.insurance.benefitsInformation = res.benefitsInformation;
+		input.insurance.planStatus = res.planStatus;
+		console.log(res);
 		checkedIns.value = true;
 	}
 };

@@ -30,9 +30,6 @@ export interface Insurance {
 	isValid: boolean;
 	benefitsInformation?: BenefitsInformation[];
 	planStatus?: PlanStatus[];
-	primary: InsurancePlan;
-	secondary?: InsurancePlan;
-	tertiary?: InsurancePlan;
 }
 
 export interface Patient {

@@ -1,10 +1,9 @@
-import { ChangeEligibility } from "~~/types/change";
+import { ChangeEligibility, EligibilityResponse } from "~~/types/change";
 import { db } from "~/server/db/index";
 
 export default defineEventHandler(async (event) => {
 	// const query = useQuery(event);
-	const body = useBody(event);
-	console.log(body);
+	const subscriber = await useBody(event);
 	const elig: ChangeEligibility = {
 		controlNumber: "123456789",
 		tradingPartnerServiceId: "00003",
@@ -41,16 +40,18 @@ export default defineEventHandler(async (event) => {
 	const changeToken = db.changeToken;
 	try {
 		const changeEligibilityUrl = `https://sandbox.apigw.changehealthcare.com/medicalnetwork/eligibility/v3`;
-		const eligibilityRes: any = await $fetch(changeEligibilityUrl, {
-			headers: {
-				Authorization: `Bearer ${changeToken.access_token}`,
-				"Content-Type": "application/json",
-			},
-			method: "POST",
-			body: elig,
-		});
-		const data = eligibilityRes;
-		return { data };
+		const eligibilityRes: EligibilityResponse = await $fetch(
+			changeEligibilityUrl,
+			{
+				headers: {
+					Authorization: `Bearer ${changeToken.access_token}`,
+					"Content-Type": "application/json",
+				},
+				method: "POST",
+				body: elig,
+			}
+		);
+		return eligibilityRes;
 	} catch (e) {
 		console.log(e);
 	}

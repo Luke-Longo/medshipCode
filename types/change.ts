@@ -1,3 +1,24 @@
+export interface BenefitsInformation {
+	benefitsAdditionalInformation: {
+		planNumber: "";
+		drugFormularyNumber: "";
+		planNetworkIdNumber: "";
+	};
+	benefitsDateInformation: { plan: "" };
+	code: "";
+	name: "";
+	planCoverage: "";
+	serviceTypeCodes: string[];
+	serviceTypes: string[];
+}
+
+export interface PlanStatus {
+	planDetails: "";
+	serviceTypeCodes: string[];
+	status: "";
+	statusCode: "";
+}
+
 export interface ChangeToken {
 	access_token: string;
 	token_type: string;
@@ -47,7 +68,7 @@ export interface InformationReceiverName {
 	socialSecurityNumber: string;
 	federalTaxpayerIdentificationNumber: string;
 	informationReceiverAdditionalIdentifierState: string;
-	address: ChangeAddress;
+	address: Address;
 }
 
 export interface Subscriber {
@@ -121,7 +142,7 @@ export interface Dependent {
 	healthCareCodeInformation?: [
 		{ diagnosisTypeCode: string; diagnosisCode: string }
 	];
-	address?: ChangeAddress;
+	address?: Address;
 	additionalIdentification?: {
 		planNumber: string;
 		policyNumber: string;
@@ -170,6 +191,33 @@ export interface ChangeEligibility {
 	subscriber: Subscriber;
 	dependents?: Dependent[];
 	encounter: Encounter;
+}
+
+export interface Payer {
+	entityIdentifier: string;
+	entityType: "Non-Person Entity" | "Individual";
+	name: string;
+	payorIdentification: string;
+}
+export interface SubscriberTraceNumber {
+	originatingCompanyIdentifier: string;
+	referenceIdentification: string;
+	traceType: string;
+	traceTypeCode: string;
+}
+export interface EligibilityResponse {
+	benefitsInformation: BenefitsInformation[];
+	controlNumber: string;
+	meta: { senderId: string; applicationMode: string; traceId: string };
+	payer: Payer;
+	planDateInformation: { plan: string };
+	planInformation: { policyNumber: string };
+	planStatus: PlanStatus[];
+	provider: Provider;
+	reassociationKey: "";
+	subscriber: Subscriber;
+	subscriberTraceNumbers: SubscriberTraceNumber[];
+	tradingPartnerServiceId: string;
 }
 export interface ProfessionalService {
 	procedureIdentifier: "";

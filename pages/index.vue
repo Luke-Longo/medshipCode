@@ -16,17 +16,23 @@
 </template>
 
 <script setup lang="ts">
+import { EligibilityResponse } from "~~/types/change";
 const eligibility = ref({});
 const benefitsInformation = ref([]);
 
 const searchChangeHealth = async () => {
 	// looking for medical service type codes 12 or DM
-	const res = await $fetch("/api/changeApi");
-	const data = res.data;
-	eligibility.value = data;
-	benefitsInformation.value = data.benefitsInformation;
+	const res: EligibilityResponse = await $fetch("/api/changeEligibility", {
+		method: "POST",
+		body: {
+			medicalServiceTypeCodes: ["12", "DM"],
+		},
+	});
 
-	console.log(data);
+	eligibility.value = res;
+	benefitsInformation.value = res.benefitsInformation;
+
+	console.log(res);
 };
 </script>
 

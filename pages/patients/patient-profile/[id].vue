@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import { Patient } from "~~/types/types";
-import { Subscriber } from "~~/types/change";
+import { EligibilityResponse, Subscriber } from "~~/types/change";
 import { usePatientStore } from "~~/stores/patients";
 import { useUiStore } from "~~/stores/ui";
 import { useAuthStore } from "~~/stores/auth";
@@ -67,9 +67,8 @@ onMounted(() => {
 const clearInputs = () => {
 	for (let key in input) {
 		if (key === "insurance") {
-			input.insurance.primary = null;
-			input.insurance.secondary = null;
-			input.insurance.tertiary = null;
+			input.insurance.benefitsInformation = [];
+			input.insurance.planStatus = [];
 			input.insurance.memberId = "";
 		} else {
 			input[key].val = "";
@@ -88,14 +87,13 @@ const insLookup = async () => {
 			dateOfBirth: input.dob.val,
 		};
 		uiStore.toggleFunctionLoading(true);
-		const res = await $fetch("/api/changeApi", {
+		const res: EligibilityResponse = await $fetch("/api/changeEligibility", {
 			method: "POST",
 			body: subscriber,
 		});
-		const data = res.data;
-		input.insurance.benefitsInformation = data.benefitsInformation;
-		input.insurance.planStatus = data.planStatus;
-		console.log(data);
+		input.insurance.benefitsInformation = res.benefitsInformation;
+		input.insurance.planStatus = res.planStatus;
+		console.log(res);
 		checkedIns.value = true;
 		uiStore.toggleFunctionLoading(false);
 	}
@@ -135,9 +133,6 @@ const addPatient = async () => {
 	}
 };
 
-const resetValidity = (key: string) => {
-	input[key].isValid = true;
-};
 const viewOrders = async () => {
 	// probably best to use a modal pop up and show a list of prescriptions referencing the patient id this would allow for me to reuse the ui for the prescription log
 	console.log("view orders");

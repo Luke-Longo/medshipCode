@@ -44,7 +44,6 @@
 
 <script setup lang="ts">
 import { usePatientStore } from "~~/stores/patients";
-import { Patient } from "~~/types/types";
 import { useUiStore } from "~~/stores/ui";
 
 const patientsStore = usePatientStore();

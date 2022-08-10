@@ -21,18 +21,17 @@ const useFormatPatients = (type: "csv" | "xlsx", patients: Patient[]) => {
 					state: "",
 					postalCode: "",
 				},
-				phone: "",
 				gender: "",
 				user_id: "",
 				patient_id: "",
 				insurance: {
 					memberId: patient.insurance?.memberId,
-					primary: null,
-					secondary: null,
+					benefitsInformation: [],
+					planStatus: [],
 					isValid: false,
 				},
-				created_at: undefined,
-				modified_at: undefined,
+				created_at: new Date(),
+				modified_at: new Date(),
 			};
 			for (let key in patient) {
 				let value = patient[key];
@@ -54,8 +53,6 @@ const useFormatPatients = (type: "csv" | "xlsx", patients: Patient[]) => {
 					newPat.address.state = value ? value : "";
 				} else if (key.includes("zip" || "postal")) {
 					newPat.address.postalCode = value ? value : "";
-				} else if (key.includes("phone")) {
-					newPat.phone = value ? value : "";
 				} else if (key.includes("dob")) {
 					// you need to format date of birth so that you can know if either 19 or 20 is being used if they only put the last two digits of the year
 					if (value.includes("/")) {
@@ -76,96 +73,10 @@ const useFormatPatients = (type: "csv" | "xlsx", patients: Patient[]) => {
 					}
 				} else if (key.includes("gender" || "sex")) {
 					newPat.gender = value ? value.charAt(0) : "";
+				} else if (key.includes("member")) {
+					newPat.insurance.memberId = value ? value : "";
 				}
 			}
-			const user_id = authStore.user_id;
-			newPat.user_id = user_id;
-			let patientId = useUuid();
-			// Check if ID has already been used
-			for (let i = 0; i < newPatients.length; i++) {
-				const patient = newPatients[i];
-				if (patient.patient_id === patientId) {
-					patientId = useUuid();
-				}
-			}
-			newPat.patient_id = patientId;
-			newPat.created_at = new Date();
-			newPat.modified_at = new Date();
-			newPatients.push(newPat);
-		});
-		return newPatients;
-	} else if (type === "xlsx") {
-		for (let i = 0; i < patients.length; i++) {
-			const pat = patients[i];
-			const newPat = <Patient>{};
-			for (let key in pat) {
-				let value = pat[key];
-				value = value.toString().toLowerCase();
-				key = key.toLowerCase();
-				if (key.includes("first")) {
-					newPat.firstName = value;
-				} else if (key.includes("last")) {
-					newPat.lastName = value;
-				} else if (key.includes("address" || "street")) {
-					if (key.includes("address2")) {
-						newPat.address.address2 = value;
-					} else {
-						newPat.address.address1 = value;
-					}
-				} else if (key.includes("city")) {
-					newPat.address.city = value;
-				} else if (key.includes("state")) {
-					newPat.address.state = value;
-				} else if (key.includes("zip")) {
-					newPat.address.postalCode = value;
-				} else if (key.includes("phone")) {
-					newPat.phone = value;
-				} else if (key.includes("dob")) {
-					if (value.includes("/")) {
-						newPat.dob = value;
-					}
-					if (value.includes("-")) {
-						let dateArr = value.split("-");
-						newPat.dob = dateArr[0] + "/" + dateArr[1] + "/" + dateArr[2];
-					} else {
-						if (value.length === 8) {
-							newPat.dob =
-								value[0] +
-								value[1] +
-								"/" +
-								value[2] +
-								value[3] +
-								"/" +
-								value[4] +
-								value[5] +
-								value[6] +
-								value[7];
-						}
-						if (value.length === 7) {
-							console.log("missing 0 at start");
-							newPat.dob =
-								"0" +
-								value[0] +
-								"/" +
-								value[1] +
-								value[2] +
-								"/" +
-								value[3] +
-								value[4] +
-								value[5] +
-								value[6];
-						}
-					}
-				} else if (key.includes("gender" || "sex")) {
-					newPat.gender = value.charAt(0);
-				}
-			}
-			newPat.insurance = {
-				memberId: "",
-				primary: null,
-				isValid: false,
-			};
-			newPat.created_at = new Date();
 			const user_id = authStore.user_id;
 			newPat.user_id = user_id;
 			let patientId = useUuid();
@@ -178,13 +89,99 @@ const useFormatPatients = (type: "csv" | "xlsx", patients: Patient[]) => {
 			}
 			newPat.patient_id = patientId;
 			newPatients.push(newPat);
-		}
-
-		setTimeout(() => {
-			uiStore.toggleAppLoading(false);
-		}, 3000);
+		});
 		return newPatients;
 	}
+	// else if (type === "xlsx") {
+	// 	for (let i = 0; i < patients.length; i++) {
+	// 		const pat = patients[i];
+	// 		const newPat = <Patient>{};
+	// 		for (let key in pat) {
+	// 			let value = pat[key];
+	// 			value = value.toString().toLowerCase();
+	// 			key = key.toLowerCase();
+	// 			if (key.includes("first")) {
+	// 				newPat.firstName = value;
+	// 			} else if (key.includes("last")) {
+	// 				newPat.lastName = value;
+	// 			} else if (key.includes("address" || "street")) {
+	// 				if (key.includes("address2")) {
+	// 					newPat.address.address2 = value;
+	// 				} else {
+	// 					newPat.address.address1 = value;
+	// 				}
+	// 			} else if (key.includes("city")) {
+	// 				newPat.address.city = value;
+	// 			} else if (key.includes("state")) {
+	// 				newPat.address.state = value;
+	// 			} else if (key.includes("zip")) {
+	// 				newPat.address.postalCode = value;
+	// 			} else if (key.includes("phone")) {
+	// 				newPat.phone = value;
+	// 			} else if (key.includes("dob")) {
+	// 				if (value.includes("/")) {
+	// 					newPat.dob = value;
+	// 				}
+	// 				if (value.includes("-")) {
+	// 					let dateArr = value.split("-");
+	// 					newPat.dob = dateArr[0] + "/" + dateArr[1] + "/" + dateArr[2];
+	// 				} else {
+	// 					if (value.length === 8) {
+	// 						newPat.dob =
+	// 							value[0] +
+	// 							value[1] +
+	// 							"/" +
+	// 							value[2] +
+	// 							value[3] +
+	// 							"/" +
+	// 							value[4] +
+	// 							value[5] +
+	// 							value[6] +
+	// 							value[7];
+	// 					}
+	// 					if (value.length === 7) {
+	// 						console.log("missing 0 at start");
+	// 						newPat.dob =
+	// 							"0" +
+	// 							value[0] +
+	// 							"/" +
+	// 							value[1] +
+	// 							value[2] +
+	// 							"/" +
+	// 							value[3] +
+	// 							value[4] +
+	// 							value[5] +
+	// 							value[6];
+	// 					}
+	// 				}
+	// 			} else if (key.includes("gender" || "sex")) {
+	// 				newPat.gender = value.charAt(0);
+	// 			}
+	// 		}
+	// 		newPat.insurance = {
+	// 			memberId: "",
+	// 			isValid: false,
+	// 		};
+	// 		newPat.created_at = new Date();
+	// 		const user_id = authStore.user_id;
+	// 		newPat.user_id = user_id;
+	// 		let patientId = useUuid();
+	// 		// Check if ID has already been used
+	// 		for (let i = 0; i < newPatients.length; i++) {
+	// 			const patient = newPatients[i];
+	// 			if (patient.patient_id === patientId) {
+	// 				patientId = useUuid();
+	// 			}
+	// 		}
+	// 		newPat.patient_id = patientId;
+	// 		newPatients.push(newPat);
+	// 	}
+
+	// 	setTimeout(() => {
+	// 		uiStore.toggleAppLoading(false);
+	// 	}, 3000);
+	// 	return newPatients;
+	// }
 };
 
 export default useFormatPatients;

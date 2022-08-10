@@ -40,9 +40,9 @@ export interface Patient {
 	lastName: string;
 	dob: string;
 	address?: Address;
-	phone: string;
-	ssn: string;
-	gender: string;
+	phone?: string;
+	ssn?: string;
+	gender?: string;
 	user_id: string;
 	patient_id: string;
 	insurance: Insurance;
@@ -83,7 +83,7 @@ export interface PatientInput {
 		val: string;
 		isValid: boolean;
 	};
-	gender: {
+	gender?: {
 		val: string;
 		isValid: boolean;
 	};
@@ -91,11 +91,11 @@ export interface PatientInput {
 		val: string;
 		isValid: boolean;
 	};
-	memberId: {
+	memberId?: {
 		val: string;
 		isValid: boolean;
 	};
-	ssn: {
+	ssn?: {
 		val: string;
 		isValid: boolean;
 	};

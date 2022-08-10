@@ -64,7 +64,7 @@ export interface Subscriber {
 	suffix?: string;
 	gender: string;
 	dateOfBirth: string;
-	ssn: string;
+	ssn?: string;
 	groupNumber?: string;
 	idCard?: string;
 	providerCode?: string;

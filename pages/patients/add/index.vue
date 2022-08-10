@@ -3,7 +3,7 @@
 		<h2 class="header">Add Patient</h2>
 		<div class="flex flex-col gap-2">
 			<div class="form-group">
-				<label for="">First Name</label>
+				<label for="">First Name <span class="text-red-400">*</span></label>
 				<input
 					class="w-2/3"
 					:class="{ 'invalid-input': !input.firstName.isValid }"
@@ -14,7 +14,7 @@
 				/>
 			</div>
 			<div class="form-group">
-				<label for="">Last Name</label>
+				<label for="">Last Name <span class="text-red-400">*</span></label>
 				<input
 					class="w-2/3"
 					:class="{ 'invalid-input': !input.lastName.isValid }"
@@ -26,7 +26,7 @@
 			</div>
 			<div class="row">
 				<div class="form-group">
-					<label for="">Address 1</label>
+					<label for="">Address 1 <span class="text-red-400">*</span></label>
 					<input
 						class=""
 						:class="{ 'invalid-input': !input.address1.isValid }"
@@ -50,7 +50,7 @@
 			</div>
 			<div class="row">
 				<div class="form-group">
-					<label for="">City</label>
+					<label for="">City <span class="text-red-400">*</span></label>
 					<input
 						:class="{ 'invalid-input': !input.city.isValid }"
 						:type="'text'"
@@ -60,7 +60,7 @@
 					/>
 				</div>
 				<div class="form-group">
-					<label for="">State</label>
+					<label for="">State <span class="text-red-400">*</span></label>
 					<input
 						:class="{ 'invalid-input': !input.state.isValid }"
 						:type="'text'"
@@ -73,7 +73,7 @@
 					</p>
 				</div>
 				<div class="form-group">
-					<label for="">Zip</label>
+					<label for="">Zip <span class="text-red-400">*</span></label>
 					<input
 						:class="{ 'invalid-input': !input.postalCode.isValid }"
 						:type="'text'"
@@ -85,17 +85,28 @@
 			</div>
 			<div class="row">
 				<div class="form-group">
-					<label for="">Phone</label>
+					<label>Date of Birth <span class="text-red-400">*</span></label>
 					<input
-						:class="{ 'invalid-input': !input.phone.isValid }"
+						:class="{ 'invalid-input': !input.dob.isValid }"
 						:type="'text'"
-						:placeholder="'Phone: ex 111-111-1111'"
-						v-model.trim="input.phone.val"
-						@blur="resetValidity('phone')"
+						:placeholder="'DOB: ex 01/05/1973'"
+						v-model.trim="input.dob.val"
+						@blur="resetValidity('dob')"
 					/>
-					<p v-if="!input.phone.isValid" class="invalid-text">
-						Please enter 10 digits for phone number
+					<p v-if="!input.dob.isValid" class="invalid-text">
+						Please match this format: 01/01/2000
 					</p>
+				</div>
+				<div class="form-group">
+					<label for="">Member Id</label>
+					<input
+						type="text"
+						:class="{ 'invalid-input': !input.memberId.isValid }"
+						:type="'text'"
+						:placeholder="'ex: 0001FQ2'"
+						v-model.trim="input.memberId.val"
+						@blur="resetValidity('memberId')"
+					/>
 				</div>
 				<div class="form-group">
 					<label for="">Gender</label>
@@ -110,31 +121,6 @@
 						Please enter M or F
 					</p>
 				</div>
-				<div class="form-group">
-					<label>Date of Birth</label>
-					<input
-						:class="{ 'invalid-input': !input.dob.isValid }"
-						:type="'text'"
-						:placeholder="'DOB: ex 01/05/1973'"
-						v-model.trim="input.dob.val"
-						@blur="resetValidity('dob')"
-					/>
-					<p v-if="!input.dob.isValid" class="invalid-text">
-						Please match this format: 01/01/2000
-					</p>
-				</div>
-			</div>
-			<div class="form-group justify-center mx-auto">
-				<label for="">Member Id</label>
-				<input
-					type="text"
-					class="lg:w-1/3"
-					:class="{ 'invalid-input': !input.memberId.isValid }"
-					:type="'text'"
-					:placeholder="'ex: 0001FQ2'"
-					v-model.trim="input.memberId.val"
-					@blur="resetValidity('memberId')"
-				/>
 			</div>
 		</div>
 		<div class="flex my-8">
@@ -167,66 +153,59 @@ import { useAuthStore } from "~~/stores/auth";
 const patientStore = usePatientStore();
 const uiStore = useUiStore();
 const authStore = useAuthStore();
-const formIsValid = ref(true);
 const checkedIns = ref(false);
 
-const input: PatientInput = reactive({
-	firstName: {
-		val: "",
-		isValid: true,
-	},
-	lastName: {
-		val: "",
-		isValid: true,
-	},
-	address1: {
-		val: "",
-		isValid: true,
-	},
-	address2: {
-		val: "",
-		isValid: true,
-	},
-	city: {
-		val: "",
-		isValid: true,
-	},
-	state: {
-		val: "",
-		isValid: true,
-	},
-	postalCode: {
-		val: "",
-		isValid: true,
-	},
-	phone: {
-		val: "",
-		isValid: true,
-	},
-	dob: {
-		val: "",
-		isValid: true,
-	},
-	gender: {
-		val: "",
-		isValid: true,
-	},
-	ssn: {
-		val: "",
-		isValid: true,
-	},
-	memberId: {
-		val: "",
-		isValid: true,
-	},
-	insurance: <Insurance>{
-		memberId: "",
-		isValid: false,
-		primary: null,
-		secondary: null,
-		tertiary: null,
-	},
-});
+const { validateInput, input, formIsValid } = useValidatePatientInput();
+
+// const input: PatientInput = reactive({
+// 	firstName: {
+// 		val: "",
+// 		isValid: true,
+// 	},
+// 	lastName: {
+// 		val: "",
+// 		isValid: true,
+// 	},
+// 	address1: {
+// 		val: "",
+// 		isValid: true,
+// 	},
+// 	address2: {
+// 		val: "",
+// 		isValid: true,
+// 	},
+// 	city: {
+// 		val: "",
+// 		isValid: true,
+// 	},
+// 	state: {
+// 		val: "",
+// 		isValid: true,
+// 	},
+// 	postalCode: {
+// 		val: "",
+// 		isValid: true,
+// 	},
+// 	dob: {
+// 		val: "",
+// 		isValid: true,
+// 	},
+// 	gender: {
+// 		val: "",
+// 		isValid: true,
+// 	},
+// 	memberId: {
+// 		val: "",
+// 		isValid: true,
+// 	},
+// 	insurance: <Insurance>{
+// 		memberId: "",
+// 		isValid: false,
+// 		primary: null,
+// 		secondary: null,
+// 		tertiary: null,
+// 	},
+// });
 
 const clearInputs = () => {
 	for (let key in input) {
@@ -246,52 +225,52 @@ const getPhoneDigits = (p) => {
 	return digits;
 };
 
-const validateInput = async () => {
-	formIsValid.value = true;
-	for (let key in input) {
-		if (key !== "insurance") {
-			input[key].val = input[key].val?.toString().toLowerCase();
-			if (key !== "address2") {
-				if (input[key].val?.length === 0) {
-					input[key].isValid = false;
-					formIsValid.value = false;
-				}
-			}
-		}
-	}
-	if (input.state.val.length !== 2) {
-		input.state.isValid = false;
-		formIsValid.value = false;
-	}
-	if (input.postalCode.val.length !== 5) {
-		input.postalCode.isValid = false;
-		formIsValid.value = false;
-	}
-	const phoneIsValid = (p) => {
-		let phoneRe = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/;
-		let digits = getPhoneDigits(p);
-		return phoneRe.test(digits);
-	};
-	if (!phoneIsValid(input.phone.val)) {
-		input.phone.isValid = false;
-		formIsValid.value = false;
-	}
-	if (
-		input.gender.val.length !== 1 ||
-		!(input.gender.val === "m" || input.gender.val === "f")
-	) {
-		input.gender.isValid = false;
-		formIsValid.value = false;
-	}
-	const dobIsValid = (dob) => {
-		let dobRe = /[0-9]{2}\/[0-9]{2}\/[0-9]{4}/;
-		return dobRe.test(dob);
-	};
-	if (!dobIsValid(input.dob.val)) {
-		input.dob.isValid = false;
-		formIsValid.value = false;
-	}
-};
+// const validateInput = async () => {
+// 	formIsValid.value = true;
+// 	for (let key in input) {
+// 		if (key !== "insurance") {
+// 			input[key].val = input[key].val?.toString().toLowerCase();
+// 			if (key !== "address2") {
+// 				if (input[key].val?.length === 0) {
+// 					input[key].isValid = false;
+// 					formIsValid.value = false;
+// 				}
+// 			}
+// 		}
+// 	}
+// 	if (input.state.val.length !== 2) {
+// 		input.state.isValid = false;
+// 		formIsValid.value = false;
+// 	}
+// 	if (input.postalCode.val.length !== 5) {
+// 		input.postalCode.isValid = false;
+// 		formIsValid.value = false;
+// 	}
+// 	const phoneIsValid = (p) => {
+// 		let phoneRe = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/;
+// 		let digits = getPhoneDigits(p);
+// 		return phoneRe.test(digits);
+// 	};
+// 	if (!phoneIsValid(input.phone.val)) {
+// 		input.phone.isValid = false;
+// 		formIsValid.value = false;
+// 	}
+// 	if (
+// 		input.gender.val.length !== 1 ||
+// 		!(input.gender.val === "m" || input.gender.val === "f")
+// 	) {
+// 		input.gender.isValid = false;
+// 		formIsValid.value = false;
+// 	}
+// 	const dobIsValid = (dob) => {
+// 		let dobRe = /[0-9]{2}\/[0-9]{2}\/[0-9]{4}/;
+// 		return dobRe.test(dob);
+// 	};
+// 	if (!dobIsValid(input.dob.val)) {
+// 		input.dob.isValid = false;
+// 		formIsValid.value = false;
+// 	}
+// };
 
 const resetValidity = (key) => {
 	input[key].isValid = true;
@@ -324,10 +303,8 @@ const addPatient = async () => {
 				state: input.state.val,
 				postalCode: input.postalCode.val,
 			},
-			phone: getPhoneDigits(input.phone.val),
 			dob: input.dob.val,
 			gender: input.gender.val,
-			ssn: input.ssn.val,
 			insurance: input.insurance,
 			user_id: authStore.user_id,
 			patient_id: useUuid(),

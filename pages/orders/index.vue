@@ -42,7 +42,7 @@
 						@click="toggleActive(order.number)"
 					>
 						Actions
-						<i class="justify-center text-xl"><IconCalendar></IconCalendar></i>
+						<i class="justify-center text-xl"><ChevronDown></ChevronDown></i>
 					</p>
 					<transition name="fade">
 						<div class="dropdown-content" v-if="order.active">
@@ -58,10 +58,17 @@
 				</div>
 			</div>
 			<div class="flex justify-end">
-				<div class="grid grid-cols-3">
-					<i></i>
-					<p>{{ page }} of {{ pages }}</p>
-					<i></i>
+				<div class="grid grid-cols-3 gap-2 justify-center items-center">
+					<i
+						class="dark:hover:bg-black hover:bg-darkSecondary py-2 px-0 rounded-md hover:cursor-pointer trans"
+					>
+						<ChevronLeft class="mx-auto text-xl"
+					/></i>
+					<span>{{ page }} of {{ pages }}</span>
+					<i
+						class="dark:hover:bg-black hover:bg-darkSecondary py-2 px-0 rounded-md hover:cursor-pointer trans"
+						><ChevronRight class="mx-auto text-xl"
+					/></i>
 				</div>
 			</div>
 		</div>
@@ -69,7 +76,9 @@
 </template>
 
 <script setup lang="ts">
-import IconCalendar from "~icons/mdi/chevron-down";
+import ChevronDown from "~icons/mdi/chevron-down";
+import ChevronLeft from "~icons/mdi/chevron-left";
+import ChevronRight from "~icons/mdi/chevron-right";
 
 const selectedStatus = ref("Ready");
 const statuses = [

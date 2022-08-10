@@ -45,9 +45,8 @@ export default function useValidatePatientInput() {
 		insurance: <Insurance>{
 			memberId: "",
 			isValid: false,
-			primary: null,
-			secondary: null,
-			tertiary: null,
+			planStatus: [],
+			benefitsInformation: [],
 		},
 	});
 	const formIsValid = ref(true);

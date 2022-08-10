@@ -28,7 +28,6 @@ import { useAuthStore } from "~~/stores/auth";
 import { Patient, ActionProps } from "~~/types/types";
 
 const router = useRouter();
-const authStore = useAuthStore();
 const searching = ref(false);
 const actionProps: ActionProps[] = [
 	{

@@ -98,123 +98,6 @@
 					</p>
 				</div>
 				<div class="form-group">
-					<label for="">Member Id</label>
-					<input
-						type="text"
-						:class="{ 'invalid-input': !input.memberId.isValid }"
-						:type="'text'"
-						:placeholder="'ex: 0001FQ2'"
-						v-model.trim="input.memberId.val"
-						@blur="resetValidity('memberId')"
-					/>
-				</div>
-				<div class="form-group">
-					<label for="">Gender</label>
-					<input
-						:class="{ 'invalid-input': !input.gender.isValid }"
-						:type="'text'"
-						:placeholder="'Gender: M or F'"
-						v-model.trim="input.gender.val"
-						@blur="resetValidity('gender')"
-					/>
-					<p v-if="!input.gender.isValid" class="invalid-text">
-						Please enter M or F
-					</p>
-				</div>
-			</div>
-		</div>
-		<div class="flex flex-col gap-2">
-			<div class="form-group">
-				<label for="">First Name <span class="text-red-400">*</span></label>
-				<input
-					class="w-2/3"
-					:class="{ 'invalid-input': !input.firstName.isValid }"
-					:type="'text'"
-					:placeholder="'First Name'"
-					v-model.trim="input.firstName.val"
-					@blur="resetValidity('firstName')"
-				/>
-			</div>
-			<div class="form-group">
-				<label for="">Last Name <span class="text-red-400">*</span></label>
-				<input
-					class="w-2/3"
-					:class="{ 'invalid-input': !input.lastName.isValid }"
-					:type="'text'"
-					:placeholder="'Last Name'"
-					v-model.trim="input.lastName.val"
-					@blur="resetValidity('lastName')"
-				/>
-			</div>
-			<div class="row">
-				<div class="form-group">
-					<label for="">Address 1 <span class="text-red-400">*</span></label>
-					<input
-						class=""
-						:class="{ 'invalid-input': !input.address1.isValid }"
-						:type="'text'"
-						:placeholder="'Address 1'"
-						v-model.trim="input.address1.val"
-						@blur="resetValidity('address1')"
-					/>
-				</div>
-				<div class="form-group">
-					<label for="">Address 2</label>
-					<input
-						class="w-2/3"
-						:type="'text'"
-						:placeholder="'ex: Suite 101'"
-						v-model.trim="input.address2.val"
-					/>
-				</div>
-			</div>
-			<div class="row">
-				<div class="form-group">
-					<label for="">City <span class="text-red-400">*</span></label>
-					<input
-						:class="{ 'invalid-input': !input.city.isValid }"
-						:type="'text'"
-						:placeholder="'City'"
-						v-model.trim="input.city.val"
-						@blur="resetValidity('city')"
-					/>
-				</div>
-				<div class="form-group">
-					<label for="">State <span class="text-red-400">*</span></label>
-					<input
-						:class="{ 'invalid-input': !input.state.isValid }"
-						:type="'text'"
-						:placeholder="'State: ex (GA)'"
-						v-model.trim="input.state.val"
-						@blur="resetValidity('state')"
-					/>
-					<p v-if="!input.state.isValid" class="invalid-text">
-						Please enter a valid state abbreviation
-					</p>
-				</div>
-				<div class="form-group">
-					<label for="">Zip <span class="text-red-400">*</span></label>
-					<input
-						:class="{ 'invalid-input': !input.postalCode.isValid }"
-						:type="'text'"
-						:placeholder="'Zip'"
-						v-model.trim="input.postalCode.val"
-						@blur="resetValidity('postalCode')"
-					/>
-				</div>
-			</div>
-			<div class="row">
-				<div class="form-group">
-					<label for="">Member Id</label>
-					<input
-						type="text"
-						class="lg:w-1/3"
-						:type="'text'"
-						:placeholder="'ex: 0001FQ2'"
-						v-model.trim="input.memberId.val"
-					/>
-				</div>
-				<div class="form-group">
 					<label for="">Gender <span class="text-red-400">*</span></label>
 					<input
 						:class="{ 'invalid-input': !input.gender.isValid }"
@@ -228,17 +111,15 @@
 					</p>
 				</div>
 				<div class="form-group">
-					<label>Date of Birth <span class="text-red-400">*</span></label>
+					<label for="">Member Id</label>
 					<input
-						:class="{ 'invalid-input': !input.dob.isValid }"
+						type="text"
+						:class="{ 'invalid-input': !input.memberId.isValid }"
 						:type="'text'"
-						:placeholder="'DOB: ex 01/05/1973'"
-						v-model.trim="input.dob.val"
-						@blur="resetValidity('dob')"
+						:placeholder="'ex: 0001FQ2'"
+						v-model.trim="input.memberId.val"
+						@blur="resetValidity('memberId')"
 					/>
-					<p v-if="!input.dob.isValid" class="invalid-text">
-						Please match this format: 01/01/2000
-					</p>
 				</div>
 			</div>
 		</div>
@@ -300,67 +181,18 @@ const setInput = () => {
 			};
 		}
 	}
-	input.address1.val = patient.address.address1;
-	input.address2.val = patient.address.address2;
-	input.city.val = patient.address.city;
-	input.state.val = patient.address.state;
-	input.postalCode.val = patient.address.postalCode;
+	for (let key in patient.address) {
+		input[key] = {
+			val: patient.address[key],
+			isValid: true,
+		};
+	}
 	input.memberId.val = patient.insurance.memberId;
 };
 
 onMounted(() => {
 	setInput();
 });
-
-// const input: PatientInput = reactive({
-// 	firstName: {
-// 		val: "",
-// 		isValid: true,
-// 	},
-// 	lastName: {
-// 		val: "",
-// 		isValid: true,
-// 	},
-// 	address1: {
-// 		val: "",
-// 		isValid: true,
-// 	},
-// 	address2: {
-// 		val: "",
-// 		isValid: true,
-// 	},
-// 	city: {
-// 		val: "",
-// 		isValid: true,
-// 	},
-// 	state: {
-// 		val: "",
-// 		isValid: true,
-// 	},
-// 	postalCode: {
-// 		val: "",
-// 		isValid: true,
-// 	},
-// 	dob: {
-// 		val: "",
-// 		isValid: true,
-// 	},
-// 	gender: {
-// 		val: "",
-// 		isValid: true,
-// 	},
-// 	memberId: {
-// 		val: "",
-// 		isValid: true,
-// 	},
-// 	insurance: <Insurance>{
-// 		memberId: "",
-// 		isValid: false,
-// 		primary: null,
-// 		secondary: null,
-// 		tertiary: null,
-// 	},
-// });
 
 const clearInputs = () => {
 	for (let key in input) {
@@ -374,48 +206,6 @@ const clearInputs = () => {
 		}
 	}
 };
-
-// const validateInput = async () => {
-// 	formIsValid.value = true;
-// 	for (let key in input) {
-// 		input[key].val = input[key].val?.toString().toLowerCase();
-// 		if (
-// 			key === "firstName" ||
-// 			key === "lastName" ||
-// 			key === "address1" ||
-// 			key === "city"
-// 		) {
-// 			if (input[key].val?.length === 0) {
-// 				input[key].isValid = false;
-// 				formIsValid.value = false;
-// 			}
-// 		}
-// 	}
-// 	if (input.state.val.length !== 2) {
-// 		input.state.isValid = false;
-// 		formIsValid.value = false;
-// 	}
-// 	if (input.postalCode.val.length !== 5) {
-// 		input.postalCode.isValid = false;
-// 		formIsValid.value = false;
-// 	}
-// 	if (
-// 		input.gender.val.length !== 1 ||
-// 		!(input.gender.val === "m" || input.gender.val === "f")
-// 	) {
-// 		input.gender.isValid = false;
-// 		formIsValid.value = false;
-// 	}
-// 	const dobIsValid = (dob) => {
-// 		let dobRe = /[0-9]{2}\/[0-9]{2}\/[0-9]{4}/;
-// 		return dobRe.test(dob);
-// 	};
-
-// 	if (!dobIsValid(input.dob.val)) {
-// 		input.dob.isValid = false;
-// 		formIsValid.value = false;
-// 	}
-// };
 
 const resetValidity = (key) => {
 	input[key].isValid = true;
@@ -472,6 +262,8 @@ const addPatient = async () => {
 		await patientStore.addPatient(patient);
 
 		clearInputs();
+
+		router.push("/patients");
 
 		uiStore.toggleFunctionLoading(false);
 	}

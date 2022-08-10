@@ -98,18 +98,7 @@
 					</p>
 				</div>
 				<div class="form-group">
-					<label for="">Member Id</label>
-					<input
-						type="text"
-						:class="{ 'invalid-input': !input.memberId.isValid }"
-						:type="'text'"
-						:placeholder="'ex: 0001FQ2'"
-						v-model.trim="input.memberId.val"
-						@blur="resetValidity('memberId')"
-					/>
-				</div>
-				<div class="form-group">
-					<label for="">Gender</label>
+					<label for="">Gender <span class="text-red-400">*</span></label>
 					<input
 						:class="{ 'invalid-input': !input.gender.isValid }"
 						:type="'text'"
@@ -120,6 +109,17 @@
 					<p v-if="!input.gender.isValid" class="invalid-text">
 						Please enter M or F
 					</p>
+				</div>
+				<div class="form-group">
+					<label for="">Member Id</label>
+					<input
+						type="text"
+						:class="{ 'invalid-input': !input.memberId.isValid }"
+						:type="'text'"
+						:placeholder="'ex: 0001FQ2'"
+						v-model.trim="input.memberId.val"
+						@blur="resetValidity('memberId')"
+					/>
 				</div>
 			</div>
 		</div>
@@ -154,6 +154,7 @@ const patientStore = usePatientStore();
 const uiStore = useUiStore();
 const authStore = useAuthStore();
 const checkedIns = ref(false);
+const router = useRouter();
 
 const { validateInput, input, formIsValid } = useValidatePatientInput();
 
@@ -214,6 +215,7 @@ const addPatient = async () => {
 		await patientStore.addPatient(patient);
 
 		clearInputs();
+		router.push("/patients");
 
 		uiStore.toggleFunctionLoading(false);
 	}

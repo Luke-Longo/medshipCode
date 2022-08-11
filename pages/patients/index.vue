@@ -30,9 +30,28 @@
 			:title="'Schedule Patients'"
 			@close="handleClose"
 		>
-			<h3 class="text-center pb-3">
+			<h3 class="text-center pb-3 trans">
 				Schedule Date: {{ selectedDate.toDateString() }}
 			</h3>
+			<transition name="fade">
+				<div v-if="!providerSelected">
+					<h3 class="text-center py-2">Choose Provider</h3>
+					<div class="flex justify-center">
+						<p
+							class="px-4 py-3 rounded-3xl hover:bg-darkSecondary hover:cursor-pointer dark:hover:bg-black trans"
+							v-for="provider in providers"
+							@click="selectProvider(provider)"
+						>
+							{{ provider.firstName }} {{ provider.lastName }}
+						</p>
+					</div>
+				</div>
+				<div v-else>
+					<h3 class="text-center pb-3 trans">
+						Provider: {{ selectedDoctor.firstName }} {{ selectedDoctor.lastName }}
+					</h3>
+				</div>
+			</transition>
 			<div>
 				<div class="form-group">
 					<label for="">Patients Name</label>
@@ -80,6 +99,7 @@ const actionProps: ActionProps[] = [
 		icon: IconCalendar,
 	},
 ];
+const providerSelected = ref(false);
 const patientStore = usePatientStore();
 const authStore = useAuthStore();
 const scheduleStore = useScheduleStore();
@@ -87,6 +107,19 @@ const searchInput = ref("");
 const filteredPatients = ref([] as Patient[]);
 const selectedDate = ref(null as Date | null);
 const selectedDoctor = ref(null as Doctor | null);
+
+const providers = ref([
+	{
+		doctor_id: "1",
+		firstName: "John",
+		lastName: "Doe",
+	},
+	{
+		doctor_id: "1",
+		firstName: "John",
+		lastName: "Doe",
+	},
+]);
 
 const handleAction = async (action: string) => {
 	if (action === "addPatient") {
@@ -114,6 +147,10 @@ const handleClose = () => {
 const dateSelected = (date: Date) => {
 	selectedDate.value = date;
 	showCalendar.value = false;
+};
+const selectProvider = (provider) => {
+	selectedDoctor.value = provider;
+	providerSelected.value = true;
 };
 const handleSchedule = (patient: Patient) => {
 	// patientStore.schedulePatient(patient, selectedDate.value);

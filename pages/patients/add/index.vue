@@ -19,7 +19,7 @@ import { Patient } from "~~/types/types";
 import { usePatientStore } from "~~/stores/patients";
 import { useUiStore } from "~~/stores/ui";
 import { useAuthStore } from "~~/stores/auth";
-import { EligibilityResponse } from "~~/types/change";
+import { EligibilityResponse, Subscriber } from "~~/types/change";
 
 const patientStore = usePatientStore();
 const uiStore = useUiStore();
@@ -44,12 +44,22 @@ const clearInputs = () => {
 const insLookup = async () => {
 	validateInput();
 	if (formIsValid.value) {
-		console.log("looking up ins");
-		const res: EligibilityResponse = await $fetch("/api/changeEligibility");
+		let subscriber: Subscriber = {
+			memberId: input.memberId.val,
+			firstName: input.firstName.val,
+			lastName: input.lastName.val,
+			gender: input.gender.val,
+			dateOfBirth: input.dob.val,
+		};
+		uiStore.toggleFunctionLoading(true);
+		const res: EligibilityResponse = await $fetch("/api/changeEligibility", {
+			method: "POST",
+			body: subscriber,
+		});
 		input.insurance.benefitsInformation = res.benefitsInformation;
 		input.insurance.planStatus = res.planStatus;
-		console.log(res);
 		checkedIns.value = true;
+		uiStore.toggleFunctionLoading(false);
 	}
 };
 

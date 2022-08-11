@@ -93,7 +93,6 @@ const insLookup = async () => {
 		});
 		input.insurance.benefitsInformation = res.benefitsInformation;
 		input.insurance.planStatus = res.planStatus;
-		console.log(res);
 		checkedIns.value = true;
 		uiStore.toggleFunctionLoading(false);
 	}

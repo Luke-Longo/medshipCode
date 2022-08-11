@@ -4,7 +4,7 @@
 		<div class="flex justify-center">
 			<button class="reverse">Create Order</button>
 		</div>
-		<div class="card h-fit">
+		<div class="card h-fit trans">
 			<div
 				class="flex gap-6 border-gray-300 border-solid border-t-0 border-r-0 border-l-0 border-b-2"
 			>
@@ -26,37 +26,41 @@
 				<p>Order Date</p>
 				<p></p>
 			</div>
-			<div
-				class="grid grid-cols-7 py-3 px-4"
-				v-for="(order, index) in paginatedOrders"
-			>
-				<p>{{ order.number }}</p>
-				<p>{{ order.doctor }}</p>
-				<p>{{ order.patient }}</p>
-				<p>{{ order.insurance }}</p>
-				<p>{{ order.tracking }}</p>
-				<p>{{ order.orderDate }}</p>
-				<div class="dropdown" @mouseleave="toggleActive(order.number, 'close')">
-					<p
-						class="flex items-center hover:cursor-pointer dark:hover:text-darkPrimary trans"
-						@click="toggleActive(order.number)"
+			<transition name="fade">
+				<div v-if="paginatedOrders.length > 0">
+					<div
+						class="grid grid-cols-7 py-3 px-4"
+						v-for="(order, index) in paginatedOrders"
 					>
-						Actions
-						<i class="justify-center text-xl"><ChevronDown></ChevronDown></i>
-					</p>
-					<transition name="fade">
-						<div class="dropdown-content" v-if="order.active">
-							<div class="content" @click="bill(order.number)">Mark as Billed</div>
-							<div class="content" @click="form1500">Download Form 1500</div>
-							<div class="content" @click="printPackingSlip">Print Packing Slip</div>
-							<div class="content" @click="printSalesSlip">Print Sales Slip</div>
-							<div class="content" @click="pod">POD</div>
-							<div class="content" @click="orderNotes">Order Notes</div>
-							<div class="content" @click="eob">EOB</div>
+						<p>{{ order.number }}</p>
+						<p>{{ order.doctor }}</p>
+						<p>{{ order.patient }}</p>
+						<p>{{ order.insurance }}</p>
+						<p>{{ order.tracking }}</p>
+						<p>{{ order.orderDate }}</p>
+						<div class="dropdown" @mouseleave="toggleActive(order.number, 'close')">
+							<p
+								class="flex items-center hover:cursor-pointer dark:hover:text-darkPrimary trans"
+								@click="toggleActive(order.number)"
+							>
+								Actions
+								<i class="justify-center text-xl"><ChevronDown></ChevronDown></i>
+							</p>
+							<transition name="fade">
+								<div class="dropdown-content" v-if="order.active">
+									<div class="content" @click="bill(order.number)">Mark as Billed</div>
+									<div class="content" @click="form1500">Download Form 1500</div>
+									<div class="content" @click="printPackingSlip">Print Packing Slip</div>
+									<div class="content" @click="printSalesSlip">Print Sales Slip</div>
+									<div class="content" @click="pod">POD</div>
+									<div class="content" @click="orderNotes">Order Notes</div>
+									<div class="content" @click="eob">EOB</div>
+								</div>
+							</transition>
 						</div>
-					</transition>
+					</div>
 				</div>
-			</div>
+			</transition>
 			<div class="flex justify-end">
 				<div class="grid grid-cols-3 gap-2 justify-center items-center">
 					<i

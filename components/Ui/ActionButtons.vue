@@ -33,27 +33,12 @@ const props = defineProps<{
 const emits = defineEmits<{
 	(e: string, action: string): void;
 }>();
-const searching = ref(false);
-
-const router = useRouter();
 
 const handleAction = async (action: string) => {
-	if (action === props.actionProps[0].id) {
-		console.log(props.actionProps[0].id);
-		emits("actionClicked", props.actionProps[0].id);
-		// router.push("/patients/add");
-	} else if (action === props.actionProps[1]?.id) {
-		console.log(props.actionProps[1]?.id);
-		emits("actionClicked", props.actionProps[1].id);
-	} else if (action === props.actionProps[2]?.id) {
-		emits("actionClicked", props.actionProps[2].id);
-		console.log(props.actionProps[2].id);
-	} else if (action === props.actionProps[3]?.id) {
-		console.log(props.actionProps[3].id);
-		emits("actionClicked", props.actionProps[3].id);
-	} else if (action === props.actionProps[4]?.id) {
-		console.log(props.actionProps[4].id);
-		emits("actionClicked", props.actionProps[4].id);
-	}
+	props.actionProps.forEach((actionProp) => {
+		if (actionProp.id === action) {
+			emits("actionClicked", actionProp.id);
+		}
+	});
 };
 </script>

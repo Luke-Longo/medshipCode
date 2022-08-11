@@ -24,7 +24,6 @@ import IconUser from "~icons/fa-solid/user";
 import IconSearch from "~icons/fa-solid/search";
 import IconCalendar from "~icons/fa-solid/calendar";
 import { usePatientStore } from "~/stores/patients";
-import { useAuthStore } from "~~/stores/auth";
 import { Patient, ActionProps } from "~~/types/types";
 
 const router = useRouter();
@@ -56,7 +55,6 @@ const handleAction = async (action: string) => {
 	} else if (action === "searchPatient") {
 		searching.value = true;
 	} else if (action === "schedulePatient") {
-		console.log("schedule patient");
 	}
 };
 const handleSearch = async () => {
@@ -65,7 +63,7 @@ const handleSearch = async () => {
 };
 const handleSelected = (patient: Patient) => {
 	patientStore.setSelectedPatient(patient);
-	router.push(`/patients/patient-profile/${patient.id}`);
+	router.push(`/patients/patient-profile/${patient.patient_id}`);
 };
 const handleClose = () => {
 	searching.value = false;

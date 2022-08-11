@@ -1,20 +1,36 @@
 <template>
 	<div class="w-fit rounded-md">
 		<div class="card">
-			<div class="flex mb-3 justify-center gap-1 items-center">
-				<i class="chevron"><ChevronLeft class="mx-auto text-lg" /></i>
-				<p class="">{{ months[selectedMonth] }}</p>
-				<i class="chevron"><ChevronRight class="mx-auto text-lg" /></i>
-				<i class="chevron"><ChevronLeft class="mx-auto text-lg" /></i>
-				<p class="">{{ selectedYear }}</p>
-				<i class="chevron"><ChevronRight class="mx-auto text-lg" /></i>
+			<div class="flex mb-3 justify-center gap-1 items-center trans">
+				<i class="chevron" @click="decrement('month')"
+					><ChevronLeft class="mx-auto text-lg"
+				/></i>
+				<div>
+					<p class="text-center trans w-20">{{ months[selectedMonth] }}</p>
+				</div>
+				<i class="chevron" @click="increment('month')"
+					><ChevronRight class="mx-auto text-lg"
+				/></i>
+				<i class="chevron" @click="selectedYear -= 1"
+					><ChevronLeft class="mx-auto text-lg"
+				/></i>
+				<p class="trans">{{ selectedYear }}</p>
+				<i class="chevron" @click="selectedYear += 1"
+					><ChevronRight class="mx-auto text-lg"
+				/></i>
 			</div>
 			<div class="grid grid-cols-7">
-				<div v-for="dayName in dayNames" class="mx-3">
+				<div v-for="dayName in dayNames" class="px-2 mx-auto">
 					<p class="">{{ dayName.slice(0, 2) }}</p>
 				</div>
-				<div class="border m-3" v-for="day in days">
-					<p>{{ day }}</p>
+				<div v-for="(day, index) in days">
+					<div
+						v-if="day !== ''"
+						class="border dark:hover:bg-black flex p-2 text-center items-center justify-center rounded-md hover:cursor-pointer hover:bg-darkSecondary"
+						@click="selectDay(day)"
+					>
+						<p class="">{{ day }}</p>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -24,6 +40,10 @@
 <script setup lang="ts">
 import ChevronLeft from "~icons/mdi/chevron-left";
 import ChevronRight from "~icons/mdi/chevron-right";
+
+const emits = defineEmits<{
+	(e: "daySelected", date: Date): void;
+}>();
 
 const selectedMonth = ref(new Date().getMonth());
 const selectedYear = ref(new Date().getFullYear());
@@ -64,6 +84,16 @@ const months = [
 	"November",
 	"December",
 ];
+const increment = (key: string) => {
+	if (key === "month") {
+		selectedMonth.value = (selectedMonth.value + 1) % 12;
+	}
+};
+const decrement = (key: string) => {
+	if (key === "month") {
+		selectedMonth.value = (selectedMonth.value + 11) % 12;
+	}
+};
 const days = computed(() => {
 	const days = [];
 	const firstDay = new Date(selectedYear.value, selectedMonth.value, 1).getDay();
@@ -76,6 +106,12 @@ const days = computed(() => {
 	}
 	return days;
 });
+const selectedDate = ref(new Date());
+const selectDay = (day: number) => {
+	selectedDate.value = new Date(selectedYear.value, selectedMonth.value, day);
+	console.log(selectedDate.value);
+	emits("daySelected", selectedDate.value);
+};
 </script>
 
 <style scoped>

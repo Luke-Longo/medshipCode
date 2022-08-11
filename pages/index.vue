@@ -12,7 +12,6 @@
 		>
 			<p>{{ benefit.planCoverage }}</p>
 		</div>
-		<UiCalendar />
 	</div>
 </template>
 

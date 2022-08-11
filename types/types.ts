@@ -102,6 +102,24 @@ export interface PatientInput {
 	id?: string;
 }
 
+export interface Schedule {
+	patients: [
+		{
+			patient_id: string;
+			firstName: string;
+			lastName: string;
+		}
+	];
+	doctor: {
+		doctor_id: string;
+		firstName: string;
+		lastName: string;
+	};
+	date: string;
+	user_id: string;
+	modified_at: Date;
+}
+
 export interface ActionIcon {
 	name: string;
 	render: () => {};

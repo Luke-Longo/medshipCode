@@ -20,7 +20,7 @@
 			<div v-if="showCalendar" class="w-full h-full mx-auto">
 				<div class="modal-backdrop" @click.self="handleClose">
 					<div class="modal">
-						<UiCalendar class="mx-auto" @day-selected="dateSelected($event)" />
+						<UiCalendar class="w-96 mx-auto" @day-selected="dateSelected($event)" />
 					</div>
 				</div>
 			</div>
@@ -30,6 +30,9 @@
 			:title="'Schedule Patients'"
 			@close="handleClose"
 		>
+			<h3 class="text-center pb-3">
+				Schedule Date: {{ selectedDate.toDateString() }}
+			</h3>
 			<div>
 				<div class="form-group">
 					<label for="">Patients Name</label>
@@ -40,7 +43,7 @@
 				</div>
 				<PatientsList
 					:patients="filteredPatients.length > 0 ? filteredPatients : []"
-					@selected="handleSelected"
+					@selected="handleSchedule"
 				/>
 			</div>
 		</UiModal>
@@ -52,7 +55,9 @@ import IconUser from "~icons/fa-solid/user";
 import IconSearch from "~icons/fa-solid/search";
 import IconCalendar from "~icons/fa-solid/calendar";
 import { usePatientStore } from "~/stores/patients";
-import { Patient, ActionProps } from "~~/types/types";
+import { useAuthStore } from "~/stores/auth";
+import { useScheduleStore } from "~/stores/schedule";
+import { Patient, ActionProps, Doctor, Schedule } from "~~/types/types";
 
 const router = useRouter();
 const searching = ref(false);
@@ -76,8 +81,12 @@ const actionProps: ActionProps[] = [
 	},
 ];
 const patientStore = usePatientStore();
+const authStore = useAuthStore();
+const scheduleStore = useScheduleStore();
 const searchInput = ref("");
 const filteredPatients = ref([] as Patient[]);
+const selectedDate = ref(null as Date | null);
+const selectedDoctor = ref(null as Doctor | null);
 
 const handleAction = async (action: string) => {
 	if (action === "addPatient") {
@@ -103,8 +112,30 @@ const handleClose = () => {
 	showCalendar.value = false;
 };
 const dateSelected = (date: Date) => {
-	console.log(date);
+	selectedDate.value = date;
 	showCalendar.value = false;
+};
+const handleSchedule = (patient: Patient) => {
+	// patientStore.schedulePatient(patient, selectedDate.value);
+	let schedule: Schedule = {
+		patients: [
+			{
+				patient_id: patient.patient_id,
+				firstName: patient.firstName,
+				lastName: patient.lastName,
+			},
+		],
+		doctor: {
+			doctor_id: selectedDoctor.value.doctor_id,
+			firstName: selectedDoctor.value.firstName,
+			lastName: selectedDoctor.value.lastName,
+		},
+		date: selectedDate.value.toISOString().split("T")[0],
+		user_id: authStore.user_id,
+		modified_at: new Date(),
+	};
+	scheduleStore.addSchedule(schedule);
+	scheduling.value = false;
 };
 </script>
 

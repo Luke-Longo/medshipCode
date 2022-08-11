@@ -109,14 +109,13 @@ const days = computed(() => {
 const selectedDate = ref(new Date());
 const selectDay = (day: number) => {
 	selectedDate.value = new Date(selectedYear.value, selectedMonth.value, day);
-	console.log(selectedDate.value);
 	emits("daySelected", selectedDate.value);
 };
 </script>
 
 <style scoped>
 div {
-	@apply dark:bg-darkBg text-primary dark:text-darkSecondary;
+	@apply dark:bg-darkBg bg-white text-primary dark:text-darkSecondary;
 }
 .chevron {
 	@apply dark:hover:bg-black hover:bg-darkSecondary py-1 px-0 rounded-md hover:cursor-pointer trans;

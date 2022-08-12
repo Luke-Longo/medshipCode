@@ -33,7 +33,7 @@
 			<h3 class="text-center pb-3 trans">
 				Schedule Date: {{ selectedDate.toDateString() }}
 			</h3>
-			<transition name="fade">
+			<transition name="fade" mode="out-in">
 				<div v-if="!providerSelected">
 					<h3 class="text-center py-2">Choose Provider</h3>
 					<div class="flex justify-center">
@@ -46,10 +46,13 @@
 						</p>
 					</div>
 				</div>
-				<div v-else>
+				<div v-else class="flex gap-3 justify-center">
 					<h3 class="text-center pb-3 trans">
-						Provider: {{ selectedDoctor.firstName }} {{ selectedDoctor.lastName }}
+						Provider: {{ selectedProvider.firstName }} {{ selectedProvider.lastName }}
 					</h3>
+					<p @click="changeProvider" class="hover:cursor-pointer hover:underline">
+						Change Provider
+					</p>
 				</div>
 			</transition>
 			<div>
@@ -76,7 +79,7 @@ import IconCalendar from "~icons/fa-solid/calendar";
 import { usePatientStore } from "~/stores/patients";
 import { useAuthStore } from "~/stores/auth";
 import { useScheduleStore } from "~/stores/schedule";
-import { Patient, ActionProps, Doctor, Schedule } from "~~/types/types";
+import { Patient, ActionProps, Provider, Schedule } from "~~/types/types";
 
 const router = useRouter();
 const searching = ref(false);
@@ -106,18 +109,18 @@ const scheduleStore = useScheduleStore();
 const searchInput = ref("");
 const filteredPatients = ref([] as Patient[]);
 const selectedDate = ref(null as Date | null);
-const selectedDoctor = ref(null as Doctor | null);
+const selectedProvider = ref(null as Provider | null);
 
 const providers = ref([
 	{
-		doctor_id: "1",
+		provider_id: "1",
 		firstName: "John",
 		lastName: "Doe",
 	},
 	{
-		doctor_id: "1",
-		firstName: "John",
-		lastName: "Doe",
+		provider_id: "2",
+		firstName: "Jim",
+		lastName: "John",
 	},
 ]);
 
@@ -149,7 +152,7 @@ const dateSelected = (date: Date) => {
 	showCalendar.value = false;
 };
 const selectProvider = (provider) => {
-	selectedDoctor.value = provider;
+	selectedProvider.value = provider;
 	providerSelected.value = true;
 };
 const handleSchedule = (patient: Patient) => {
@@ -173,6 +176,9 @@ const handleSchedule = (patient: Patient) => {
 	};
 	scheduleStore.addSchedule(schedule);
 	scheduling.value = false;
+};
+const changeProvider = () => {
+	providerSelected.value = null;
 };
 </script>
 

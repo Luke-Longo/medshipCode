@@ -9,6 +9,7 @@
 			</li>
 			<li class="sidebar-li"><NuxtLink to="/payments">Payments</NuxtLink></li>
 			<li class="sidebar-li"><NuxtLink to="/customers">Customers</NuxtLink></li>
+			<li class="sidebar-li"><NuxtLink to="/profile">Profile</NuxtLink></li>
 			<li class="sidebar-li"><NuxtLink to="/help">Help</NuxtLink></li>
 		</ul>
 	</nav>

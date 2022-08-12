@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { useUiStore } from "../../stores/ui";
 import { useAuthStore } from "../../stores/auth";
-const authState = ref<"Login" | "Signup">("Login");
 const authStore = useAuthStore();
-const showConfirmEmailMsg = ref(false);
 
 const router = useRouter();
 
@@ -11,16 +9,6 @@ const input = reactive({
 	email: "",
 	password: "",
 });
-
-const toggleAuthState = () => {
-	if (authState.value === "Login") {
-		authState.value = "Signup";
-	} else {
-		authState.value = "Login";
-	}
-	authStore.setError("");
-	showConfirmEmailMsg.value = false;
-};
 
 const clearInput = () => {
 	input.email = "";
@@ -30,25 +18,28 @@ const clearInput = () => {
 const uiStore = useUiStore();
 
 const handleSubmit = async () => {
-	if (authState.value === "Login") {
-		uiStore.toggleFunctionLoading(true);
-		await authStore.signIn({ email: input.email, password: input.password });
-		clearInput();
-		if (!authStore.isError && authStore.isLoggedIn) {
-			router.push("/");
-			uiStore.toggleSidebar();
-		}
-		uiStore.toggleFunctionLoading(false);
+	uiStore.toggleFunctionLoading(true);
+	await authStore.signIn({ email: input.email, password: input.password });
+	clearInput();
+	if (!authStore.isError && authStore.isLoggedIn) {
+		router.push("/");
+		uiStore.toggleSidebar();
+	}
+	uiStore.toggleFunctionLoading(false);
+};
+
+const reset = ref(false);
+const handleReset = async () => {
+	if (!reset.value) {
+		reset.value = true;
 	} else {
 		uiStore.toggleFunctionLoading(true);
-		await authStore.signUp({ email: input.email, password: input.password });
-		clearInput();
-		if (!authStore.isError) {
-			router.push("/");
-			showConfirmEmailMsg.value = true;
-		}
+		await authStore.resetPassword(input.email);
 		uiStore.toggleFunctionLoading(false);
 	}
+};
+const cancelReset = () => {
+	reset.value = false;
 };
 </script>
 
@@ -56,7 +47,7 @@ const handleSubmit = async () => {
 	<div class="flex flex-col items-center">
 		<UiCard>
 			<div v-if="!authStore.user">
-				<h3>{{ authState }}</h3>
+				<h3>Login</h3>
 				<div class="form-group">
 					<label for="email">Email</label>
 					<input
@@ -77,33 +68,32 @@ const handleSubmit = async () => {
 				</div>
 				<div class="flex flex-col gap-4">
 					<UiButton class="mt-7" @click="handleSubmit" mode="reverse">
-						{{ authState }}
+						Login
 					</UiButton>
 					<p class="m-2" id="invalid" v-if="authStore.authError !== ''">
 						{{ authStore.authError }}
 					</p>
-					<p v-if="authState === 'Login'" class="flex justify-center mb-3">
-						Need to create an Account?
-						<span class="link px-2" @click="toggleAuthState"> Signup</span>
-					</p>
-					<p v-if="authState === 'Signup'" class="flex justify-center mb-3">
-						Already have an account?
-						<span class="link px-2" @click="toggleAuthState"> Login</span>
-					</p>
+					<div class="flex flex-col justify-center" v-if="reset">
+						<p class="text-center m-2">
+							Are you sure you would like to reset your password?
+						</p>
+						<div class="flex">
+							<button class="reverse mx-auto my-3" @click="cancelReset">Cancel</button>
+							<p
+								class="reverse hover:cursor-pointer mx-auto my-3"
+								@click="handleReset"
+							>
+								Reset
+							</p>
+						</div>
+					</div>
+					<div v-else>
+						<p class="flex justify-center mb-3">
+							Forgot Your Password?
+							<span class="link px-2" @click="handleReset">Reset Password</span>
+						</p>
+					</div>
 				</div>
-			</div>
-			<div
-				class="flex mx-auto flex-col"
-				v-if="showConfirmEmailMsg && !authStore.isError"
-			>
-				<p class="text-xl text-center items-center mx-auto my-4">
-					Please check your email to confirm your account
-				</p>
-				<span
-					class="flex mx-auto py-2 my-4 dark:hover:bg-black px-4 rounded-full hover:text-gray-300 hover:cursor-pointer trans"
-					@click="showConfirmEmailMsg = false"
-					>Dismiss</span
-				>
 			</div>
 		</UiCard>
 	</div>

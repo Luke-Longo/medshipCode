@@ -130,17 +130,14 @@ export interface ActionProps {
 	icon: ActionIcon;
 }
 
-export interface Doctor {
+export interface Provider {
 	firstName: string;
 	lastName: string;
 	npi: string;
-	dea: string;
 	dob: string;
-	address: Address;
-	phone: string;
 	date_added: Date;
 	user_id: string;
-	doctor_id: string;
+	modified_at: Date;
 	practice_id: string;
 }
 
@@ -151,12 +148,11 @@ export interface Practice {
 	dbaName: string;
 	npi: string;
 	address: Address;
-	doctors: string[];
 	created_at: Date;
 	modified_at: Date;
 }
 
-export interface DoctorInput {
+export interface ProviderInput {
 	firstName: {
 		val: string;
 		isValid: boolean;
@@ -170,35 +166,7 @@ export interface DoctorInput {
 
 		isValid: boolean;
 	};
-	dea: {
-		val: string;
-		isValid: boolean;
-	};
 	dob: {
-		val: string;
-		isValid: boolean;
-	};
-	street: {
-		val: string;
-		isValid: boolean;
-	};
-	city: {
-		val: string;
-		isValid: boolean;
-	};
-	state: {
-		val: string;
-		isValid: boolean;
-	};
-	zip: {
-		val: string;
-		isValid: boolean;
-	};
-	phone: {
-		val: string;
-		isValid: boolean;
-	};
-	gender: {
 		val: string;
 		isValid: boolean;
 	};
@@ -246,19 +214,6 @@ export interface Wounds {
 	12?: OrderDetails;
 }
 
-export interface PatientShort {
-	patient_id: string;
-	firstName: string;
-	lastName: string;
-}
-
-export interface ProviderShort {
-	provider_id: string;
-	firstName: string;
-	lastName: string;
-	npi: string;
-}
-
 export interface InsuranceShort {
 	planName: string;
 	benefitsInformation?: BenefitsInformation[];
@@ -266,11 +221,11 @@ export interface InsuranceShort {
 }
 
 export interface Order {
-	user_id: string;
-	patient: PatientShort;
 	order_id: string;
+	user_id: string;
+	patient_id: string;
+	provider_id: string;
 	orderNumber: number;
-	provider: ProviderShort;
 	insurance: InsuranceShort;
 	trackingNumber: string;
 	status: "Ready" | "Not Ready" | "Payment Due" | "Completed" | "Held Orders";

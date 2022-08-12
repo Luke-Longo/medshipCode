@@ -115,5 +115,29 @@ export const useAuthStore = defineStore("auth", {
 			this.setSession(null);
 			this.setError("");
 		},
+		async resetPassword(email: string) {
+			const { $supabase } = useNuxtApp();
+			try {
+				const { error } = await $supabase.auth.api.resetPasswordForEmail(email);
+				if (error) {
+					throw error;
+				}
+			} catch (e) {
+				this.authError = e.message;
+			}
+		},
+		async changePassword(access_token, password: string) {
+			const { $supabase } = useNuxtApp();
+			try {
+				const { error, data } = await $supabase.auth.api.updateUser(access_token, {
+					password,
+				});
+				if (error) {
+					throw error;
+				}
+			} catch (e) {
+				this.authError = e.message;
+			}
+		},
 	},
 });

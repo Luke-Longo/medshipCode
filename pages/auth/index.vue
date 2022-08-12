@@ -6,7 +6,19 @@
 	</div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { onMounted } from "vue";
+import { useUiStore } from "~~/stores/ui";
+import { useAuthStore } from "~~/stores/auth";
+
+const uiStore = useUiStore();
+const authStore = useAuthStore();
+onMounted(async () => {
+	uiStore.toggleFunctionLoading(true);
+	await authStore.checkRefresh();
+	uiStore.toggleFunctionLoading(false);
+});
+</script>
 
 <style>
 * {

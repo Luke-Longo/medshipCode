@@ -37,10 +37,13 @@ import { onMounted } from "vue";
 import { useUiStore } from "../stores/ui";
 import { useAuthStore } from "../stores/auth";
 import { usePatientStore } from "~~/stores/patients";
+
 const { $supabase } = useNuxtApp();
 const uiStore = useUiStore();
 const authStore = useAuthStore();
 const patientStore = usePatientStore();
+const route = useRoute();
+const router = useRouter();
 
 onMounted(async () => {
 	uiStore.toggleAppLoading(true);
@@ -56,6 +59,10 @@ onMounted(async () => {
 		await authStore.user;
 		uiStore.toggleSidebar();
 		// load all the data, load some in background
+	}
+	if (route.hash) {
+		console.log(route.hash);
+		router.push("/recovery");
 	}
 	uiStore.toggleAppLoading(false);
 });

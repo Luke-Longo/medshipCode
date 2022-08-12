@@ -2,6 +2,7 @@
 	<div>
 		<h3 class="header">Home</h3>
 		<button @click="searchChangeHealth">ChangeHealthCare</button>
+		<button @click="recovery">recovery</button>
 		<!-- <div class="w-2/3">
 			<p>{{ eligibility }}</p>
 		</div> -->
@@ -19,6 +20,7 @@
 import { EligibilityResponse } from "~~/types/change";
 const eligibility = ref({});
 const benefitsInformation = ref([]);
+const router = useRouter();
 
 const searchChangeHealth = async () => {
 	// looking for medical service type codes 12 or DM
@@ -33,6 +35,10 @@ const searchChangeHealth = async () => {
 	benefitsInformation.value = res.benefitsInformation;
 
 	console.log(res);
+};
+
+const recovery = () => {
+	router.push("/recovery");
 };
 </script>
 

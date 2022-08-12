@@ -209,8 +209,20 @@ export interface Delivery {
 }
 
 export interface OrderDetails {
-	to: Date;
-	from: Date;
+	location: "lt" | "rt";
+	bodyPart: string;
+	length: number;
+	width: number;
+	depth: number;
+	woundStage: string;
+	drainage: string;
+	debrided: boolean;
+	icd10?: string;
+	primaryDressing: {
+		hcpcs: string;
+		frequency?: string;
+		quantity: number;
+	};
 	placeOfService: string;
 	hcpcs: string;
 	modifier: string;
@@ -234,18 +246,39 @@ export interface Wounds {
 	12?: OrderDetails;
 }
 
+export interface PatientShort {
+	patient_id: string;
+	firstName: string;
+	lastName: string;
+}
+
+export interface ProviderShort {
+	provider_id: string;
+	firstName: string;
+	lastName: string;
+	npi: string;
+}
+
+export interface InsuranceShort {
+	planName: string;
+	benefitsInformation?: BenefitsInformation[];
+	planStatus?: PlanStatus[];
+}
+
 export interface Order {
 	user_id: string;
-	patient_id: string;
+	patient: PatientShort;
 	order_id: string;
 	orderNumber: number;
-	doctor_id: string;
-	insurance_id: string;
+	provider: ProviderShort;
+	insurance: InsuranceShort;
 	trackingNumber: string;
 	status: "Ready" | "Not Ready" | "Payment Due" | "Completed" | "Held Orders";
 	notes: string;
 	delivery: Delivery;
-	orderDetails: OrderDetails[];
+	wounds: Wounds;
 	created_at: Date;
 	modified_at: Date;
+	primaryPayment?: number;
+	secondaryPayment?: number;
 }

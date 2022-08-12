@@ -39,12 +39,31 @@ const input = reactive({
 
 const handleSubmit = async () => {
 	uiStore.toggleFunctionLoading(true);
-	await authStore.changePassword(authStore.session.access_token, input.password);
-	uiStore.toggleFunctionLoading(false);
-	if (!authStore.isError) {
-		await authStore.signOut();
-		router.push("/");
+	await authStore.checkRefresh();
+	let session = authStore.session;
+	if (session) {
+		try {
+			await authStore.changePassword(
+				authStore.session.access_token,
+				input.password
+			);
+		} catch (error) {
+			authStore.setError(error.message);
+			console.log(error);
+		}
+		if (!authStore.isError) {
+			authStore.setResettingPassword(false);
+			await authStore.signOut();
+			router.push("/");
+		}
+	} else {
+		authStore.setError("No session found, please try resetting again");
+		setTimeout(() => {
+			authStore.setResettingPassword(false);
+			router.push("/");
+		}, 5000);
 	}
+	uiStore.toggleFunctionLoading(false);
 };
 </script>
 

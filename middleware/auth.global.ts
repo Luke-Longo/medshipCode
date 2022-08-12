@@ -7,7 +7,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 		if (to.path !== "/auth") {
 			return navigateTo("/auth");
 		}
-	} else if (authStore.isLoggedIn && to.path === "/auth/recovery") {
+	} else if (authStore.isLoggedIn && to.path === "/recovery") {
 		return navigateTo("/auth/recovery");
 	}
 });

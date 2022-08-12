@@ -219,6 +219,21 @@ export interface OrderDetails {
 	provider_id: string;
 }
 
+export interface Wounds {
+	1: OrderDetails;
+	2?: OrderDetails;
+	3?: OrderDetails;
+	4?: OrderDetails;
+	5?: OrderDetails;
+	6?: OrderDetails;
+	7?: OrderDetails;
+	8?: OrderDetails;
+	9?: OrderDetails;
+	10?: OrderDetails;
+	11?: OrderDetails;
+	12?: OrderDetails;
+}
+
 export interface Order {
 	user_id: string;
 	patient_id: string;

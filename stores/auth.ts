@@ -8,6 +8,7 @@ export const useAuthStore = defineStore("auth", {
 		session: null as Session | Session,
 		authError: "" as String,
 		expiresIn: null as Number,
+		resettingPassword: false as Boolean,
 	}),
 	getters: {
 		getUser(state) {
@@ -25,6 +26,9 @@ export const useAuthStore = defineStore("auth", {
 		isAdmin(state) {
 			return state.user.role === "admin";
 		},
+		isResetting(state) {
+			return state.resettingPassword;
+		},
 	},
 	actions: {
 		setUser(user: User) {
@@ -35,6 +39,9 @@ export const useAuthStore = defineStore("auth", {
 		},
 		setSession(session: Session) {
 			this.session = session;
+		},
+		setResettingPassword(resetting: Boolean) {
+			this.resettingPassword = resetting;
 		},
 		async signUp({ email, password, ...metadata }) {
 			const { $supabase } = useNuxtApp();
@@ -89,7 +96,7 @@ export const useAuthStore = defineStore("auth", {
 			}
 		},
 		async checkRefresh() {
-			const { $supabase, $router } = useNuxtApp();
+			const { $supabase } = useNuxtApp();
 			if (this.session === null) {
 				try {
 					const supabaseAuthToken = JSON.parse(
@@ -103,7 +110,6 @@ export const useAuthStore = defineStore("auth", {
 						}
 						this.setSession(session);
 						this.setUser(session.user);
-						$router.push("/");
 					}
 				} catch (e) {
 					this.authError = e.message;

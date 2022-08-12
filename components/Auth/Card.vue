@@ -41,6 +41,13 @@ const handleReset = async () => {
 const cancelReset = () => {
 	reset.value = false;
 };
+
+onMounted(async () => {
+	await authStore.checkRefresh();
+	if (authStore.isLoggedIn) {
+		router.push("/");
+	}
+});
 </script>
 
 <template>

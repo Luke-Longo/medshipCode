@@ -26,8 +26,12 @@ export const useUiStore = defineStore("ui", {
 				this.theme = "dark";
 			}
 		},
-		toggleSidebar() {
-			this.sidebar = !this.sidebar;
+		toggleSidebar(show?: boolean) {
+			if (show === undefined) {
+				this.sidebar = !this.sidebar;
+			} else {
+				this.sidebar = show;
+			}
 		},
 		toggleAppLoading(loading: boolean) {
 			this.appLoading = loading;

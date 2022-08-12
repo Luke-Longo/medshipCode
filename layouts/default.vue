@@ -43,7 +43,6 @@ const uiStore = useUiStore();
 const authStore = useAuthStore();
 const patientStore = usePatientStore();
 const route = useRoute();
-const router = useRouter();
 
 onMounted(async () => {
 	uiStore.toggleAppLoading(true);
@@ -56,13 +55,13 @@ onMounted(async () => {
 	}
 	await authStore.checkRefresh();
 	if (authStore.isLoggedIn) {
-		await authStore.user;
-		uiStore.toggleSidebar();
+		uiStore.toggleSidebar(true);
 		// load all the data, load some in background
+	} else {
+		uiStore.toggleSidebar(false);
 	}
-	if (route.hash) {
-		console.log(route.hash);
-		router.push("/recovery");
+	if (route.hash.includes("recovery")) {
+		authStore.setResettingPassword(true);
 	}
 	uiStore.toggleAppLoading(false);
 });

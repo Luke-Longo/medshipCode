@@ -1,17 +1,18 @@
 <template>
 	<div class="flex items-center justify-center">
 		<transition name="fade" mode="out-in">
-			<AuthCard class="w-2/3 justify-center items-center" />
+			<AuthCard
+				class="w-2/3 justify-center items-center"
+				v-if="!authStore.resettingPassword"
+			/>
+			<AuthRecoveryCard v-else />
 		</transition>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
-import { useUiStore } from "~~/stores/ui";
 import { useAuthStore } from "~~/stores/auth";
 
-const uiStore = useUiStore();
 const authStore = useAuthStore();
 </script>
 

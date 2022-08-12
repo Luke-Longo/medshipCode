@@ -9,7 +9,7 @@ const authStore = useAuthStore();
 const handleSignOut = async () => {
 	uiStore.toggleFunctionLoading(true);
 	await authStore.signOut();
-	uiStore.toggleSidebar();
+	uiStore.toggleSidebar(false);
 	uiStore.toggleFunctionLoading(false);
 };
 const handleSidebar = () => {

@@ -208,6 +208,12 @@ export interface Delivery {
 	delivery_id: string;
 }
 
+export interface Dressing {
+	hcpcs: string;
+	frequency?: string;
+	quantity: number;
+}
+
 export interface OrderDetails {
 	location: "lt" | "rt";
 	bodyPart: string;
@@ -218,16 +224,10 @@ export interface OrderDetails {
 	drainage: string;
 	debrided: boolean;
 	icd10?: string;
-	primaryDressing: {
-		hcpcs: string;
-		frequency?: string;
-		quantity: number;
-	};
-	placeOfService: string;
-	hcpcs: string;
-	modifier: string;
+	primaryDressing: Dressing;
+	secondaryDressing: Dressing;
+	ancillaryItems: Dressing;
 	charges: number;
-	units: number;
 	provider_id: string;
 }
 

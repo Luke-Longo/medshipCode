@@ -1,5 +1,5 @@
 <template>
-	<div class="flex flex-col items-center w-3/4">
+	<div class="flex flex-col items-center w-3/4 mx-auto">
 		<UiCard class="h-fit">
 			<h2 class="text-3xl text-center">Reset Password</h2>
 			<div class="form-group">
@@ -12,11 +12,11 @@
 				/>
 			</div>
 			<div class="flex flex-col gap-4 mb-4">
-				<div class="flex justify-around">
-					<UiButton class="mt-7 w-64" @click="cancelReset" mode="reverse">
+				<div class="flex justify-around gap-6">
+					<UiButton class="mt-7 w-52" @click="cancelReset" mode="reverse">
 						Cancel
 					</UiButton>
-					<UiButton class="mt-7 w-64" @click="handleSubmit" mode="reverse">
+					<UiButton class="mt-7 w-52" @click="handleSubmit" mode="reverse">
 						Reset
 					</UiButton>
 				</div>

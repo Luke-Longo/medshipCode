@@ -5,7 +5,7 @@
 				class="w-2/3 justify-center items-center"
 				v-if="!authStore.resettingPassword"
 			/>
-			<AuthRecoveryCard v-else />
+			<AuthRecoveryCard v-else class="mx-auto w-2/3" />
 		</transition>
 	</div>
 </template>

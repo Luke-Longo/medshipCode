@@ -12,9 +12,14 @@
 				/>
 			</div>
 			<div class="flex flex-col gap-4 mb-4">
-				<UiButton class="mt-7" @click="handleSubmit" mode="reverse">
-					Reset
-				</UiButton>
+				<div class="flex justify-around">
+					<UiButton class="mt-7 w-64" @click="cancelReset" mode="reverse">
+						Cancel
+					</UiButton>
+					<UiButton class="mt-7 w-64" @click="handleSubmit" mode="reverse">
+						Reset
+					</UiButton>
+				</div>
 				<p class="m-2" id="invalid" v-if="authStore.authError !== ''">
 					{{ authStore.authError }}
 				</p>
@@ -34,6 +39,11 @@ const router = useRouter();
 const input = reactive({
 	password: "",
 });
+
+const cancelReset = () => {
+	authStore.setResettingPassword(false);
+	router.push("/");
+};
 
 const handleSubmit = async () => {
 	uiStore.toggleFunctionLoading(true);

@@ -110,8 +110,8 @@ export interface Schedule {
 			lastName: string;
 		}
 	];
-	doctor: {
-		doctor_id: string;
+	provider: {
+		npi: string;
 		firstName: string;
 		lastName: string;
 	};

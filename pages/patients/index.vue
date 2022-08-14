@@ -34,7 +34,7 @@
 				Schedule Date: {{ selectedDate.toDateString() }}
 			</h3>
 			<transition name="fade" mode="out-in">
-				<div v-if="!providerSelected">
+				<div v-if="!isProviderSelected">
 					<h3 class="text-center py-2">Choose Provider</h3>
 					<div class="flex justify-center">
 						<p
@@ -102,7 +102,7 @@ const actionProps: ActionProps[] = [
 		icon: IconCalendar,
 	},
 ];
-const providerSelected = ref(false);
+const isProviderSelected = ref(false);
 const patientStore = usePatientStore();
 const authStore = useAuthStore();
 const scheduleStore = useScheduleStore();
@@ -153,7 +153,7 @@ const dateSelected = (date: Date) => {
 };
 const selectProvider = (provider) => {
 	selectedProvider.value = provider;
-	providerSelected.value = true;
+	isProviderSelected.value = true;
 };
 const handleSchedule = (patient: Patient) => {
 	// patientStore.schedulePatient(patient, selectedDate.value);
@@ -165,10 +165,10 @@ const handleSchedule = (patient: Patient) => {
 				lastName: patient.lastName,
 			},
 		],
-		doctor: {
-			doctor_id: selectedDoctor.value.doctor_id,
-			firstName: selectedDoctor.value.firstName,
-			lastName: selectedDoctor.value.lastName,
+		provider: {
+			npi: selectedProvider.value.npi,
+			firstName: selectedProvider.value.firstName,
+			lastName: selectedProvider.value.lastName,
 		},
 		date: selectedDate.value.toISOString().split("T")[0],
 		user_id: authStore.user_id,
@@ -178,7 +178,7 @@ const handleSchedule = (patient: Patient) => {
 	scheduling.value = false;
 };
 const changeProvider = () => {
-	providerSelected.value = null;
+	isProviderSelected.value = null;
 };
 </script>
 

@@ -1,71 +1,8 @@
 <template>
-	<div class="flex flex-col items-center">
-		<UiCard>
-			<div>
-				<h3 class="">Reset Password</h3>
-				<div class="form-group">
-					<label for="password">Password</label>
-					<input
-						v-model="input.password"
-						type="password"
-						placeholder="password"
-						class="w-sm mx-auto border shadow-sm border-slate-300 placeholder-slate-400 dark:focus:outline-darkPrimary dark:bg-darkBg"
-					/>
-				</div>
-				<div class="flex flex-col gap-4 mb-4">
-					<UiButton class="mt-7" @click="handleSubmit" mode="reverse">
-						Reset
-					</UiButton>
-					<p class="m-2" id="invalid" v-if="authStore.authError !== ''">
-						{{ authStore.authError }}
-					</p>
-				</div>
-			</div>
-		</UiCard>
-	</div>
+	<AuthRecoveryCard />
 </template>
 
-<script setup lang="ts">
-import { useUiStore } from "~~/stores/ui";
-import { useAuthStore } from "~~/stores/auth";
-
-const uiStore = useUiStore();
-const authStore = useAuthStore();
-const router = useRouter();
-
-const input = reactive({
-	password: "",
-});
-
-const handleSubmit = async () => {
-	uiStore.toggleFunctionLoading(true);
-	await authStore.checkRefresh();
-	let session = authStore.session;
-	if (session) {
-		try {
-			await authStore.changePassword(
-				authStore.session.access_token,
-				input.password
-			);
-		} catch (error) {
-			authStore.setError(error.message);
-			console.log(error);
-		}
-		if (!authStore.isError) {
-			authStore.setResettingPassword(false);
-			await authStore.signOut();
-			router.push("/");
-		}
-	} else {
-		authStore.setError("No session found, please try resetting again");
-		setTimeout(() => {
-			authStore.setResettingPassword(false);
-			router.push("/");
-		}, 5000);
-	}
-	uiStore.toggleFunctionLoading(false);
-};
-</script>
+<script setup lang="ts"></script>
 
 <style scoped>
 .max-width {

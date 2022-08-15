@@ -6,13 +6,6 @@
 		<!-- <div class="w-2/3">
 			<p>{{ eligibility }}</p>
 		</div> -->
-		<div
-			class="grid grid-cols-5"
-			v-for="benefit in benefitsInformation"
-			v-if="benefitsInformation.length > 0"
-		>
-			<p>{{ benefit.planCoverage }}</p>
-		</div>
 	</div>
 </template>
 

@@ -40,9 +40,9 @@ type ProfileType = "practice" | "salesRep" | "admin";
 
 const profileType = ref<ProfileType>("practice");
 
-const handleRadio = (type: ProfileType) => {
-	profileType.value = type;
-};
+// const handleRadio = (type: ProfileType) => {
+// 	profileType.value = type;
+// };
 </script>
 
 <style scoped>

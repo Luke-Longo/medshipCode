@@ -1,51 +1,36 @@
 <template>
 	<div>
 		<h3 class="header">Create a new Profile</h3>
-		<div class="flex flex-wrap">
-			<div class="flex items-center mr-4">
+		<div class="flex justify-center gap-4">
+			<div class="flex gap-4">
+				<label for="" class="container">Practice </label>
 				<input
-					id="red-radio"
+					class="cursor-pointer"
 					type="radio"
-					value=""
-					name="colored-radio"
-					class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+					v-model="profileType"
+					value="practice"
+					checked
 				/>
-				<label
-					for="red-radio"
-					class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-					>Red</label
-				>
 			</div>
-			<div class="flex items-center mr-4">
+			<div class="flex gap-4">
+				<label for="">Sales Rep</label>
 				<input
-					id="green-radio"
+					class="cursor-pointer"
 					type="radio"
-					value=""
-					name="colored-radio"
-					class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+					v-model="profileType"
+					value="salesRep"
 				/>
-				<label
-					for="green-radio"
-					class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-					>Green</label
-				>
 			</div>
-			<div class="flex items-center mr-4">
+			<div class="flex gap-4">
+				<label for="">Admin</label>
 				<input
-					id="purple-radio"
+					class="cursor-pointer"
 					type="radio"
-					value=""
-					name="colored-radio"
-					class="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 focus:ring-purple-500 dark:focus:ring-purple-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+					v-model="profileType"
+					value="admin"
 				/>
-				<label
-					for="purple-radio"
-					class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-					>Purple</label
-				>
 			</div>
 		</div>
-
 		<UiCard class="mx-auto"> </UiCard>
 	</div>
 </template>
@@ -54,6 +39,57 @@
 type ProfileType = "practice" | "salesRep" | "admin";
 
 const profileType = ref<ProfileType>("practice");
+
+const handleRadio = (type: ProfileType) => {
+	profileType.value = type;
+};
 </script>
 
-<style scoped></style>
+<style scoped>
+.container {
+	@apply relative cursor-pointer flex justify-center items-center gap-4 select-none;
+}
+
+/* Create a custom radio button */
+.checkmark {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 25px;
+	width: 25px;
+	border-radius: 50%;
+	@apply bg-darkSecondary;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+	@apply bg-primary dark:bg-darkBg cursor-pointer;
+}
+
+/* When the radio button is checked, add a blue background */
+.container input:checked ~ .checkmark {
+	@apply bg-primary dark:bg-darkPrimary;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+	content: "";
+	position: absolute;
+	display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container input:checked ~ .checkmark:after {
+	display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container .checkmark:after {
+	top: 9px;
+	left: 9px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: white;
+}
+</style>

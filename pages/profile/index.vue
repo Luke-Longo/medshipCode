@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<h3 class="header">Create a new Profile</h3>
-		<div class="flex justify-center gap-4">
+		<div class="flex justify-center gap-6">
 			<label
 				for=""
 				class="cursor-pointer dark:hover:bg-darkBg hover:bg-slate-100 rounded-lg p-2 trans"

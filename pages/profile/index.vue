@@ -2,6 +2,9 @@
 	<div>
 		<h3 class="header">Create a new Profile</h3>
 		<UiRadio :radioTypes="radioTypes" v-model="selectedRadio" />
+		<transition name="fade" mode="out-in">
+			<ProfilePractice v-if="selectedRadio === 'practice'" />
+		</transition>
 	</div>
 </template>
 
@@ -21,6 +24,7 @@ const radioTypes = [
 	},
 ];
 const selectedRadio = ref(radioTypes[0].id);
+const selectedSalesRep = ref("");
 </script>
 
 <style scoped></style>

@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="my-8 grid grid-cols-3 sm:gap-2 lg:grid-cols-4">
+		<div class="mt-6 mb-6 grid grid-cols-3 sm:gap-2 lg:grid-cols-4">
 			<FormElementGrid
 				class="lg:w-full"
 				v-for="formElement in formElements"
@@ -126,20 +126,23 @@ const createElements = () => {
 		if (key === "address2") {
 			required = false;
 		}
-		formElements.value.push({
-			title: title,
-			modelValue: input[key].val,
-			isValid: input[key].isValid,
-			required: required,
-			error: input[key].error,
-			placeholder: input[key].placeholder,
-		} as Element);
+		formElements.value.push(
+			reactive({
+				title: title,
+				modelValue: input[key].val,
+				isValid: input[key].isValid,
+				required: required,
+				error: input[key].error,
+				placeholder: input[key].placeholder,
+			}) as Element
+		);
 	}
 };
 createElements();
 
 const { validateInput, formIsValid } = useValidatePracticeInput(input);
 const createProfile = async () => {
+	console.log(input);
 	validateInput();
 };
 </script>

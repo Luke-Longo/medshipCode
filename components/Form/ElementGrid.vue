@@ -1,6 +1,8 @@
 <template>
 	<div class="form-group">
-		<label for="">{{ title }}</label>
+		<label for=""
+			>{{ title }} <span v-if="required" class="invalid-text">*</span></label
+		>
 		<input
 			:class="{ 'invalid-input': !isValid }"
 			:type="'text'"
@@ -18,6 +20,7 @@ interface Element {
 	title: string;
 	modelValue: string;
 	isValid: boolean;
+	required: boolean;
 	error?: string;
 	placeholder?: string;
 }

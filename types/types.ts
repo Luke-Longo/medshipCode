@@ -237,3 +237,82 @@ export interface Order {
 	primaryPayment?: number;
 	secondaryPayment?: number;
 }
+
+export interface PracticeInput {
+	practiceName: {
+		val: "";
+		isValid: boolean;
+	};
+	legalName: {
+		val: "";
+		isValid: boolean;
+	};
+	address1: {
+		val: "";
+		isValid: boolean;
+	};
+	address2: {
+		val: "";
+		isValid: boolean;
+	};
+	city: {
+		val: "";
+		isValid: boolean;
+	};
+	state: {
+		val: "";
+		isValid: boolean;
+	};
+	postalCode: {
+		val: "";
+		isValid: boolean;
+	};
+	contactPhone: {
+		val: "";
+		isValid: boolean;
+	};
+	contactEmail: {
+		val: "";
+		isValid: boolean;
+	};
+	contactName: {
+		val: "";
+		isValid: boolean;
+	};
+	accountsPayableContact: {
+		val: "";
+		isValid: boolean;
+	};
+	accountsPayableEmail: {
+		val: "";
+		isValid: boolean;
+	};
+	accountsPayablePhone: {
+		val: "";
+		isValid: boolean;
+	};
+	clinicalContact: {
+		val: "";
+		isValid: boolean;
+	};
+	clinicalEmail: {
+		val: "";
+		isValid: boolean;
+	};
+	clinicalPhone: {
+		val: "";
+		isValid: boolean;
+	};
+	groupNpi: {
+		val: "";
+		isValid: boolean;
+	};
+	ein: {
+		val: "";
+		isValid: boolean;
+	};
+	ptan: {
+		val: "";
+		isValid: boolean;
+	};
+}

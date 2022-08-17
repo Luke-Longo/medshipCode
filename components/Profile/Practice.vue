@@ -6,11 +6,12 @@
 				v-for="formElement in formElements"
 				:key="formElement.title"
 				:title="formElement.title"
-				v-model="formElement.modelValue"
-				:is-valid="formElement.isValid"
+				v-model="input[formElement.id].val"
+				:is-valid="input[formElement.id].isValid"
 				:error="formElement.error"
 				:placeholder="formElement.title"
 				:required="formElement.required"
+				@reset-validity="resetValidity(formElement.id)"
 			/>
 		</div>
 		<div class="flex justify-center">
@@ -24,9 +25,8 @@
 <script setup lang="ts">
 import { PracticeInput } from "~/types/types";
 interface Element {
+	id: string;
 	title: string;
-	modelValue: string;
-	isValid: boolean;
 	required: boolean;
 	error?: string;
 	placeholder?: string;
@@ -114,6 +114,8 @@ const formElements = ref([] as Element[]);
 
 const createElements = () => {
 	for (let key in input) {
+		let error = "";
+		let placeholder = "";
 		let required = true;
 		let text = key.replace(/([A-Z])/g, " $1");
 		let title = text.charAt(0).toUpperCase() + text.slice(1);
@@ -126,23 +128,23 @@ const createElements = () => {
 		if (key === "address2") {
 			required = false;
 		}
-		formElements.value.push(
-			reactive({
-				title: title,
-				modelValue: input[key].val,
-				isValid: input[key].isValid,
-				required: required,
-				error: input[key].error,
-				placeholder: input[key].placeholder,
-			}) as Element
-		);
+		formElements.value.push({
+			id: key,
+			title: title,
+			required: required,
+			error: error,
+			placeholder: placeholder,
+		} as Element);
 	}
+};
+const resetValidity = (id: string) => {
+	input[id].isValid = true;
 };
 createElements();
 
 const { validateInput, formIsValid } = useValidatePracticeInput(input);
 const createProfile = async () => {
-	console.log(input);
 	validateInput();
+	console.log(input);
 };
 </script>

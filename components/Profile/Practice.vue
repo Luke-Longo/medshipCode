@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="mx-4">
 		<div class="mt-6 mb-6 grid grid-cols-3 sm:gap-2 lg:grid-cols-4">
 			<FormElementGrid
 				class="lg:w-full"

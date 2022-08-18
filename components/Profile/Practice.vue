@@ -1,9 +1,11 @@
 <template>
 	<div class="mx-4">
-		<div class="p-8" v-if="!repSelected">
-			<p class="text-center">Search Sales Rep</p>
-			<input class="" type="text" />
-		</div>
+		<UiSearchInline
+			v-if="!repSelected"
+			v-model="repSearchInput"
+			label="Search Rep"
+			@search="handleSearch"
+		/>
 		<div v-else>
 			<div class="mt-6 mb-6 grid grid-cols-3 sm:gap-2 lg:grid-cols-4">
 				<FormElementGrid
@@ -117,6 +119,7 @@ const input: PracticeInput = reactive({
 });
 
 const repSelected = ref(false);
+const repSearchInput = ref("");
 const formElements = ref([] as Element[]);
 
 const createElements = () => {
@@ -154,4 +157,15 @@ const createProfile = async () => {
 	validateInput();
 	console.log(input);
 };
+const handleSearch = async () => {
+	console.log(repSearchInput.value);
+};
 </script>
+
+<style scoped>
+.input {
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	@apply border shadow-sm border-slate-300 placeholder-slate-400 dark:bg-darkBg dark:focus:outline-darkPrimary;
+}
+</style>

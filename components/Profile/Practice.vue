@@ -1,23 +1,29 @@
 <template>
 	<div class="mx-4">
-		<div class="mt-6 mb-6 grid grid-cols-3 sm:gap-2 lg:grid-cols-4">
-			<FormElementGrid
-				class="lg:w-full"
-				v-for="formElement in formElements"
-				:key="formElement.title"
-				:title="formElement.title"
-				v-model="input[formElement.id].val"
-				:is-valid="input[formElement.id].isValid"
-				:error="formElement.error"
-				:placeholder="formElement.title"
-				:required="formElement.required"
-				@reset-validity="resetValidity(formElement.id)"
-			/>
+		<div class="p-8" v-if="!repSelected">
+			<p class="text-center">Search Sales Rep</p>
+			<input class="" type="text" />
 		</div>
-		<div class="flex justify-center">
-			<button class="w-2/3 mx-auto reverse" @click="createProfile">
-				Create Profile
-			</button>
+		<div v-else>
+			<div class="mt-6 mb-6 grid grid-cols-3 sm:gap-2 lg:grid-cols-4">
+				<FormElementGrid
+					class="lg:w-full"
+					v-for="formElement in formElements"
+					:key="formElement.title"
+					:title="formElement.title"
+					v-model="input[formElement.id].val"
+					:is-valid="input[formElement.id].isValid"
+					:error="formElement.error"
+					:placeholder="formElement.title"
+					:required="formElement.required"
+					@reset-validity="resetValidity(formElement.id)"
+				/>
+			</div>
+			<div class="flex justify-center">
+				<button class="w-2/3 mx-auto reverse" @click="createProfile">
+					Create Profile
+				</button>
+			</div>
 		</div>
 	</div>
 </template>
@@ -110,6 +116,7 @@ const input: PracticeInput = reactive({
 	},
 });
 
+const repSelected = ref(false);
 const formElements = ref([] as Element[]);
 
 const createElements = () => {

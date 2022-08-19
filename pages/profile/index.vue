@@ -3,7 +3,10 @@
 		<h3 class="header">Create a new Profile</h3>
 		<UiRadio :radioTypes="radioTypes" v-model="selectedRadio" />
 		<transition name="fade" mode="out-in">
-			<ProfilePractice v-if="selectedRadio === 'practice'" />
+			<ProfilePractice
+				v-if="selectedRadio === 'practice'"
+				@toRep="handleRadioChange('salesRep')"
+			/>
 		</transition>
 	</div>
 </template>
@@ -24,7 +27,9 @@ const radioTypes = [
 	},
 ];
 const selectedRadio = ref(radioTypes[0].id);
-const selectedSalesRep = ref("");
+const handleRadioChange = (radioType: string) => {
+	selectedRadio.value = radioType;
+};
 </script>
 
 <style scoped></style>

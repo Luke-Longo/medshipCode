@@ -10,17 +10,19 @@
 				<SalesRepList
 					:items="reps"
 					:list="listTitles"
+					:itemName="'Sales Rep'"
 					@selected="handleSelected"
 					@add="addRep"
 				/>
 				<button
 					class="reverse text-center justify-center mx-auto mt-4"
-					@click="handleSelected"
+					@click="handleSelected(null)"
 				>
 					Add Without Rep
 				</button>
 			</div>
 			<div v-else>
+				<p class="my-4">Selected Rep: {{ selectedRep.name }}</p>
 				<div class="mt-6 mb-6 grid grid-cols-3 sm:gap-2 lg:grid-cols-4">
 					<FormElementGrid
 						class="lg:w-full"
@@ -174,6 +176,9 @@ const resetValidity = (id: string) => {
 	input[id].isValid = true;
 };
 createElements();
+const emit = defineEmits<{
+	(e: "toRep");
+}>();
 
 const { validateInput, formIsValid } = useValidatePracticeInput(input);
 const createProfile = async () => {
@@ -187,11 +192,10 @@ const handleSearch = async () => {
 const handleSelected = async (rep) => {
 	repSelected.value = true;
 	selectedRep.value = rep;
-	console.log(rep);
 };
 
 const addRep = async () => {
-	console.log(selectedRep.value);
+	emit("toRep");
 };
 </script>
 

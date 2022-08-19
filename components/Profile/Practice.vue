@@ -1,32 +1,37 @@
 <template>
 	<div class="mx-4">
-		<UiSearchInline
-			v-if="!repSelected"
-			v-model="repSearchInput"
-			label="Search Rep"
-			@search="handleSearch"
-		/>
-		<div v-else>
-			<div class="mt-6 mb-6 grid grid-cols-3 sm:gap-2 lg:grid-cols-4">
-				<FormElementGrid
-					class="lg:w-full"
-					v-for="formElement in formElements"
-					:key="formElement.title"
-					:title="formElement.title"
-					v-model="input[formElement.id].val"
-					:is-valid="input[formElement.id].isValid"
-					:error="formElement.error"
-					:placeholder="formElement.title"
-					:required="formElement.required"
-					@reset-validity="resetValidity(formElement.id)"
+		<transition name="fade" mode="out-in">
+			<div v-if="!repSelected">
+				<UiSearchInline
+					v-model="repSearchInput"
+					label="Search Rep"
+					@search="handleSearch"
 				/>
+				<SalesRepList :items="reps" :list="listTitles" />
+				<button class="reverse text-center">No Sales Rep</button>
 			</div>
-			<div class="flex justify-center">
-				<button class="w-2/3 mx-auto reverse" @click="createProfile">
-					Create Profile
-				</button>
+			<div v-else>
+				<div class="mt-6 mb-6 grid grid-cols-3 sm:gap-2 lg:grid-cols-4">
+					<FormElementGrid
+						class="lg:w-full"
+						v-for="formElement in formElements"
+						:key="formElement.title"
+						:title="formElement.title"
+						v-model="input[formElement.id].val"
+						:is-valid="input[formElement.id].isValid"
+						:error="formElement.error"
+						:placeholder="formElement.title"
+						:required="formElement.required"
+						@reset-validity="resetValidity(formElement.id)"
+					/>
+				</div>
+				<div class="flex justify-center">
+					<button class="w-2/3 mx-auto reverse" @click="createProfile">
+						Create Profile
+					</button>
+				</div>
 			</div>
-		</div>
+		</transition>
 	</div>
 </template>
 
@@ -117,7 +122,14 @@ const input: PracticeInput = reactive({
 		isValid: true,
 	},
 });
-
+const reps = ref([
+	{
+		id: "1",
+		name: "John Doe",
+		email: "",
+	},
+]);
+const listTitles = ref(["name", "email"]);
 const repSelected = ref(false);
 const repSearchInput = ref("");
 const formElements = ref([] as Element[]);
@@ -158,7 +170,7 @@ const createProfile = async () => {
 	console.log(input);
 };
 const handleSearch = async () => {
-	console.log(repSearchInput.value);
+	// await salesRepStore.search(repSearchInput.value);
 };
 </script>
 

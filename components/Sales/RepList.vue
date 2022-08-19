@@ -8,14 +8,14 @@
 				v-if="paginatedItems.length > 0"
 				v-for="item in paginatedItems"
 				:key="item"
-				class="text-primary dark:text-darkSecondary grid grid-cols-4 rounded hover:bg-darkSecondary dark:hover:bg-black w-full p-2 cursor-pointer"
+				class="text-primary dark:text-darkSecondary grid grid-cols-4 rounded hover:bg-darkSecondary dark:hover:bg-darkBg w-full p-2 cursor-pointer trans"
 				@click="emits('selected', item)"
 			>
 				<div v-for="key in list">{{ item[key] }}</div>
 			</div>
 			<div
 				v-else
-				class="text-primary dark:text-darkSecondary flex flex-col items-center justify-center rounded w-full p-2 my-12 text-lg gap-8"
+				class="text-primary dark:text-darkSecondary flex flex-col items-center justify-center rounded w-full p-2 my-12 text-lg gap-8 trans"
 			>
 				<p>No {{ itemName }}'s Found</p>
 				<p class="btn reverse hover:cursor-pointer" @click="emits('add')">

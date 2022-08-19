@@ -1,5 +1,5 @@
 <template>
-	<div class="p-8 flex gap-5 items-center justify-center">
+	<div class="m-8 flex gap-5 items-center justify-center">
 		<p class="text-center text-lg">Search {{ label }}</p>
 		<input
 			class="p-1"

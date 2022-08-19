@@ -1,14 +1,24 @@
 <template>
 	<div class="mx-4">
 		<transition name="fade" mode="out-in">
-			<div v-if="!repSelected">
+			<div class="flex flex-col" v-if="!repSelected">
 				<UiSearchInline
 					v-model="repSearchInput"
 					label="Search Rep"
 					@search="handleSearch"
 				/>
-				<SalesRepList :items="reps" :list="listTitles" />
-				<button class="reverse text-center">No Sales Rep</button>
+				<SalesRepList
+					:items="reps"
+					:list="listTitles"
+					@selected="handleSelected"
+					@add="addRep"
+				/>
+				<button
+					class="reverse text-center justify-center mx-auto mt-4"
+					@click="handleSelected"
+				>
+					Add Without Rep
+				</button>
 			</div>
 			<div v-else>
 				<div class="mt-6 mb-6 grid grid-cols-3 sm:gap-2 lg:grid-cols-4">
@@ -132,6 +142,7 @@ const reps = ref([
 const listTitles = ref(["name", "email"]);
 const repSelected = ref(false);
 const repSearchInput = ref("");
+const selectedRep = ref(null);
 const formElements = ref([] as Element[]);
 
 const createElements = () => {
@@ -171,6 +182,16 @@ const createProfile = async () => {
 };
 const handleSearch = async () => {
 	// await salesRepStore.search(repSearchInput.value);
+};
+
+const handleSelected = async (rep) => {
+	repSelected.value = true;
+	selectedRep.value = rep;
+	console.log(rep);
+};
+
+const addRep = async () => {
+	console.log(selectedRep.value);
 };
 </script>
 

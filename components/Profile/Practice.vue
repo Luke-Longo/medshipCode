@@ -22,7 +22,14 @@
 				</button>
 			</div>
 			<div v-else>
-				<p class="my-4">Selected Rep: {{ selectedRep.name }}</p>
+				<p class="my-4 flex gap-4 items-center">
+					Selected Rep: {{ selectedRep !== null ? selectedRep.name : "None" }}
+					<span
+						class="p-2 rounded-md dark:hover:bg-darkBg cursor-pointer border border-darkBg trans hover:bg-darkSecondary"
+						@click="changeRep"
+						>Change Rep</span
+					>
+				</p>
 				<div class="mt-6 mb-6 grid grid-cols-3 sm:gap-2 lg:grid-cols-4">
 					<FormElementGrid
 						class="lg:w-full"
@@ -146,7 +153,10 @@ const repSelected = ref(false);
 const repSearchInput = ref("");
 const selectedRep = ref(null);
 const formElements = ref([] as Element[]);
-
+const changeRep = () => {
+	repSelected.value = false;
+	selectedRep.value = null;
+};
 const createElements = () => {
 	for (let key in input) {
 		let error = "";

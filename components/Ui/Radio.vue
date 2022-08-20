@@ -3,7 +3,7 @@
 		<label
 			v-for="radioType in radioTypes"
 			:key="radioType.id"
-			class="cursor-pointer dark:hover:bg-darkBg hover:bg-slate-100 rounded-lg p-2 trans"
+			class="cursor-pointer dark:hover:bg-darkBg hover:bg-darkSecondary rounded-lg p-2 trans"
 			:class="{ selected: radioType.id === modelValue }"
 			@click="handleUpdate(radioType.id)"
 			>{{ radioType.label }}

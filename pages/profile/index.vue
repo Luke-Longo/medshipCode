@@ -7,6 +7,7 @@
 				v-if="selectedRadio === 'practice'"
 				@toRep="handleRadioChange('salesRep')"
 			/>
+			<ProfileRep v-else-if="selectedRadio === 'salesRep'" />
 		</transition>
 	</div>
 </template>

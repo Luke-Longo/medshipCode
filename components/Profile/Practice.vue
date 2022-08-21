@@ -146,40 +146,14 @@ const listTitles = ref(["name", "email"]);
 const repSelected = ref(false);
 const repSearchInput = ref("");
 const selectedRep = ref(null);
-const formElements = ref([] as FormElement[]);
+
+const { formElements, resetValidity } = useFormElements(input);
+
 const changeRep = () => {
 	repSelected.value = false;
 	selectedRep.value = null;
 };
-const createElements = () => {
-	for (let key in input) {
-		let error = "";
-		let placeholder = "";
-		let required = true;
-		let text = key.replace(/([A-Z])/g, " $1");
-		let title = text.charAt(0).toUpperCase() + text.slice(1);
-		if (key === "ptan" || key === "ein") {
-			title = key.toUpperCase();
-		}
-		if (key === "groupNpi") {
-			title = "Group NPI";
-		}
-		if (key === "address2") {
-			required = false;
-		}
-		formElements.value.push({
-			id: key,
-			title: title,
-			required: required,
-			error: error,
-			placeholder: placeholder,
-		} as FormElement);
-	}
-};
-const resetValidity = (id: string) => {
-	input[id].isValid = true;
-};
-createElements();
+
 const emit = defineEmits<{
 	(e: "toRep");
 }>();

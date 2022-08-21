@@ -54,7 +54,6 @@
 </template>
 
 <script setup lang="ts">
-import { Element } from "~/types/types";
 const input = reactive({
 	name: {
 		val: "",
@@ -78,7 +77,12 @@ const handleSearch = async () => {
 const repSelected = ref(false);
 const repSearchInput = ref("");
 const selectedRep = ref(null);
-const formElements = ref([] as Element);
+
+const { formElements } = useFormElements(input);
+
+const resetValidity = (id: string) => {
+	input[id].isValid = true;
+};
 
 const reps = ref([
 	{
@@ -87,32 +91,6 @@ const reps = ref([
 		email: "",
 	},
 ]);
-
-const createElements = () => {
-	for (let key in input) {
-		let error = "";
-		let placeholder = "";
-		let required = true;
-		let text = key.replace(/([A-Z])/g, " $1");
-		let title = text.charAt(0).toUpperCase() + text.slice(1);
-		if (key === "ptan" || key === "ein") {
-			title = key.toUpperCase();
-		}
-		if (key === "groupNpi") {
-			title = "Group NPI";
-		}
-		if (key === "address2") {
-			required = false;
-		}
-		formElements.value.push({
-			id: key,
-			title: title,
-			required: required,
-			error: error,
-			placeholder: placeholder,
-		} as Element);
-	}
-};
 
 const changeRep = () => {
 	repSelected.value = false;

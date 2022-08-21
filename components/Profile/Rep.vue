@@ -78,11 +78,7 @@ const repSelected = ref(false);
 const repSearchInput = ref("");
 const selectedRep = ref(null);
 
-const { formElements } = useFormElements(input);
-
-const resetValidity = (id: string) => {
-	input[id].isValid = true;
-};
+const { formElements, resetValidity } = useFormElements(input);
 
 const reps = ref([
 	{

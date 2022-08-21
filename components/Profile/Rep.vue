@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="mx-4">
 		<transition name="fade" mode="out-in">
 			<div class="flex flex-col" v-if="!repSelected">
 				<UiSearchInline
@@ -57,15 +57,15 @@
 const input = reactive({
 	name: {
 		val: "",
-		isValid: false,
+		isValid: true,
 	},
 	email: {
 		val: "",
-		isValid: false,
+		isValid: true,
 	},
 	phone: {
 		val: "",
-		isValid: false,
+		isValid: true,
 	},
 });
 const listTitles = ref(["name", "email"]);

@@ -316,3 +316,11 @@ export interface PracticeInput {
 		isValid: boolean;
 	};
 }
+
+export interface FormElement {
+	id: string;
+	title: string;
+	required: boolean;
+	error?: string;
+	placeholder?: string;
+}

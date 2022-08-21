@@ -55,14 +55,8 @@
 </template>
 
 <script setup lang="ts">
-import { PracticeInput } from "~/types/types";
-interface Element {
-	id: string;
-	title: string;
-	required: boolean;
-	error?: string;
-	placeholder?: string;
-}
+import { PracticeInput, FormElement } from "~/types/types";
+
 const input: PracticeInput = reactive({
 	practiceName: {
 		val: "",
@@ -152,7 +146,7 @@ const listTitles = ref(["name", "email"]);
 const repSelected = ref(false);
 const repSearchInput = ref("");
 const selectedRep = ref(null);
-const formElements = ref([] as Element[]);
+const formElements = ref([] as FormElement[]);
 const changeRep = () => {
 	repSelected.value = false;
 	selectedRep.value = null;
@@ -179,7 +173,7 @@ const createElements = () => {
 			required: required,
 			error: error,
 			placeholder: placeholder,
-		} as Element);
+		} as FormElement);
 	}
 };
 const resetValidity = (id: string) => {

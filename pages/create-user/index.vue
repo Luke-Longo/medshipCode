@@ -1,8 +1,9 @@
 <template>
 	<div class="flex flex-col items-center">
 		<UiCard>
-			<div v-if="!authStore.user">
-				<h3>Login</h3>
+			<!-- && profileStore.type === 'admin' -->
+			<div v-if="authStore.user">
+				<h3>Signup</h3>
 				<div class="form-group">
 					<label for="email">Email</label>
 					<input
@@ -23,35 +24,11 @@
 				</div>
 				<div class="flex flex-col gap-4">
 					<UiButton class="mt-7" @click="handleSubmit" mode="reverse">
-						Login
+						Signup
 					</UiButton>
 					<p class="m-2" id="invalid" v-if="authStore.authError !== ''">
 						{{ authStore.authError }}
 					</p>
-					<div class="flex flex-col justify-center" v-if="reset">
-						<p class="text-center m-2" v-if="!emailSent">
-							Are you sure you would like to reset your password?
-						</p>
-						<p class="text-center m-2" v-else>
-							An email has been sent to you with instructions on how to reset your
-							password, please check your inbox.
-						</p>
-						<div class="flex">
-							<button class="reverse mx-auto my-3" @click="cancelReset">Cancel</button>
-							<p
-								class="reverse hover:cursor-pointer mx-auto my-3"
-								@click="handleReset"
-							>
-								Reset
-							</p>
-						</div>
-					</div>
-					<div v-else>
-						<p class="flex justify-center mb-3">
-							Forgot Your Password?
-							<span class="link px-2" @click="handleReset">Reset Password</span>
-						</p>
-					</div>
 				</div>
 			</div>
 		</UiCard>
@@ -61,8 +38,9 @@
 <script setup lang="ts">
 import { useUiStore } from "../../stores/ui";
 import { useAuthStore } from "../../stores/auth";
-const authStore = useAuthStore();
 
+const authStore = useAuthStore();
+const uiStore = useUiStore();
 const router = useRouter();
 
 const input = reactive({
@@ -74,12 +52,14 @@ const clearInput = () => {
 	input.email = "";
 	input.password = "";
 };
-const emailSent = ref(false);
-const uiStore = useUiStore();
 
 const handleSubmit = async () => {
 	uiStore.toggleFunctionLoading(true);
-	await authStore.signIn({ email: input.email, password: input.password });
+	await authStore.signUp({
+		email: input.email,
+		password: input.password,
+		metadata: { type: "practice" },
+	});
 	clearInput();
 	if (!authStore.isError && authStore.isLoggedIn) {
 		router.push("/");
@@ -87,28 +67,6 @@ const handleSubmit = async () => {
 	}
 	uiStore.toggleFunctionLoading(false);
 };
-
-const reset = ref(false);
-const handleReset = async () => {
-	if (!reset.value) {
-		reset.value = true;
-	} else {
-		emailSent.value = true;
-		uiStore.toggleFunctionLoading(true);
-		await authStore.resetPassword(input.email);
-		uiStore.toggleFunctionLoading(false);
-	}
-};
-const cancelReset = () => {
-	reset.value = false;
-};
-
-onMounted(async () => {
-	await authStore.checkRefresh();
-	if (authStore.isLoggedIn) {
-		router.push("/");
-	}
-});
 </script>
 
 <style scoped>

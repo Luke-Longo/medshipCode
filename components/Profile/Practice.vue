@@ -4,7 +4,7 @@
 			<div class="flex flex-col" v-if="!repSelected">
 				<UiSearchInline
 					v-model="repSearchInput"
-					label="Search Rep"
+					label="Sales Rep"
 					@search="handleSearch"
 				/>
 				<SalesRepList

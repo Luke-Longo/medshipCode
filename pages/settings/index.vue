@@ -1,8 +1,15 @@
 <template>
 	<div class="my-6">
 		<h3 class="header">Settings</h3>
-		<div class="mx-auto">
-			<button class="reverse">Create a new Profile</button>
+		<div class="">
+			<UiCard class="mx-auto flex flex-col gap-4">
+				<p class="hover:cursor-pointer hover:underline" @click="editProfile">
+					Edit Profile
+				</p>
+				<p class="hover:cursor-pointer hover:underline" @click="recovery">
+					Reset Password
+				</p>
+			</UiCard>
 		</div>
 	</div>
 </template>
@@ -24,6 +31,14 @@ const clearInput = () => {
 	for (let key in input) {
 		input[key] = "";
 	}
+};
+
+const recovery = () => {
+	router.push("/recovery");
+};
+
+const editProfile = () => {
+	router.push("/profile");
 };
 
 const createProfile = async () => {

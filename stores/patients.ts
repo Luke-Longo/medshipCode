@@ -43,7 +43,7 @@ export const usePatientStore = defineStore("patients", {
 			try {
 				const { data, error } = await $supabase
 					.from("patients")
-					.select()
+					.select("*")
 					.eq("firstName", patient.firstName)
 					.eq("lastName", patient.lastName)
 					.eq("dob", patient.dob)

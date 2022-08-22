@@ -9,6 +9,7 @@ export const useAuthStore = defineStore("auth", {
 		authError: "" as String,
 		expiresIn: null as Number,
 		resettingPassword: false as Boolean,
+		isAdmin: false as boolean,
 	}),
 	getters: {
 		getUser(state) {
@@ -23,14 +24,28 @@ export const useAuthStore = defineStore("auth", {
 		user_id(state) {
 			return state.user.id;
 		},
-		isAdmin(state) {
-			return state.user.role === "admin";
-		},
 		isResetting(state) {
 			return state.resettingPassword;
 		},
 	},
 	actions: {
+		async checkAdmin(user_id) {
+			const { $supabase } = useNuxtApp();
+			try {
+				const { data, error } = await $supabase
+					.from("profiles")
+					.select("*")
+					.eq("user_id", user_id);
+				if (error) {
+					throw error;
+				}
+				if (data[0].admin) {
+					this.isAdmin = true;
+				}
+			} catch (error) {
+				console.log(error);
+			}
+		},
 		setUser(user: User) {
 			this.user = user;
 		},
@@ -52,7 +67,7 @@ export const useAuthStore = defineStore("auth", {
 						password,
 					},
 					{
-						data: metadata,
+						data: { ...metadata },
 						redirectTo: `${window.location.origin}/?source=email`,
 					}
 				);
@@ -75,6 +90,7 @@ export const useAuthStore = defineStore("auth", {
 				}
 				this.setSession(session);
 				this.setUser(user);
+				await this.checkAdmin(user.id);
 				$router.push("/");
 			} catch (e) {
 				this.authError = e.message;
@@ -110,6 +126,7 @@ export const useAuthStore = defineStore("auth", {
 						}
 						this.setSession(session);
 						this.setUser(session.user);
+						await this.checkAdmin(session.user.id);
 					}
 				} catch (e) {
 					this.authError = e.message;

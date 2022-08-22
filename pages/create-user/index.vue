@@ -58,7 +58,6 @@ const handleSubmit = async () => {
 	await authStore.signUp({
 		email: input.email,
 		password: input.password,
-		metadata: { type: "practice" },
 	});
 	clearInput();
 	if (!authStore.isError && authStore.isLoggedIn) {

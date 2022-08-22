@@ -38,6 +38,7 @@ const recovery = () => {
 };
 
 const editProfile = () => {
+	// get the current profile and pass this data to the profile store where the page should render the data based on the store.
 	router.push("/profile");
 };
 

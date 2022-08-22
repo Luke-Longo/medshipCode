@@ -1,11 +1,6 @@
 <template>
 	<div>
 		<h3 class="header">Home</h3>
-		<button @click="searchChangeHealth">ChangeHealthCare</button>
-		<button @click="recovery">recovery</button>
-		<!-- <div class="w-2/3">
-			<p>{{ eligibility }}</p>
-		</div> -->
 	</div>
 </template>
 
@@ -28,10 +23,6 @@ const searchChangeHealth = async () => {
 	benefitsInformation.value = res.benefitsInformation;
 
 	console.log(res);
-};
-
-const recovery = () => {
-	router.push("/recovery");
 };
 </script>
 

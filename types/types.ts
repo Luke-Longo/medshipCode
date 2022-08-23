@@ -143,13 +143,21 @@ export interface Provider {
 
 export interface Practice {
 	practice_id: string;
-	user_id: string;
-	legalName: string;
-	dbaName: string;
-	npi: string;
+	practiceName: string;
 	address: Address;
-	created_at: Date;
-	modified_at: Date;
+	legalName: string;
+	contactPhone: string;
+	contactEmail: string;
+	contactName: string;
+	accountsPayableContact: string;
+	accountsPayableEmail: string;
+	accountsPayablePhone: string;
+	clinicalContact: string;
+	clinicalEmail: string;
+	clinicalPhone: string;
+	npi: string;
+	ein: string;
+	ptan: string;
 }
 
 export interface ProviderInput {
@@ -326,14 +334,14 @@ export interface FormElement {
 }
 
 export interface SalesRep {
-	user_id: string;
+	rep_id: string;
 	firstName: string;
 	lastName: string;
-	sales_reps: SalesRep[];
-	practices: Practice[];
+	businessName: string;
 	email: string;
 	phone: string;
+	salesReps: SalesRep[];
+	practices: Practice[];
 	created_at: Date;
 	modified_at: Date;
-	businessName: string;
 }

@@ -49,8 +49,9 @@ const handleRadioChange = (radioType: string) => {
 const selectedProfile = ref<Profile | null>(null);
 
 const searchProfiles = async () => {
+	// search by name
 	if (authStore.isAdmin) {
-		const profiles = await profileStore.adminFetchProfiles();
+		const profiles = await profileStore.adminFetchProfiles(searchInput.value);
 	}
 };
 </script>

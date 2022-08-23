@@ -32,7 +32,7 @@ export const useProfileStore = defineStore("profile", {
 				console.log(error);
 			}
 		},
-		async adminFetchProfiles() {
+		async adminFetchProfiles(input) {
 			const { $supabase } = useNuxtApp();
 			try {
 				const { data, error } = await $supabase.from("profiles").select("*");

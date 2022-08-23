@@ -349,6 +349,7 @@ export interface SalesRep {
 export interface Profile {
 	user_id: string;
 	type: "salesRep" | "practice" | "admin";
+	email: string;
 	admin: boolean;
 	rep_id: string;
 	practice_id: string;

@@ -324,3 +324,16 @@ export interface FormElement {
 	error?: string;
 	placeholder?: string;
 }
+
+export interface SalesRep {
+	user_id: string;
+	firstName: string;
+	lastName: string;
+	sales_reps: SalesRep[];
+	practices: Practice[];
+	email: string;
+	phone: string;
+	created_at: Date;
+	modified_at: Date;
+	businessName: string;
+}

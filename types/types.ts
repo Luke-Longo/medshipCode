@@ -345,3 +345,13 @@ export interface SalesRep {
 	created_at: Date;
 	modified_at: Date;
 }
+
+export interface Profile {
+	user_id: string;
+	type: "salesRep" | "practice" | "admin";
+	admin: boolean;
+	rep_id: string;
+	practice_id: string;
+	created_at: Date;
+	modified_at: Date;
+}

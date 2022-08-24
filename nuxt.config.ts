@@ -2,6 +2,9 @@ import { defineNuxtConfig } from "nuxt";
 import Icons from "unplugin-icons/vite";
 
 export default defineNuxtConfig({
+	head: {
+		link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+	},
 	css: ["@/assets/css/tailwind.css"],
 	build: {
 		postcss: {

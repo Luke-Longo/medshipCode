@@ -5,7 +5,6 @@ export default async function useLoadContent() {
 	const uiStore = useUiStore();
 	const authStore = useAuthStore();
 	uiStore.toggleAppLoading(true);
-	uiStore.toggleFunctionLoading(true);
 	if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
 		uiStore.setTheme("dark");
 		document.body.classList.add("dark:bg-black");
@@ -21,7 +20,6 @@ export default async function useLoadContent() {
 	}
 	uiStore.toggleSidebar(true);
 	setTimeout(() => {
-		uiStore.toggleFunctionLoading(false);
 		uiStore.toggleAppLoading(false);
-	}, 2000);
+	}, 1000);
 }

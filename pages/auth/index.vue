@@ -14,15 +14,13 @@
 
 <script setup lang="ts">
 import { useAuthStore } from "~~/stores/auth";
-import { useUiStore } from "~~/stores/ui";
 
-const uiStore = useUiStore();
 const authStore = useAuthStore();
 const router = useRouter();
 
-definePageMeta({
-	middleware: ["page-load"],
-});
+// definePageMeta({
+// 	middleware: ["page-load"],
+// });
 
 if (!authStore.isLoggedIn) {
 	await authStore.checkRefresh();

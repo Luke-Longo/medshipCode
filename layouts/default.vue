@@ -1,39 +1,40 @@
 <template>
-	<div class="dark:bg-black">
-		<teleport to="body">
-			<transition name="modal-fade">
-				<div v-if="uiStore.functionLoading" class="modal-backdrop">
-					<UiBaseSpinner></UiBaseSpinner>
-				</div>
-			</transition>
-		</teleport>
-		<UiNav class="dark:bg-darkBg dark:text-darkSecondary" />
-		<div class="flex dark:bg-black h-full">
-			<transition name="sidebar" mode="out-in">
-				<UiSideNav v-if="uiStore.sidebar" />
-			</transition>
-			<transition name="fade" mode="out-in">
-				<div
-					v-if="!uiStore.appLoading"
-					class="flex-grow max-w-full max-h-full dark:bg-black trans"
-				>
-					<transition name="route-fade" mode="out-in" appear>
-						<div :key="$route.path">
-							<slot />
-						</div>
-					</transition>
-				</div>
-				<div v-else class="flex flex-grow mt-40 justify-center trans">
-					<UiBaseSpinner />
-				</div>
-			</transition>
-			<!-- <UiFooter class="footer" id="footer" /> -->
+	<div>
+		<div class="dark:bg-black">
+			<teleport to="body">
+				<transition name="modal-fade">
+					<div v-if="uiStore.functionLoading" class="modal-backdrop">
+						<UiBaseSpinner></UiBaseSpinner>
+					</div>
+				</transition>
+			</teleport>
+			<UiNav class="dark:bg-darkBg dark:text-darkSecondary" />
+			<div class="flex dark:bg-black h-full">
+				<transition name="sidebar" mode="out-in">
+					<UiSideNav v-if="uiStore.sidebar" />
+				</transition>
+				<transition name="fade" mode="out-in">
+					<div
+						v-if="!uiStore.appLoading"
+						class="flex-grow max-w-full max-h-full dark:bg-black trans"
+					>
+						<transition name="route-fade" mode="out-in" appear>
+							<div :key="$route.path">
+								<slot />
+							</div>
+						</transition>
+					</div>
+					<div v-else class="flex flex-grow mt-40 justify-center trans">
+						<UiBaseSpinner />
+					</div>
+				</transition>
+				<!-- <UiFooter class="footer" id="footer" /> -->
+			</div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
 import { useUiStore } from "../stores/ui";
 import { useAuthStore } from "../stores/auth";
 import { usePatientStore } from "~~/stores/patients";
@@ -42,7 +43,24 @@ const { $supabase } = useNuxtApp();
 const uiStore = useUiStore();
 const authStore = useAuthStore();
 const patientStore = usePatientStore();
-const route = useRoute();
+
+// onBeforeMount(async () => {
+// 	uiStore.toggleAppLoading(true);
+// 	if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+// 		uiStore.setTheme("dark");
+// 		document.body.classList.add("dark:bg-black");
+// 	} else {
+// 		uiStore.setTheme("light");
+// 		document.body.classList.remove("dark:bg-black");
+// 	}
+// 	if (authStore.isLoggedIn) {
+// 		uiStore.toggleSidebar(true);
+// 		// load all the data, load some in background
+// 	} else {
+// 		uiStore.toggleSidebar(false);
+// 	}
+// 	uiStore.toggleAppLoading(false);
+// });
 
 onMounted(async () => {
 	uiStore.toggleAppLoading(true);
@@ -53,15 +71,11 @@ onMounted(async () => {
 		uiStore.setTheme("light");
 		document.body.classList.remove("dark:bg-black");
 	}
-	await authStore.checkRefresh();
 	if (authStore.isLoggedIn) {
 		uiStore.toggleSidebar(true);
 		// load all the data, load some in background
 	} else {
 		uiStore.toggleSidebar(false);
-	}
-	if (route.hash.includes("recovery")) {
-		authStore.setResettingPassword(true);
 	}
 	uiStore.toggleAppLoading(false);
 });

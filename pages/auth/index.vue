@@ -1,12 +1,17 @@
 <template>
-	<div class="flex items-center justify-center">
-		<transition name="fade" mode="out-in">
-			<AuthCard
-				class="w-2/3 justify-center items-center"
-				v-if="!authStore.resettingPassword"
-			/>
-			<AuthRecoveryCard v-else class="mx-auto w-2/3" />
-		</transition>
+	<div>
+		<div class="flex items-center justify-center" v-if="!authStore.isLoggedIn">
+			<transition name="fade" mode="out-in">
+				<AuthCard
+					class="w-2/3 justify-center items-center"
+					v-if="!authStore.resettingPassword"
+				/>
+				<AuthRecoveryCard v-else class="mx-auto w-2/3" />
+			</transition>
+		</div>
+		<div v-else>
+			<UiBaseSpinner class=""></UiBaseSpinner>
+		</div>
 	</div>
 </template>
 
@@ -14,6 +19,8 @@
 import { useAuthStore } from "~~/stores/auth";
 
 const authStore = useAuthStore();
+
+onBeforeMount(async () => {});
 </script>
 
 <style>

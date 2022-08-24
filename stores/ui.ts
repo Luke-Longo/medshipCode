@@ -7,6 +7,7 @@ export const useUiStore = defineStore("ui", {
 		theme: "light",
 		appLoading: false,
 		functionLoading: false,
+		initialLoading: false,
 	}),
 	getters: {},
 	actions: {

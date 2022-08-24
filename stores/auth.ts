@@ -16,7 +16,7 @@ export const useAuthStore = defineStore("auth", {
 			return state.user;
 		},
 		isLoggedIn(state) {
-			return !!state.user;
+			return state.user === null ? false : true;
 		},
 		isError(state) {
 			return state.authError !== "";

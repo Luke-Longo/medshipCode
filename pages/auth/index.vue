@@ -10,17 +10,21 @@
 			</transition>
 		</div>
 		<div v-else>
-			<UiBaseSpinner class=""></UiBaseSpinner>
+			<UiBaseLoader :show="uiStore.appLoading" />
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { useAuthStore } from "~~/stores/auth";
+import { useUiStore } from "~~/stores/ui";
 
+const uiStore = useUiStore();
 const authStore = useAuthStore();
 
-onBeforeMount(async () => {});
+onBeforeMount(async () => {
+	await authStore.checkRefresh();
+});
 </script>
 
 <style>

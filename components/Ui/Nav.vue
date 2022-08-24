@@ -4,8 +4,14 @@ import { useAuthStore } from "../../stores/auth";
 import IconMoon from "~icons/fa-solid/moon";
 import IconSun from "~icons/fa-solid/sun";
 import IconBars from "~icons/fa-solid/bars";
+
 const uiStore = useUiStore();
 const authStore = useAuthStore();
+
+onBeforeMount(async () => {
+	await authStore.checkRefresh();
+});
+
 const handleSignOut = async () => {
 	uiStore.toggleFunctionLoading(true);
 	await authStore.signOut();
@@ -50,9 +56,12 @@ const handleSidebar = () => {
 					<li class="nav-li">
 						<NuxtLink to="/settings">Settings</NuxtLink>
 					</li>
-					<li class="nav-li" @click="handleSignOut">
-						<NuxtLink to="/auth" v-if="authStore.isLoggedIn">Sign Out</NuxtLink>
-						<NuxtLink to="/auth" v-else>Sign In</NuxtLink>
+					<li class="nav-li trans" @click="handleSignOut">
+						<client-only>
+							<NuxtLink to="/auth">{{
+								authStore.isLoggedIn ? "Sign Out" : "Sign In"
+							}}</NuxtLink>
+						</client-only>
 					</li>
 				</ul>
 			</div>

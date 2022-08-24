@@ -18,17 +18,18 @@
 						v-if="!uiStore.appLoading"
 						class="flex-grow max-w-full max-h-full dark:bg-black trans"
 					>
-						<transition name="route-fade" mode="out-in" appear>
-							<div :key="$route.path">
-								<slot />
-							</div>
-						</transition>
+						<client-only>
+							<transition name="route-fade" mode="out-in" appear>
+								<div :key="$route.path">
+									<slot />
+								</div>
+							</transition>
+						</client-only>
 					</div>
 					<div v-else class="flex flex-grow mt-40 justify-center trans">
 						<UiBaseSpinner />
 					</div>
 				</transition>
-				<!-- <UiFooter class="footer" id="footer" /> -->
 			</div>
 		</div>
 	</div>
@@ -43,8 +44,7 @@ const { $supabase } = useNuxtApp();
 const uiStore = useUiStore();
 const authStore = useAuthStore();
 const patientStore = usePatientStore();
-
-// onBeforeMount(async () => {
+// onMounted(async () => {
 // 	uiStore.toggleAppLoading(true);
 // 	if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
 // 		uiStore.setTheme("dark");
@@ -53,6 +53,7 @@ const patientStore = usePatientStore();
 // 		uiStore.setTheme("light");
 // 		document.body.classList.remove("dark:bg-black");
 // 	}
+// 	await authStore.checkRefresh();
 // 	if (authStore.isLoggedIn) {
 // 		uiStore.toggleSidebar(true);
 // 		// load all the data, load some in background
@@ -61,25 +62,6 @@ const patientStore = usePatientStore();
 // 	}
 // 	uiStore.toggleAppLoading(false);
 // });
-
-onMounted(async () => {
-	uiStore.toggleAppLoading(true);
-	if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-		uiStore.setTheme("dark");
-		document.body.classList.add("dark:bg-black");
-	} else {
-		uiStore.setTheme("light");
-		document.body.classList.remove("dark:bg-black");
-	}
-	if (authStore.isLoggedIn) {
-		uiStore.toggleSidebar(true);
-		// load all the data, load some in background
-	} else {
-		uiStore.toggleSidebar(false);
-	}
-	uiStore.toggleAppLoading(false);
-});
-
 $supabase.auth.onAuthStateChange(async (event, session) => {
 	if (event === "SIGNED_OUT") {
 		patientStore.clear();

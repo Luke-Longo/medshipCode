@@ -1,9 +1,9 @@
 <template>
 	<div class="flex flex-col items-center">
-		<UiCard>
-			<!-- && profileStore.type === 'admin' -->
-			<div v-if="authStore.user">
+		<UiCard class="w-36">
+			<div v-if="authStore.isAdmin">
 				<h3>Signup</h3>
+				<UiRadio :radioTypes="radioTypes" v-model="selectedRadio" :reverse="true" />
 				<div class="form-group">
 					<label for="email">Email</label>
 					<input
@@ -47,6 +47,19 @@ const input = reactive({
 	email: "",
 	password: "",
 });
+
+const radioTypes = ref([
+	{
+		id: "practice",
+		label: "Practice",
+	},
+	{
+		id: "salesRep",
+		label: "Sales Rep",
+	},
+]);
+
+const selectedRadio = ref("practice");
 
 const clearInput = () => {
 	input.email = "";

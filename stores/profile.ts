@@ -34,8 +34,26 @@ export const useProfileStore = defineStore("profile", {
 		},
 		async adminFetchProfiles(input) {
 			const { $supabase } = useNuxtApp();
+			if (input.split(" ").length > 1) {
+				input = input.split(" ");
+				try {
+					const { data, error } = await $supabase
+						.from("profiles")
+						.select("*")
+						.textSearch("email", `${input[0]} | ${input[1]}`);
+					if (error) {
+						throw error;
+					}
+					return data;
+				} catch (error) {
+					console.log(error);
+				}
+			}
 			try {
-				const { data, error } = await $supabase.from("profiles").select("*");
+				const { data, error } = await $supabase
+					.from("profiles")
+					.select("*")
+					.textSearch("email", `input`);
 				if (error) {
 					throw error;
 				}

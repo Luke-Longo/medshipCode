@@ -1,25 +1,11 @@
-<template>
-	<div class="">
-		<UiBaseSpinner
-			class="flex flex-grow mt-40 justify-center trans"
-			:show="uiStore.initialLoading"
-		/>
-	</div>
-</template>
-
-<script setup lang="ts">
-import { useUiStore } from "~~/stores/ui";
+import { useUiStore } from "~/stores/ui";
 import { useAuthStore } from "~/stores/auth";
 
-const uiStore = useUiStore();
-const authStore = useAuthStore();
-
-definePageMeta({
-	layout: false,
-});
-
-const setState = async () => {
+export default async function useLoadContent() {
+	const uiStore = useUiStore();
+	const authStore = useAuthStore();
 	uiStore.toggleAppLoading(true);
+	uiStore.toggleFunctionLoading(true);
 	if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
 		uiStore.setTheme("dark");
 		document.body.classList.add("dark:bg-black");
@@ -33,8 +19,9 @@ const setState = async () => {
 	} else {
 		uiStore.toggleSidebar(false);
 	}
-	uiStore.toggleAppLoading(false);
-};
-
-setState();
-</script>
+	uiStore.toggleSidebar(true);
+	setTimeout(() => {
+		uiStore.toggleFunctionLoading(false);
+		uiStore.toggleAppLoading(false);
+	}, 2000);
+}

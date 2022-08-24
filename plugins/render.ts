@@ -1,8 +1,9 @@
 import { useUiStore } from "~~/stores/ui";
 
-export default defineNuxtPlugin((nuxtApp) => {
-	nuxtApp.hook("page:start", () => {
+export default defineNuxtPlugin(async (nuxtApp) => {
+	nuxtApp.hook("page:start", async () => {
 		const uiStore = useUiStore();
-		uiStore.toggleAppLoading(true);
+		console.log("page:start");
+		await useLoadContent();
 	});
 });

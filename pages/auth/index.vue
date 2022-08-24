@@ -9,9 +9,6 @@
 				<AuthRecoveryCard v-else class="mx-auto w-2/3" />
 			</transition>
 		</div>
-		<div v-else>
-			<UiBaseLoader :show="uiStore.appLoading" />
-		</div>
 	</div>
 </template>
 
@@ -21,10 +18,18 @@ import { useUiStore } from "~~/stores/ui";
 
 const uiStore = useUiStore();
 const authStore = useAuthStore();
+const router = useRouter();
 
-onBeforeMount(async () => {
-	await authStore.checkRefresh();
+definePageMeta({
+	middleware: ["page-load"],
 });
+
+if (!authStore.isLoggedIn) {
+	await authStore.checkRefresh();
+}
+if (authStore.isLoggedIn) {
+	router.push("/");
+}
 </script>
 
 <style>

@@ -104,7 +104,6 @@ const cancelReset = () => {
 };
 
 onMounted(async () => {
-	await authStore.checkRefresh();
 	if (authStore.isLoggedIn) {
 		router.push("/");
 	}

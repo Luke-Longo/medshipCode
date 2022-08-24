@@ -44,24 +44,7 @@ const { $supabase } = useNuxtApp();
 const uiStore = useUiStore();
 const authStore = useAuthStore();
 const patientStore = usePatientStore();
-// onMounted(async () => {
-// 	uiStore.toggleAppLoading(true);
-// 	if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-// 		uiStore.setTheme("dark");
-// 		document.body.classList.add("dark:bg-black");
-// 	} else {
-// 		uiStore.setTheme("light");
-// 		document.body.classList.remove("dark:bg-black");
-// 	}
-// 	await authStore.checkRefresh();
-// 	if (authStore.isLoggedIn) {
-// 		uiStore.toggleSidebar(true);
-// 		// load all the data, load some in background
-// 	} else {
-// 		uiStore.toggleSidebar(false);
-// 	}
-// 	uiStore.toggleAppLoading(false);
-// });
+
 $supabase.auth.onAuthStateChange(async (event, session) => {
 	if (event === "SIGNED_OUT") {
 		patientStore.clear();

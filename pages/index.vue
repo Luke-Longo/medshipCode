@@ -1,7 +1,12 @@
 <template>
 	<div>
 		<h3 class="header">Home</h3>
-		<UiTable :cols="['Name', 'Email', 'Phone']" :gridCols="'grid-cols-4'" />
+		<UiTable
+			:cols="cols"
+			:gridCols="gridCols"
+			:tableData="tableData"
+			:properties="properties"
+		/>
 	</div>
 </template>
 
@@ -10,6 +15,25 @@ import { EligibilityResponse } from "~~/types/change";
 const eligibility = ref({});
 const benefitsInformation = ref([]);
 
+const cols = ref(["Name", "Email", "Phone", "Order", "Patient"]);
+const gridCols = ref("grid-cols-6");
+const tableData = ref([
+	{
+		name: "John Doe",
+		email: "jimm@jimmm",
+		phone: "",
+		order: "",
+		patient: "",
+	},
+]);
+const properties = ref([
+	"name",
+	"email",
+	"phone",
+	"order",
+	"patient",
+	"dropdown",
+]);
 const searchChangeHealth = async () => {
 	// looking for medical service type codes 12 or DM
 	const res: EligibilityResponse = await $fetch("/api/changeEligibility", {

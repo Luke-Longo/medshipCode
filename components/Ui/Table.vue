@@ -1,6 +1,9 @@
 <template>
 	<div>
-		<div class="dark:bg-darkBg shadow-lg mx-4 justify-center rounded-lg">
+		<div
+			class="dark:bg-darkBg shadow-lg mx-4 justify-center rounded-lg"
+			:class="widths"
+		>
 			<table class="w-full">
 				<thead
 					class="grid text-xl p-4 pb-4 bg-darkSecondary dark:bg-darkBg rounded-t-lg"
@@ -32,6 +35,7 @@
 <script setup lang="ts">
 const props = defineProps<{
 	cols: string[];
+	widths?: string[];
 	gridCols: string;
 	tableData: any[];
 	properties: string[];

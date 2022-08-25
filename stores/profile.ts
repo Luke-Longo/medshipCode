@@ -32,15 +32,36 @@ export const useProfileStore = defineStore("profile", {
 				console.log(error);
 			}
 		},
-		async adminFetchProfiles(input) {
+		async adminFetchProfiles(input, filter?) {
 			const { $supabase } = useNuxtApp();
 			if (input.split(" ").length > 1) {
-				input = input.split(" ");
+				let terms = input.split(" ");
+				try {
+					console.log(terms);
+					const { data, error } = await $supabase
+						.from("profiles")
+						.select("*")
+						.or(
+							`username.in.(${terms}),email.in.(${terms}),username.like.%${terms[0]}%,email.like.%${terms[1]}%,username.like.%${terms[0]}%,email.like.%${terms[1]}%`
+						)
+						.neq("admin", true)
+						.eq("type", filter);
+					if (error) {
+						throw error;
+					}
+					console.log(data);
+					return data;
+				} catch (error) {
+					console.log(error);
+				}
+			} else {
 				try {
 					const { data, error } = await $supabase
 						.from("profiles")
 						.select("*")
-						.textSearch("email", `${input[0]} | ${input[1]}`);
+						.or(`username.like.%${input}%,email.like.%${input}%`)
+						.neq("admin", true)
+						.eq("type", filter);
 					if (error) {
 						throw error;
 					}
@@ -48,18 +69,6 @@ export const useProfileStore = defineStore("profile", {
 				} catch (error) {
 					console.log(error);
 				}
-			}
-			try {
-				const { data, error } = await $supabase
-					.from("profiles")
-					.select("*")
-					.textSearch("email", `input`);
-				if (error) {
-					throw error;
-				}
-				return data;
-			} catch (error) {
-				console.log(error);
 			}
 		},
 		clear() {

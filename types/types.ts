@@ -234,7 +234,7 @@ export interface Order {
 	patient_id: string;
 	provider_id: string;
 	orderNumber: number;
-	insurance: InsuranceShort;
+	insurance?: InsuranceShort;
 	trackingNumber: string;
 	status: "Ready" | "Not Ready" | "Payment Due" | "Completed" | "Held Orders";
 	notes: string;
@@ -244,6 +244,7 @@ export interface Order {
 	modified_at: Date;
 	primaryPayment?: number;
 	secondaryPayment?: number;
+	active?: boolean;
 }
 
 export interface PracticeInput {

@@ -1,5 +1,6 @@
 <template>
 	<div v-if="authStore.isAdmin">
+		<UiRadio :radioTypes="radioTypes" v-model="selectedRadio" />
 		<UiSearchInline
 			:label="'Profiles'"
 			v-model="searchInput"
@@ -17,6 +18,15 @@
 				</transition>
 			</div>
 		</transition>
+		<div>
+			<UiList
+				:items="profiles"
+				:list="listNames"
+				:hideAdd="true"
+				:itemName="'Profiles'"
+				:flipHover="true"
+			/>
+		</div>
 	</div>
 </template>
 
@@ -39,16 +49,23 @@ const radioTypes = [
 		label: "Sales Rep",
 	},
 ];
+
+const listNames = ref(["type", "username"]);
+
 const selectedRadio = ref(radioTypes[0].id);
 const handleRadioChange = (radioType: string) => {
 	selectedRadio.value = radioType;
 };
 const selectedProfile = ref<Profile | null>(null);
-
+const profiles = ref([] as Profile[]);
 const searchProfiles = async () => {
 	// search by name
+
 	if (authStore.isAdmin) {
-		const profiles = await profileStore.adminFetchProfiles(searchInput.value);
+		profiles.value = await profileStore.adminFetchProfiles(
+			searchInput.value,
+			selectedRadio.value
+		);
 	}
 };
 </script>

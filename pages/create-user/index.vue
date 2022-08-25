@@ -78,7 +78,6 @@ const clearInput = () => {
 
 const handleSubmit = async () => {
 	uiStore.toggleFunctionLoading(true);
-	// probably an issue with my spread operator
 	await authStore.signUp({
 		email: input.email,
 		password: input.password,

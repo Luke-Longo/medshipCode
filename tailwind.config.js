@@ -23,5 +23,10 @@ module.exports = {
 			},
 		},
 	},
+	variants: {
+		extend: {
+			backgroundColor: ["even", "odd"],
+		},
+	},
 	plugins: [],
 };

@@ -25,6 +25,20 @@ const tableData = ref([
 		order: "",
 		patient: "",
 	},
+	{
+		name: "John Doe",
+		email: "jimm@jimmm",
+		phone: "",
+		order: "",
+		patient: "",
+	},
+	{
+		name: "John Doe",
+		email: "jimm@jimmm",
+		phone: "",
+		order: "",
+		patient: "",
+	},
 ]);
 const properties = ref([
 	"name",

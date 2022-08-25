@@ -2,7 +2,7 @@
 	<div class="dropdown" @mouseleave="toggleActive(false)">
 		<div
 			class="flex items-center hover:cursor-pointer dark:hover:text-darkPrimary trans"
-			@click="toggleActive(true)"
+			@click="toggleActive()"
 		>
 			Actions
 			<i class="justify-center text-xl"><ChevronDown></ChevronDown></i>

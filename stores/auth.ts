@@ -58,7 +58,7 @@ export const useAuthStore = defineStore("auth", {
 		setResettingPassword(resetting: Boolean) {
 			this.resettingPassword = resetting;
 		},
-		async signUp({ email, password, ...metadata }) {
+		async signUp({ email, password }, metadata) {
 			const { $supabase } = useNuxtApp();
 			try {
 				const { error } = await $supabase.auth.signUp(
@@ -67,7 +67,7 @@ export const useAuthStore = defineStore("auth", {
 						password,
 					},
 					{
-						data: { ...metadata },
+						data: metadata,
 						redirectTo: `${window.location.origin}/?source=email`,
 					}
 				);
@@ -111,19 +111,6 @@ export const useAuthStore = defineStore("auth", {
 				this.authError = e.message;
 			}
 		},
-		// async cookieLogin(cookie) {
-		// 	const { $supabase } = useNuxtApp();
-		// 	try {
-		// 		const { user, error } = await $supabase.auth.api.getUser(cookie);
-		// 		if (error) {
-		// 			throw error;
-		// 		}
-		// 		this.setUser(user);
-		// 		await this.checkAdmin(user.id);
-		// 	} catch (e) {
-		// 		this.authError = e.message;
-		// 	}
-		// },
 		async checkRefresh() {
 			const { $supabase } = useNuxtApp();
 			if (this.session === null) {

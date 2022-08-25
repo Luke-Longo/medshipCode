@@ -2,9 +2,9 @@ import { useUiStore } from "~/stores/ui";
 import { useAuthStore } from "~/stores/auth";
 
 export default async function useLoadContent() {
+	console.log("useLoadContent");
 	const uiStore = useUiStore();
 	const authStore = useAuthStore();
-	uiStore.toggleAppLoading(true);
 	if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
 		uiStore.setTheme("dark");
 		document.body.classList.add("dark:bg-black");
@@ -13,13 +13,10 @@ export default async function useLoadContent() {
 		document.body.classList.remove("dark:bg-black");
 	}
 	if (authStore.isLoggedIn) {
+		uiStore.toggleAppLoading(true);
 		uiStore.toggleSidebar(true);
-		// load all the data, load some in background
-	} else {
-		uiStore.toggleSidebar(false);
+		setTimeout(() => {
+			uiStore.toggleAppLoading(false);
+		}, 1000);
 	}
-	uiStore.toggleSidebar(true);
-	setTimeout(() => {
-		uiStore.toggleAppLoading(false);
-	}, 1000);
 }

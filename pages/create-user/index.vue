@@ -5,6 +5,15 @@
 				<h3>Signup</h3>
 				<UiRadio :radioTypes="radioTypes" v-model="selectedRadio" :reverse="true" />
 				<div class="form-group">
+					<label for="username">Username</label>
+					<input
+						class="w-sm mx-auto border shadow-sm border-slate-300 placeholder-slate-400 dark:bg-darkBg dark:focus:outline-darkPrimary"
+						:type="'text'"
+						:placeholder="'Sales Rep or Practice Name'"
+						v-model="input.username"
+					/>
+				</div>
+				<div class="form-group">
 					<label for="email">Email</label>
 					<input
 						class="w-sm mx-auto border shadow-sm border-slate-300 placeholder-slate-400 dark:bg-darkBg dark:focus:outline-darkPrimary"
@@ -46,6 +55,7 @@ const router = useRouter();
 const input = reactive({
 	email: "",
 	password: "",
+	username: "",
 });
 
 const radioTypes = ref([
@@ -68,10 +78,18 @@ const clearInput = () => {
 
 const handleSubmit = async () => {
 	uiStore.toggleFunctionLoading(true);
-	await authStore.signUp({
-		email: input.email,
-		password: input.password,
-	});
+	// probably an issue with my spread operator
+	const metadata = {
+		username: input.username,
+		type: selectedRadio.value,
+	};
+	await authStore.signUp(
+		{
+			email: input.email,
+			password: input.password,
+		},
+		metadata
+	);
 	clearInput();
 	if (!authStore.isError && authStore.isLoggedIn) {
 		router.push("/");

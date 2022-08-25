@@ -58,7 +58,7 @@ export const useAuthStore = defineStore("auth", {
 		setResettingPassword(resetting: Boolean) {
 			this.resettingPassword = resetting;
 		},
-		async signUp({ email, password }, metadata) {
+		async signUp({ email, password, username, type }) {
 			const { $supabase } = useNuxtApp();
 			try {
 				const { error } = await $supabase.auth.signUp(
@@ -67,8 +67,7 @@ export const useAuthStore = defineStore("auth", {
 						password,
 					},
 					{
-						data: metadata,
-						redirectTo: `${window.location.origin}/?source=email`,
+						data: { username, type },
 					}
 				);
 				if (error) {

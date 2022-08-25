@@ -79,17 +79,12 @@ const clearInput = () => {
 const handleSubmit = async () => {
 	uiStore.toggleFunctionLoading(true);
 	// probably an issue with my spread operator
-	const metadata = {
+	await authStore.signUp({
+		email: input.email,
+		password: input.password,
 		username: input.username,
 		type: selectedRadio.value,
-	};
-	await authStore.signUp(
-		{
-			email: input.email,
-			password: input.password,
-		},
-		metadata
-	);
+	});
 	clearInput();
 	if (!authStore.isError && authStore.isLoggedIn) {
 		router.push("/");

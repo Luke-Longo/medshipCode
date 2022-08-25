@@ -2,7 +2,6 @@ import { useUiStore } from "~/stores/ui";
 import { useAuthStore } from "~/stores/auth";
 
 export default async function useLoadContent() {
-	console.log("useLoadContent");
 	const uiStore = useUiStore();
 	const authStore = useAuthStore();
 	if (window.matchMedia("(prefers-color-scheme: dark)").matches) {

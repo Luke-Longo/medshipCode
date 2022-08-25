@@ -14,8 +14,10 @@
 
 <script setup lang="ts">
 import { useAuthStore } from "~~/stores/auth";
+import { useUiStore } from "~~/stores/ui";
 
 const authStore = useAuthStore();
+const uiStore = useUiStore();
 const router = useRouter();
 
 // definePageMeta({
@@ -27,6 +29,7 @@ if (!authStore.isLoggedIn) {
 }
 if (authStore.isLoggedIn) {
 	router.push("/");
+	uiStore.toggleSidebar(true);
 }
 </script>
 

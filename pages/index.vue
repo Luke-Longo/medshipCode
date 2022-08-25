@@ -1,6 +1,7 @@
 <template>
 	<div>
 		<h3 class="header">Home</h3>
+		<UiTable :cols="['Name', 'Email', 'Phone']" :gridCols="'grid-cols-4'" />
 	</div>
 </template>
 
@@ -8,7 +9,6 @@
 import { EligibilityResponse } from "~~/types/change";
 const eligibility = ref({});
 const benefitsInformation = ref([]);
-const router = useRouter();
 
 const searchChangeHealth = async () => {
 	// looking for medical service type codes 12 or DM

@@ -7,6 +7,7 @@
 			:tableData="tableData"
 			:properties="properties"
 			:dropdownItems="dropdownItems"
+			@itemClicked="handleItemClick"
 		/>
 	</div>
 </template>
@@ -53,18 +54,16 @@ const dropdownItems = ref([
 	{
 		id: "1",
 		label: "Edit",
-		function: () => {
-			console.log("Edit");
-		},
 	},
 	{
 		id: "2",
 		label: "Delete",
-		function: () => {
-			console.log("Delete");
-		},
 	},
 ]);
+
+const handleItemClick = (item, row) => {
+	console.log(item, row);
+};
 // const searchChangeHealth = async () => {
 // 	// looking for medical service type codes 12 or DM
 // 	const res: EligibilityResponse = await $fetch("/api/changeEligibility", {

@@ -26,7 +26,7 @@
 							<div v-else>
 								<UiDropdown
 									:dropdownItems="dropdownItems"
-									@itemClicked="handleItemClick"
+									@itemClicked="handleItemClick($event, row)"
 								/>
 							</div>
 						</td>
@@ -53,8 +53,12 @@ const props = defineProps<{
 	dropdownItems: Item[];
 }>();
 
-const handleItemClick = (item) => {
-	item.function();
+const emits = defineEmits<{
+	(e: "item-clicked", item: Item, row: any): void;
+}>();
+
+const handleItemClick = (item, row) => {
+	emits("item-clicked", item, row);
 };
 </script>
 

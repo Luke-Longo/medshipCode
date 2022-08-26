@@ -27,7 +27,6 @@ import ChevronDown from "~icons/mdi/chevron-down";
 interface Item {
 	id: string;
 	label: string;
-	function: Function;
 }
 
 const props = defineProps<{

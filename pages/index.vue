@@ -6,6 +6,7 @@
 			:gridCols="gridCols"
 			:tableData="tableData"
 			:properties="properties"
+			:dropdownItems="dropdownItems"
 		/>
 	</div>
 </template>
@@ -48,20 +49,36 @@ const properties = ref([
 	"patient",
 	"dropdown",
 ]);
-const searchChangeHealth = async () => {
-	// looking for medical service type codes 12 or DM
-	const res: EligibilityResponse = await $fetch("/api/changeEligibility", {
-		method: "POST",
-		body: {
-			medicalServiceTypeCodes: ["12", "DM"],
+const dropdownItems = ref([
+	{
+		id: "1",
+		label: "Edit",
+		function: () => {
+			console.log("Edit");
 		},
-	});
+	},
+	{
+		id: "2",
+		label: "Delete",
+		function: () => {
+			console.log("Delete");
+		},
+	},
+]);
+// const searchChangeHealth = async () => {
+// 	// looking for medical service type codes 12 or DM
+// 	const res: EligibilityResponse = await $fetch("/api/changeEligibility", {
+// 		method: "POST",
+// 		body: {
+// 			medicalServiceTypeCodes: ["12", "DM"],
+// 		},
+// 	});
 
-	eligibility.value = res;
-	benefitsInformation.value = res.benefitsInformation;
+// 	eligibility.value = res;
+// 	benefitsInformation.value = res.benefitsInformation;
 
-	console.log(res);
-};
+// 	console.log(res);
+// };
 </script>
 
 <style scoped>

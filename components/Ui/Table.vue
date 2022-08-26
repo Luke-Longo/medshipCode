@@ -23,7 +23,12 @@
 					>
 						<td v-for="key in properties">
 							<div v-if="key !== 'dropdown'">{{ row[key] }}</div>
-							<div v-else><UiDropdown></UiDropdown></div>
+							<div v-else>
+								<UiDropdown
+									:dropdownItems="dropdownItems"
+									@itemClicked="handleItemClick"
+								/>
+							</div>
 						</td>
 					</tr>
 				</tbody>
@@ -33,13 +38,24 @@
 </template>
 
 <script setup lang="ts">
+interface Item {
+	id: string;
+	label: string;
+	function: Function;
+}
+
 const props = defineProps<{
 	cols: string[];
 	widths?: string[];
 	gridCols: string;
 	tableData: any[];
 	properties: string[];
+	dropdownItems: Item[];
 }>();
+
+const handleItemClick = (item) => {
+	item.function();
+};
 </script>
 
 <style scoped>

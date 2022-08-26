@@ -9,8 +9,13 @@
 		</div>
 		<transition name="fade">
 			<div class="dropdown-content" v-if="active">
-				<div class="content" @click="bill(order.orderNumber)">Mark as Billed</div>
-				<div class="content" @click="form1500">Download Form 1500</div>
+				<div
+					class="content"
+					v-for="(item, index) in dropdownItems"
+					@click="handleItemFunction(item, index)"
+				>
+					{{ item.label }}
+				</div>
 			</div>
 		</transition>
 	</div>
@@ -19,7 +24,26 @@
 <script setup lang="ts">
 import ChevronDown from "~icons/mdi/chevron-down";
 
+interface Item {
+	id: string;
+	label: string;
+	function: Function;
+}
+
+const props = defineProps<{
+	dropdownItems: Item[];
+}>();
+
+const emits = defineEmits<{
+	(e: "item-clicked", item: Item): void;
+}>();
+
 const active = ref(false);
+
+const handleItemFunction = (item: Item, index?: number) => {
+	emits("item-clicked", item);
+	active.value = false;
+};
 
 const toggleActive = (isActive?: boolean) => {
 	if (isActive !== undefined) {

@@ -4,7 +4,7 @@
 			class="dark:bg-darkBg shadow-lg mx-4 justify-center rounded-lg"
 			:class="widths"
 		>
-			<table class="w-full">
+			<table class="w-full" v-if="tableData.length > 0">
 				<thead
 					class="grid p-4 pb-4 bg-darkSecondary dark:bg-darkBg rounded-lg"
 					:class="gridCols"
@@ -51,6 +51,13 @@
 					</div>
 				</tbody>
 			</table>
+			<div
+				v-else
+				class="flex justify-center p-4 pb-4 bg-darkSecondary dark:bg-darkBg rounded-lg"
+				:class="gridCols"
+			>
+				None Found
+			</div>
 		</div>
 	</div>
 </template>

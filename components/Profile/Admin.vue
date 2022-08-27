@@ -19,12 +19,14 @@
 			</div>
 		</transition>
 		<div>
-			<UiList
-				:items="profiles"
-				:list="listNames"
-				:hideAdd="true"
-				:itemName="'Profiles'"
-				:flipHover="true"
+			<UiTable
+				:cols="cols"
+				:gridCols="gridCols"
+				:tableData="profiles"
+				:properties="properties"
+				:dropdownItems="dropdownItems"
+				@itemClicked="handleItemClick"
+				:pageLength="10"
 			/>
 		</div>
 	</div>
@@ -50,7 +52,30 @@ const radioTypes = [
 	},
 ];
 
-const listNames = ref(["type", "username"]);
+const cols = ref(["Type", "Username"]);
+
+const properties = ref(["type", "username"]);
+
+const gridCols = ref("grid-cols-3");
+
+const dropdownItems = ref([
+	{
+		id: "1",
+		label: "Edit",
+	},
+	{
+		id: "2",
+		label: "Delete",
+	},
+]);
+
+const handleItemClick = (id: string) => {
+	if (id === "1") {
+		console.log("edit");
+	} else if (id === "2") {
+		console.log("delete");
+	}
+};
 
 const selectedRadio = ref(radioTypes[0].id);
 const handleRadioChange = (radioType: string) => {

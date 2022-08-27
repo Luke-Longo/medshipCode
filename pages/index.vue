@@ -19,7 +19,9 @@ const eligibility = ref({});
 const benefitsInformation = ref([]);
 
 const cols = ref(["Name", "Email", "Phone", "Order", "Patient"]);
+
 const gridCols = ref("grid-cols-6");
+
 const tableData = ref([
 	{
 		name: "John Doe",

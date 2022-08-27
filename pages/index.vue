@@ -8,6 +8,7 @@
 			:properties="properties"
 			:dropdownItems="dropdownItems"
 			@itemClicked="handleItemClick"
+			:pageLength="10"
 		/>
 	</div>
 </template>
@@ -20,6 +21,41 @@ const benefitsInformation = ref([]);
 const cols = ref(["Name", "Email", "Phone", "Order", "Patient"]);
 const gridCols = ref("grid-cols-6");
 const tableData = ref([
+	{
+		name: "John Doe",
+		email: "jimm@jimmm",
+		phone: "",
+		order: "",
+		patient: "",
+	},
+	{
+		name: "John Doe",
+		email: "jimm@jimmm",
+		phone: "",
+		order: "",
+		patient: "",
+	},
+	{
+		name: "John Doe",
+		email: "jimm@jimmm",
+		phone: "",
+		order: "",
+		patient: "",
+	},
+	{
+		name: "John Doe",
+		email: "jimm@jimmm",
+		phone: "",
+		order: "",
+		patient: "",
+	},
+	{
+		name: "John Doe",
+		email: "jimm@jimmm",
+		phone: "",
+		order: "",
+		patient: "",
+	},
 	{
 		name: "John Doe",
 		email: "jimm@jimmm",

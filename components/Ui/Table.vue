@@ -4,21 +4,9 @@
 			class="dark:bg-darkBg shadow-lg mx-4 justify-center rounded-lg"
 			:class="widths"
 		>
-			<div
-				class="flex gap-6 border-gray-300 border-solid border-t-0 border-r-0 border-l-0 border-b-2"
-			>
-				<div
-					class="p-2 hover:cursor-pointer mb-2 dark:hover:text-darkPrimary hover:text-secondary"
-					:class="{ selected: selectedStatus === status }"
-					v-for="status in statuses"
-					@click="selectedStatus = status"
-				>
-					{{ status }}
-				</div>
-			</div>
 			<table class="w-full">
 				<thead
-					class="grid p-4 pb-4 bg-darkSecondary dark:bg-darkBg rounded-t-lg"
+					class="grid p-4 pb-4 bg-darkSecondary dark:bg-darkBg rounded-lg"
 					:class="gridCols"
 				>
 					<tr v-for="col in cols">
@@ -29,7 +17,7 @@
 				</thead>
 				<tbody class="">
 					<tr
-						v-for="(row, index) in tableData"
+						v-for="(row, index) in paginatedItems"
 						class="grid p-4 dark:odd:bg-black dark:even:bg-darkBg even:bg-darkSecondary"
 						:class="gridCols"
 					>
@@ -43,6 +31,24 @@
 							</div>
 						</td>
 					</tr>
+					<div class="flex justify-end">
+						<div
+							class="grid grid-cols-3 gap-2 justify-center items-center p-4 dark:even:bg-darkBg even:bg-darkSecondary"
+						>
+							<i
+								class="dark:hover:bg-black hover:bg-darkSecondary py-2 px-0 rounded-md hover:cursor-pointer trans"
+								@click="previousPage"
+							>
+								<ChevronLeft class="mx-auto text-xl"
+							/></i>
+							<span>{{ page }} of {{ pages }}</span>
+							<i
+								class="dark:hover:bg-black hover:bg-darkSecondary py-2 px-0 rounded-md hover:cursor-pointer trans"
+								@click="nextPage"
+								><ChevronRight class="mx-auto text-xl"
+							/></i>
+						</div>
+					</div>
 				</tbody>
 			</table>
 		</div>
@@ -50,6 +56,9 @@
 </template>
 
 <script setup lang="ts">
+import ChevronLeft from "~icons/mdi/chevron-left";
+import ChevronRight from "~icons/mdi/chevron-right";
+
 interface Item {
 	id: string;
 	label: string;
@@ -62,9 +71,23 @@ const props = defineProps<{
 	tableData: any[];
 	properties: string[];
 	dropdownItems: Item[];
-	filters?: string[];
 }>();
-const selectedFilter = ref(props.filters?.[0] ?? "");
+
+const items = ref(props.tableData);
+
+const pageLength = ref(10);
+
+const {
+	page,
+	pages,
+	start,
+	end,
+	paginatedItems,
+	nextPage,
+	previousPage,
+	firstPage,
+	lastPage,
+} = usePaginate(items, pageLength);
 
 const emits = defineEmits<{
 	(e: "item-clicked", item: Item, row: any): void;

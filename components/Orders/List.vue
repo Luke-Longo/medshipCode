@@ -23,10 +23,10 @@
 				<p></p>
 			</div>
 			<transition name="fade">
-				<div v-if="paginatedOrders.length > 0">
+				<div v-if="paginatedItems.length > 0">
 					<div
 						class="grid grid-cols-7 py-3 px-4"
-						v-for="(order, index) in paginatedOrders"
+						v-for="(order, index) in paginatedItems"
 					>
 						<p>{{ order.orderNumber }}</p>
 						<p>{{ order.provider }}</p>
@@ -66,13 +66,14 @@
 				<div class="grid grid-cols-3 gap-2 justify-center items-center">
 					<i
 						class="dark:hover:bg-black hover:bg-darkSecondary py-2 px-0 rounded-md hover:cursor-pointer trans"
+						@click="previousPage"
 					>
 						<ChevronLeft class="mx-auto text-xl"
 					/></i>
 					<span>{{ page }} of {{ pages }}</span>
 					<i
 						class="dark:hover:bg-black hover:bg-darkSecondary py-2 px-0 rounded-md hover:cursor-pointer trans"
-						><ChevronRight class="mx-auto text-xl"
+						><ChevronRight class="mx-auto text-xl" @click="nextPage"
 					/></i>
 				</div>
 			</div>
@@ -106,22 +107,24 @@ const orders = ref([
 		status: "Ready",
 	},
 ]);
-const page = ref(1);
-const perPage = ref(10);
-const pages = computed(() => {
-	return Math.ceil(orders.value.length / perPage.value);
-});
-const paginatedOrders = computed(() => {
-	return filteredOrders.value.slice(
-		(page.value - 1) * perPage.value,
-		page.value * perPage.value
-	);
-});
+
 const filteredOrders = computed(() => {
 	return orders.value.filter((order) => {
 		return order.status === selectedStatus.value;
 	});
 });
+
+const {
+	page,
+	pages,
+	start,
+	end,
+	paginatedItems,
+	nextPage,
+	previousPage,
+	firstPage,
+	lastPage,
+} = usePaginate(filteredOrders, 10);
 
 const bill = (orderNumber) => {
 	orders.value.forEach((order) => {

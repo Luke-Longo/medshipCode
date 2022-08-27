@@ -3,7 +3,7 @@ import Icons from "unplugin-icons/vite";
 
 export default defineNuxtConfig({
 	head: {
-		link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+		link: [{ rel: "icon", type: "image/png", href: "/favicon.png" }],
 	},
 	css: ["@/assets/css/tailwind.css"],
 	build: {

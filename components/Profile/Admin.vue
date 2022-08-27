@@ -83,6 +83,7 @@ const handleRadioChange = (radioType: string) => {
 };
 const selectedProfile = ref<Profile | null>(null);
 const profiles = ref([] as Profile[]);
+
 const searchProfiles = async () => {
 	// search by name
 

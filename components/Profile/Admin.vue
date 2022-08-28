@@ -20,6 +20,7 @@
 		</transition>
 		<div>
 			<UiTable
+				v-if="profiles.length > 0"
 				:cols="cols"
 				:gridCols="gridCols"
 				:tableData="profiles"
@@ -27,6 +28,7 @@
 				:dropdownItems="dropdownItems"
 				@itemClicked="handleItemClick"
 				:pageLength="10"
+				:key="componentKey"
 			/>
 		</div>
 	</div>
@@ -57,6 +59,12 @@ const cols = ref(["Type", "Username"]);
 const properties = ref(["type", "username"]);
 
 const gridCols = ref("grid-cols-3");
+
+const componentKey = ref(0);
+
+const forceUpdate = () => {
+	componentKey.value++;
+};
 
 const dropdownItems = ref([
 	{
@@ -92,6 +100,7 @@ const searchProfiles = async () => {
 			searchInput.value,
 			selectedRadio.value
 		);
+		forceUpdate();
 	}
 };
 </script>

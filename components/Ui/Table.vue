@@ -9,7 +9,7 @@
 					class="grid p-4 pb-4 bg-darkSecondary dark:bg-darkBg rounded-lg"
 					:class="gridCols"
 				>
-					<tr v-for="col in cols">
+					<tr v-for="col in cols" :key="col">
 						{{
 							col
 						}}
@@ -17,11 +17,12 @@
 				</thead>
 				<tbody class="">
 					<tr
-						v-for="(row, index) in paginatedItems"
+						v-for="row in paginatedItems"
 						class="grid p-4 dark:odd:bg-black dark:even:bg-darkBg even:bg-darkSecondary"
 						:class="gridCols"
+						:key="row.id"
 					>
-						<td v-for="key in properties">
+						<td v-for="key in properties" :key="key">
 							<div v-if="key !== 'dropdown'">{{ row[key] }}</div>
 							<div v-else>
 								<UiDropdown
@@ -82,7 +83,13 @@ const props = defineProps<{
 
 const items = ref(props.tableData);
 
+console.log(items.value);
+
 const pageLength = ref(10);
+
+watch(props.tableData, (newVal) => {
+	console.log(newVal);
+});
 
 const {
 	page,

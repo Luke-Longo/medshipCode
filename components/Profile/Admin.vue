@@ -81,8 +81,9 @@ const dropdownItems = ref([
 	},
 ]);
 
-const handleItemClick = (event, row) => {
+const handleItemClick = async (event, row) => {
 	if (event.id === "edit") {
+		await profileStore.fetchProfile(row.user_id);
 		router.push(`/profile/edit/${row.type}/${row.user_id}`);
 	} else if (event.id === "key") {
 		console.log("key");

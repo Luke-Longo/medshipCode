@@ -64,6 +64,7 @@
 import { useProfileStore } from "~/stores/profile";
 import { useAuthStore } from "~/stores/auth";
 import { Profile, SalesRep } from "~/types/types";
+import { SalesRepList } from "~~/.nuxt/components";
 
 const profileStore = useProfileStore();
 const authStore = useAuthStore();
@@ -85,43 +86,91 @@ const input = reactive({
 		val: "",
 		isValid: true,
 	},
+	businessName: {
+		val: "",
+		isValid: true,
+	},
 });
-const listTitles = ref(["name", "email"]);
+const formIsValid = ref(true);
+const listTitles = ref(["firstName", "email"]);
 
 const handleSearch = async () => {
 	// await salesRepStore.search(repSearchInput.value);
 };
 
-onBeforeMount(async () => {
+const salesRep: SalesRep = reactive({
+	user_id: "",
+	firstName: "",
+	lastName: "",
+	email: "",
+	phone: "",
+	children: [] as string[],
+	practices: [] as string[],
+	parent_id: "",
+	businessName: "",
+	created_at: null,
+	modified_at: null,
+});
+const route = useRoute();
+
+// rendering prior to component mounting
+onMounted(async () => {
+	await setInputs();
+});
+
+const setInputs = async () => {
 	let salesRep = await profileStore.salesRep;
 	console.log(salesRep);
-	// if (salesRep !== null || salesRep !== undefined) {
-	// 	if (authStore.isAdmin) {
-	// 		for (let key in input) {
-	// 			input[key].val = salesRep[key];
-	// 		}
-	// 	} else {
-	// 		for (let key in input) {
-	// 			input[key].val = salesRep[key];
-	// 		}
-	// 	}
-	// 	if (salesRep.parent_id !== null) {
-	// 		repSelected.value = true;
-	// 		let parentRep = await profileStore.getParentRep(salesRep.parent_id);
-	// 		selectedRep.value = parentRep;
-	// 	}
-	// }
-});
+	if (!!salesRep) {
+		if (authStore.isAdmin) {
+			console.log("runing");
+			for (let key in input) {
+				input[key].val = salesRep[key];
+			}
+		} else {
+			for (let key in input) {
+				input[key].val = salesRep[key];
+			}
+		}
+		if (salesRep.parent_id !== null) {
+			repSelected.value = true;
+			let parentRep = await profileStore.getParentRep(salesRep.parent_id);
+			selectedRep.value = parentRep;
+		}
+	}
+};
 
 const repSelected = ref(false);
 const repSearchInput = ref("");
+
 const selectedRep = ref(null as SalesRep | null);
 
 const { formElements, resetValidity } = useFormElements(input);
 
 const reps = ref([] as SalesRep[]);
 
+const validateRep = () => {};
+
 const saveProfile = async () => {
+	formIsValid.value = true;
+	validateRep();
+	if (formIsValid) {
+		let updatedSalesRep: SalesRep = {
+			user_id: route.params.id,
+			firstName: input.firstName.val,
+			lastName: input.lastName.val,
+			email: input.email.val,
+			phone: input.phone.val,
+			businessName: input.businessName.val,
+			children: salesRep.children,
+			practices: salesRep.practices,
+			parent_id: selectedRep.value !== null ? selectedRep.value.user_id : null,
+			created_at: salesRep.created_at ? salesRep.created_at : new Date(),
+			modified_at: new Date(),
+		};
+		console.log(updatedSalesRep);
+		await profileStore.adminAddSalesRep(updatedSalesRep);
+	}
 	// await profileStore.updateProfile();
 };
 

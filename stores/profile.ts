@@ -22,10 +22,11 @@ export const useProfileStore = defineStore("profile", {
 	actions: {
 		async setProfile(profile: Profile) {
 			this.profile = profile;
+			console.log(profile);
 			if (profile.type === "salesRep") {
-				this.setSalesRep(profile.rep_id);
+				await this.setSalesRep(profile.rep_id);
 			} else if (profile.type === "practice") {
-				this.setPractice(profile.practice_id);
+				await this.setPractice(profile.practice_id);
 			}
 		},
 		async setPractice(id) {
@@ -87,7 +88,8 @@ export const useProfileStore = defineStore("profile", {
 				console.log(error);
 			}
 		},
-		setAdminSelectedProfile(profile: Profile) {
+		async setAdminSelectedProfile(profile: Profile) {
+			await this.setProfile(profile);
 			this.selectedProfile = profile;
 		},
 		async fetchProfile(id?) {
@@ -159,15 +161,33 @@ export const useProfileStore = defineStore("profile", {
 			}
 		},
 		async adminAddSalesRep(salesRep: SalesRep) {
+			const { $supabase } = useNuxtApp();
 			try {
-				const { $supabase } = useNuxtApp();
-				const { data, error } = await $supabase.from("sales_reps").insert(salesRep);
+				const { data, error } = await $supabase
+					.from("sales_reps")
+					.select("*")
+					.eq("firstName", salesRep.firstName)
+					.eq("lastName", salesRep.lastName)
+					.eq("user_id", salesRep.user_id);
 				if (error) {
 					throw error;
 				}
-				return data;
-			} catch (error) {
-				console.log(error);
+				if (data.length === 0) {
+					const { error } = await $supabase.from("sales_reps").insert(salesRep);
+					if (error) {
+						throw error;
+					}
+				} else {
+					console.log("upserting rep");
+					salesRep.modified_at = new Date();
+					salesRep.created_at = data[0].created_at;
+					const { error } = await $supabase.from("salesReps").upsert(salesRep);
+					if (error) {
+						throw error;
+					}
+				}
+			} catch (e) {
+				console.log(e);
 			}
 		},
 		async adminAddPractice(practice: Practice) {

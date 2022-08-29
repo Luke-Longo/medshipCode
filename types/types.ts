@@ -335,17 +335,17 @@ export interface FormElement {
 }
 
 export interface SalesRep {
-	rep_id: string;
+	user_id: string;
 	firstName: string;
 	lastName: string;
 	businessName: string;
 	email: string;
 	phone: string;
-	salesReps: string[];
-	practices: Practice[];
+	children: string[];
+	practices: string[];
 	created_at: Date;
 	modified_at: Date;
-	parent_id?: string;
+	parent_id: string | null;
 }
 
 export interface Profile {

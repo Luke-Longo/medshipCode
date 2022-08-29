@@ -10,50 +10,49 @@ export const useProfileStore = defineStore("profile", {
 	}),
 	getters: {
 		isAdmin(state) {
-			return state.profile && state.profile.admin;
+			return !!state.profile && state.profile.admin;
 		},
 		isPractice(state) {
-			return state.profile.practice_id;
+			return !!state.profile.practice_id;
 		},
 		isRep(state) {
-			return state.profile.rep_id;
+			return !!state.profile.rep_id;
 		},
 	},
 	actions: {
 		async setProfile(profile: Profile) {
 			this.profile = profile;
 			if (profile.type === "salesRep") {
+				this.setSalesRep(profile.rep_id);
+			} else if (profile.type === "practice") {
+				this.setPractice(profile.practice_id);
 			}
 		},
-		async setSalesRep(id) {
-			// try {
-			// 	const { $supabase } = useNuxtApp();
-			// 	const { data, error } = await $supabase
-			// 		.from("sales_reps")
-			// 		.select("*")
-			// 		.eq("rep_id", id);
-			// 	if (error) {
-			// 		throw error;
-			// 	}
-			// } catch (error) {
-			// 	console.log(error);
-			// }
+		async setPractice(id) {
 			try {
 				const { $supabase } = useNuxtApp();
 				const { data, error } = await $supabase
-					.from("profiles")
-					.select(
-						`
-					rep_id (
-						*
-					)
-					`
-					)
-					.eq("rep_id", id);
-				console.log(data);
+					.from("practices")
+					.select("*")
+					.eq("user_id", id);
 				if (error) {
 					throw error;
 				}
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		async setSalesRep(id) {
+			try {
+				const { $supabase } = useNuxtApp();
+				const { data, error } = await $supabase
+					.from("sales_reps")
+					.select("*")
+					.eq("user_id", id);
+				if (error) {
+					throw error;
+				}
+				this.salesRep = data[0];
 			} catch (error) {
 				console.log(error);
 			}
@@ -102,8 +101,8 @@ export const useProfileStore = defineStore("profile", {
 					if (error) {
 						throw error;
 					}
-					console.log(data);
 					this.setProfile(data[0]);
+
 					return data[0];
 				} catch (error) {
 					console.log(error);
@@ -157,6 +156,30 @@ export const useProfileStore = defineStore("profile", {
 				} catch (error) {
 					console.log(error);
 				}
+			}
+		},
+		async adminAddSalesRep(salesRep: SalesRep) {
+			try {
+				const { $supabase } = useNuxtApp();
+				const { data, error } = await $supabase.from("sales_reps").insert(salesRep);
+				if (error) {
+					throw error;
+				}
+				return data;
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		async adminAddPractice(practice: Practice) {
+			try {
+				const { $supabase } = useNuxtApp();
+				const { data, error } = await $supabase.from("sales_reps").insert(practice);
+				if (error) {
+					throw error;
+				}
+				return data;
+			} catch (error) {
+				console.log(error);
 			}
 		},
 		clear() {

@@ -83,8 +83,6 @@ const props = defineProps<{
 
 const items = ref(props.tableData);
 
-console.log(items.value);
-
 const pageLength = ref(10);
 
 watch(props.tableData, (newVal) => {

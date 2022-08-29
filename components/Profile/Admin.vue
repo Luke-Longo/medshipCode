@@ -20,7 +20,6 @@
 		</transition>
 		<div>
 			<UiTable
-				v-if="profiles.length > 0"
 				:cols="cols"
 				:gridCols="gridCols"
 				:tableData="profiles"
@@ -56,7 +55,7 @@ const radioTypes = [
 
 const cols = ref(["Type", "Username"]);
 
-const properties = ref(["type", "username"]);
+const properties = ref(["type", "username", "dropdown"]);
 
 const gridCols = ref("grid-cols-3");
 
@@ -77,10 +76,10 @@ const dropdownItems = ref([
 	},
 ]);
 
-const handleItemClick = (id: string) => {
-	if (id === "1") {
+const handleItemClick = (event, row) => {
+	if (event.id === "1") {
 		console.log("edit");
-	} else if (id === "2") {
+	} else if (event.id === "2") {
 		console.log("delete");
 	}
 };

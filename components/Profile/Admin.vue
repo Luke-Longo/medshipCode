@@ -41,6 +41,7 @@ import { Profile } from "~/types/types";
 const searchInput = ref("");
 const profileStore = useProfileStore();
 const authStore = useAuthStore();
+const router = useRouter();
 
 const radioTypes = [
 	{
@@ -53,11 +54,11 @@ const radioTypes = [
 	},
 ];
 
-const cols = ref(["Type", "Username"]);
+const cols = ref(["Type", "Username", "Email"]);
 
-const properties = ref(["type", "username", "dropdown"]);
+const properties = ref(["type", "username", "email", "dropdown"]);
 
-const gridCols = ref("grid-cols-3");
+const gridCols = ref("grid-cols-4");
 
 const componentKey = ref(0);
 
@@ -67,20 +68,26 @@ const forceUpdate = () => {
 
 const dropdownItems = ref([
 	{
-		id: "1",
-		label: "Edit",
+		id: "edit",
+		label: "Edit Profile",
 	},
 	{
-		id: "2",
-		label: "Delete",
+		id: "key",
+		label: "Key",
+	},
+	{
+		id: "reset",
+		label: "Reset password",
 	},
 ]);
 
 const handleItemClick = (event, row) => {
-	if (event.id === "1") {
-		console.log("edit");
-	} else if (event.id === "2") {
-		console.log("delete");
+	if (event.id === "edit") {
+		router.push(`/profile/edit/${row.type}/${row.user_id}`);
+	} else if (event.id === "key") {
+		console.log("key");
+	} else if (event.id === "reset") {
+		console.log("reset");
 	}
 };
 

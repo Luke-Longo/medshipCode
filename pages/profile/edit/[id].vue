@@ -1,13 +1,13 @@
 <template>
 	<div>
-		<h3 class="header">Create a new Profile</h3>
+		<h3 class="header">Edit Profile</h3>
 		<UiRadio :radioTypes="radioTypes" v-model="selectedRadio" />
 		<transition name="fade" mode="out-in">
-			<ProfilePractice
+			<ProfilePracticeEdit
 				v-if="selectedRadio === 'practice'"
 				@toRep="handleRadioChange('salesRep')"
 			/>
-			<ProfileRep v-else-if="selectedRadio === 'salesRep'" />
+			<ProfileRepEdit v-else-if="selectedRadio === 'salesRep'" />
 		</transition>
 	</div>
 </template>

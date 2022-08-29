@@ -4,6 +4,7 @@ import { Profile } from "~/types/types";
 export const useProfileStore = defineStore("profile", {
 	state: () => ({
 		profile: null as Profile,
+		adminSelectedProfile: null as Profile,
 	}),
 	getters: {
 		isAdmin(state) {
@@ -20,16 +21,36 @@ export const useProfileStore = defineStore("profile", {
 		setProfile(profile: Profile) {
 			this.profile = profile;
 		},
-		async fetchProfile() {
+		setAdminSelectedProfile(profile: Profile) {
+			this.selectedProfile = profile;
+		},
+		async fetchProfile(id?) {
 			const { $supabase } = useNuxtApp();
-			try {
-				const { data, error } = await $supabase.from("profiles").select("*");
-				if (error) {
-					throw error;
+			if (id) {
+				try {
+					const { data, error } = await $supabase
+						.from("profiles")
+						.select("*")
+						.eq("user_id", id);
+					if (error) {
+						throw error;
+					}
+					console.log(data);
+					this.setProfile(data[0]);
+					return data[0];
+				} catch (error) {
+					console.log(error);
 				}
-				this.setProfile(data[0]);
-			} catch (error) {
-				console.log(error);
+			} else {
+				try {
+					const { data, error } = await $supabase.from("profiles").select("*");
+					if (error) {
+						throw error;
+					}
+					this.setProfile(data[0]);
+				} catch (error) {
+					console.log(error);
+				}
 			}
 		},
 		async adminFetchProfiles(input, filter?) {

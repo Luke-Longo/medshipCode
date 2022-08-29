@@ -153,9 +153,16 @@ const reps = ref([] as SalesRep[]);
 
 onMounted(async () => {
 	if (authStore.isAdmin) {
-		await profileStore.adminSelectedProfile;
+		let practice = await profileStore.practice;
+		for (let key in input) {
+			input[key].val = practice[key];
+		}
+	} else {
+		let practice = await profileStore.practice;
+		for (let key in input) {
+			input[key].val = practice[key];
+		}
 	}
-	await profileStore.profile;
 });
 
 const listTitles = ref(["name", "email"]);

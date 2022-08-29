@@ -1,10 +1,12 @@
 import { defineStore } from "pinia";
-import { Profile } from "~/types/types";
+import { Practice, Profile, SalesRep } from "~/types/types";
 
 export const useProfileStore = defineStore("profile", {
 	state: () => ({
 		profile: null as Profile,
 		adminSelectedProfile: null as Profile,
+		practice: null as Practice,
+		salesRep: null as SalesRep,
 	}),
 	getters: {
 		isAdmin(state) {
@@ -18,8 +20,73 @@ export const useProfileStore = defineStore("profile", {
 		},
 	},
 	actions: {
-		setProfile(profile: Profile) {
+		async setProfile(profile: Profile) {
 			this.profile = profile;
+			if (profile.type === "salesRep") {
+			}
+		},
+		async setSalesRep(id) {
+			// try {
+			// 	const { $supabase } = useNuxtApp();
+			// 	const { data, error } = await $supabase
+			// 		.from("sales_reps")
+			// 		.select("*")
+			// 		.eq("rep_id", id);
+			// 	if (error) {
+			// 		throw error;
+			// 	}
+			// } catch (error) {
+			// 	console.log(error);
+			// }
+			try {
+				const { $supabase } = useNuxtApp();
+				const { data, error } = await $supabase
+					.from("profiles")
+					.select(
+						`
+					rep_id (
+						*
+					)
+					`
+					)
+					.eq("rep_id", id);
+				console.log(data);
+				if (error) {
+					throw error;
+				}
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		async getChildrenReps(ids: string[]) {
+			try {
+				const { $supabase } = useNuxtApp();
+				const { data, error } = await $supabase
+					.from("sales_reps")
+					.select("*")
+					.in("rep_id", ids);
+				if (error) {
+					throw error;
+				}
+				return data;
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		async getParentRep(id) {
+			try {
+				const { $supabase } = useNuxtApp();
+				const { data, error } = await $supabase
+					.from("sales_reps")
+					.select("*")
+					.eq("rep_id", id);
+				if (error) {
+					throw error;
+				}
+				return data[0];
+			} catch (error) {
+				console.log(error);
+			}
 		},
 		setAdminSelectedProfile(profile: Profile) {
 			this.selectedProfile = profile;

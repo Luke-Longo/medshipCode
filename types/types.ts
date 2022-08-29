@@ -341,10 +341,11 @@ export interface SalesRep {
 	businessName: string;
 	email: string;
 	phone: string;
-	salesReps: SalesRep[];
+	salesReps: string[];
 	practices: Practice[];
 	created_at: Date;
 	modified_at: Date;
+	parent_id?: string;
 }
 
 export interface Profile {

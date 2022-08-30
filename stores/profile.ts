@@ -197,14 +197,23 @@ export const useProfileStore = defineStore("profile", {
 					.from("sales_reps")
 					.select("children[]")
 					.eq("user_id", parent_id);
-				let children = data[0].children;
-				if (!!children) {
-					children.push(child_id);
+
+				let oldChildren = data[0].children;
+
+				let newChildren;
+
+				if (oldChildren?.length > 0) {
+					// filter out the new child_id if it is already in the array
+					newChildren = oldChildren.filter((child) => child !== child_id);
+					newChildren.push(child_id);
+				} else {
+					newChildren = [child_id];
 				}
+
 				try {
 					const { data, error } = await $supabase
 						.from("sales_reps")
-						.update({ children })
+						.update({ children: newChildren })
 						.eq("user_id", parent_id);
 				} catch (error) {
 					console.log(error);
@@ -234,7 +243,6 @@ export const useProfileStore = defineStore("profile", {
 						throw error;
 					}
 				} else {
-					console.log("upserting practice");
 					practice.modified_at = new Date();
 					practice.created_at = data[0].created_at;
 					const { error } = await $supabase.from("practices").upsert(practice);
@@ -251,7 +259,6 @@ export const useProfileStore = defineStore("profile", {
 			if (input.split(" ").length > 1) {
 				let terms = input.split(" ");
 				try {
-					console.log(terms);
 					const { data, error } = await $supabase
 						.from("sales_reps")
 						.select("*")
@@ -261,13 +268,11 @@ export const useProfileStore = defineStore("profile", {
 					if (error) {
 						throw error;
 					}
-					console.log(data);
 					return data;
 				} catch (error) {
 					console.log(error);
 				}
 			} else {
-				console.log("searching for rep");
 				try {
 					const { data, error } = await $supabase
 						.from("sales_reps")

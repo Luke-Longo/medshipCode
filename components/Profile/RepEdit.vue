@@ -26,7 +26,7 @@
 						Selected Rep:
 						{{
 							selectedRep !== null
-								? selectedRep.firstName + selectedRep.lastName
+								? selectedRep.firstName + " " + selectedRep.lastName
 								: "None"
 						}}
 						<span
@@ -65,9 +65,11 @@ import { useProfileStore } from "~/stores/profile";
 import { useAuthStore } from "~/stores/auth";
 import { Profile, SalesRep } from "~/types/types";
 import { SalesRepList } from "~~/.nuxt/components";
+import { useUiStore } from "~~/stores/ui";
 
 const profileStore = useProfileStore();
 const authStore = useAuthStore();
+const uiStore = useUiStore();
 
 const input = reactive({
 	firstName: {
@@ -91,6 +93,7 @@ const input = reactive({
 		isValid: true,
 	},
 });
+
 const formIsValid = ref(true);
 const listTitles = ref(["firstName", "lastName", "phone", "businessName"]);
 
@@ -107,7 +110,8 @@ const salesRep: SalesRep = reactive({
 	created_at: null,
 	modified_at: null,
 });
-const route = useRoute();
+
+const router = useRouter();
 
 onMounted(async () => {
 	await setInputs();
@@ -165,10 +169,11 @@ const saveProfile = async () => {
 	validateRep();
 
 	if (formIsValid.value) {
+		uiStore.toggleFunctionLoading(true);
 		let children = [];
 		let parent_id = null;
-
-		if (!!selectedRep.value.user_id) {
+		if (!!selectedRep.value) {
+			console.log("selected");
 			parent_id = selectedRep.value.user_id;
 		}
 
@@ -189,7 +194,7 @@ const saveProfile = async () => {
 			businessName: input.businessName.val,
 			children: children.length > 0 ? children : null,
 			practices: salesRep.practices,
-			parent_id: parent_id,
+			parent_id: !!parent_id ? parent_id : null,
 			created_at: !!salesRep.created_at ? salesRep.created_at : new Date(),
 			modified_at: new Date(),
 		};
@@ -197,10 +202,15 @@ const saveProfile = async () => {
 		await profileStore.adminAddSalesRep(updatedSalesRep);
 
 		if (!!selectedRep.value) {
+			console.log("adding child");
 			let child_id = updatedSalesRep.user_id;
 			let parent_id = selectedRep.value.user_id;
 			await profileStore.adminAddChildRep(parent_id, child_id);
 		}
+
+		uiStore.toggleFunctionLoading(false);
+
+		router.push("/profile");
 	}
 };
 

@@ -168,6 +168,7 @@ export const useProfileStore = defineStore("profile", {
 					.from("sales_reps")
 					.select("*")
 					.eq("user_id", salesRep.user_id);
+				console.log(data[0]);
 				if (error) {
 					throw error;
 				}
@@ -177,10 +178,10 @@ export const useProfileStore = defineStore("profile", {
 						throw error;
 					}
 				} else {
-					console.log("upserting rep");
-					salesRep.modified_at = new Date();
-					salesRep.created_at = data[0].created_at;
-					const { error } = await $supabase.from("sales_reps").upsert(salesRep);
+					const { error } = await $supabase
+						.from("sales_reps")
+						.update(salesRep)
+						.match({ user_id: salesRep.user_id });
 					if (error) {
 						throw error;
 					}
@@ -189,18 +190,30 @@ export const useProfileStore = defineStore("profile", {
 				console.log(e);
 			}
 		},
-		async adminAddChildRep(parent_id, child_id) {
+		async adminAddChildRep(parent_id: string, child_id: string) {
 			const { $supabase } = useNuxtApp();
 			try {
 				const { data, error } = await $supabase
 					.from("sales_reps")
-					.update({ children: child_id })
+					.select("children[]")
 					.eq("user_id", parent_id);
+				let children = data[0].children;
+				if (!!children) {
+					children.push(child_id);
+				}
+				try {
+					const { data, error } = await $supabase
+						.from("sales_reps")
+						.update({ children })
+						.eq("user_id", parent_id);
+				} catch (error) {
+					console.log(error);
+				}
 				if (error) {
 					throw error;
 				}
-				this.setAdminSelectedProfile(data[0]);
-				this.profile = data[0];
+				// this.setAdminSelectedProfile(data[0]);
+				// this.profile = data[0];
 			} catch (e) {
 				console.log(e);
 			}
@@ -221,10 +234,9 @@ export const useProfileStore = defineStore("profile", {
 						throw error;
 					}
 				} else {
-					console.log("upserting rep");
+					console.log("upserting practice");
 					practice.modified_at = new Date();
 					practice.created_at = data[0].created_at;
-					// FIGURE OUT THE ARRAY OF CHILDREN ISSUE
 					const { error } = await $supabase.from("practices").upsert(practice);
 					if (error) {
 						throw error;

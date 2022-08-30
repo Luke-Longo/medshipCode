@@ -115,9 +115,7 @@ onMounted(async () => {
 
 const setInputs = async () => {
 	const profile: Profile = profileStore.adminSelectedProfile;
-	console.log(profile);
 	const rep: SalesRep = await profileStore.setSalesRep(profile.rep_id);
-	console.log(rep);
 	if (!!rep) {
 		if (authStore.isAdmin) {
 			console.log("runing");
@@ -131,7 +129,6 @@ const setInputs = async () => {
 		}
 		if (!!rep.parent_id) {
 			let parentRep = await profileStore.getParentRep(rep.parent_id);
-			console.log(parentRep);
 			repSelected.value = true;
 			selectedRep.value = parentRep;
 		}
@@ -156,6 +153,7 @@ const validateRep = () => {
 	for (let key in input) {
 		if (input[key].val.length === 0) {
 			input[key].isValid = false;
+			formIsValid.value = false;
 		} else {
 			input[key].isValid = true;
 		}
@@ -165,35 +163,45 @@ const validateRep = () => {
 const saveProfile = async () => {
 	formIsValid.value = true;
 	validateRep();
-	if (formIsValid) {
+
+	if (formIsValid.value) {
 		let children = [];
+		let parent_id = null;
+
+		if (!!selectedRep.value.user_id) {
+			parent_id = selectedRep.value.user_id;
+		}
+
 		salesRep.children.forEach((child) => {
-			children.push(child);
+			if (child !== salesRep.user_id && !!child && child !== parent_id) {
+				children.push(child);
+			}
 		});
-		console.log(children);
+
+		let user_id = profileStore.adminSelectedProfile.user_id;
+
 		let updatedSalesRep: SalesRep = {
-			user_id: route.params.id,
+			user_id: user_id,
 			firstName: input.firstName.val,
 			lastName: input.lastName.val,
 			email: input.email.val,
 			phone: input.phone.val,
 			businessName: input.businessName.val,
-			children: salesRep.children.length > 0 ? children : null,
+			children: children.length > 0 ? children : null,
 			practices: salesRep.practices,
-			parent_id: !!selectedRep.value ? selectedRep.value.user_id : null,
+			parent_id: parent_id,
 			created_at: !!salesRep.created_at ? salesRep.created_at : new Date(),
 			modified_at: new Date(),
 		};
-		console.log(updatedSalesRep);
+
 		await profileStore.adminAddSalesRep(updatedSalesRep);
+
 		if (!!selectedRep.value) {
-			await profileStore.adminAddChildRep(
-				updatedSalesRep.parent_id,
-				updatedSalesRep.user_id
-			);
+			let child_id = updatedSalesRep.user_id;
+			let parent_id = selectedRep.value.user_id;
+			await profileStore.adminAddChildRep(parent_id, child_id);
 		}
 	}
-	// await profileStore.updateProfile();
 };
 
 const changeRep = () => {

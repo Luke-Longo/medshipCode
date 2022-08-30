@@ -92,11 +92,7 @@ const input = reactive({
 	},
 });
 const formIsValid = ref(true);
-const listTitles = ref(["firstName", "email"]);
-
-const handleSearch = async () => {
-	// await salesRepStore.search(repSearchInput.value);
-};
+const listTitles = ref(["firstName", "lastName", "phone", "businessName"]);
 
 const salesRep: SalesRep = reactive({
 	user_id: "",
@@ -113,28 +109,30 @@ const salesRep: SalesRep = reactive({
 });
 const route = useRoute();
 
-// rendering prior to component mounting
 onMounted(async () => {
 	await setInputs();
 });
 
 const setInputs = async () => {
-	let salesRep = await profileStore.salesRep;
-	console.log(salesRep);
-	if (!!salesRep) {
+	const profile: Profile = profileStore.adminSelectedProfile;
+	console.log(profile);
+	const rep: SalesRep = await profileStore.setSalesRep(profile.rep_id);
+	console.log(rep);
+	if (!!rep) {
 		if (authStore.isAdmin) {
 			console.log("runing");
 			for (let key in input) {
-				input[key].val = salesRep[key];
+				input[key].val = rep[key];
 			}
 		} else {
 			for (let key in input) {
-				input[key].val = salesRep[key];
+				input[key].val = rep[key];
 			}
 		}
-		if (salesRep.parent_id !== null) {
+		if (!!rep.parent_id) {
+			let parentRep = await profileStore.getParentRep(rep.parent_id);
+			console.log(parentRep);
 			repSelected.value = true;
-			let parentRep = await profileStore.getParentRep(salesRep.parent_id);
 			selectedRep.value = parentRep;
 		}
 	}
@@ -143,18 +141,36 @@ const setInputs = async () => {
 const repSelected = ref(false);
 const repSearchInput = ref("");
 
+const handleSearch = async () => {
+	console.log("searching");
+	reps.value = await profileStore.adminSearchReps(repSearchInput.value);
+};
+
 const selectedRep = ref(null as SalesRep | null);
 
 const { formElements, resetValidity } = useFormElements(input);
 
 const reps = ref([] as SalesRep[]);
 
-const validateRep = () => {};
+const validateRep = () => {
+	for (let key in input) {
+		if (input[key].val.length === 0) {
+			input[key].isValid = false;
+		} else {
+			input[key].isValid = true;
+		}
+	}
+};
 
 const saveProfile = async () => {
 	formIsValid.value = true;
 	validateRep();
 	if (formIsValid) {
+		let children = [];
+		salesRep.children.forEach((child) => {
+			children.push(child);
+		});
+		console.log(children);
 		let updatedSalesRep: SalesRep = {
 			user_id: route.params.id,
 			firstName: input.firstName.val,
@@ -162,14 +178,20 @@ const saveProfile = async () => {
 			email: input.email.val,
 			phone: input.phone.val,
 			businessName: input.businessName.val,
-			children: salesRep.children,
+			children: salesRep.children.length > 0 ? children : null,
 			practices: salesRep.practices,
-			parent_id: selectedRep.value !== null ? selectedRep.value.user_id : null,
-			created_at: salesRep.created_at ? salesRep.created_at : new Date(),
+			parent_id: !!selectedRep.value ? selectedRep.value.user_id : null,
+			created_at: !!salesRep.created_at ? salesRep.created_at : new Date(),
 			modified_at: new Date(),
 		};
 		console.log(updatedSalesRep);
 		await profileStore.adminAddSalesRep(updatedSalesRep);
+		if (!!selectedRep.value) {
+			await profileStore.adminAddChildRep(
+				updatedSalesRep.parent_id,
+				updatedSalesRep.user_id
+			);
+		}
 	}
 	// await profileStore.updateProfile();
 };

@@ -142,7 +142,7 @@ export interface Provider {
 }
 
 export interface Practice {
-	practice_id: string;
+	user_id: string;
 	practiceName: string;
 	address: Address;
 	legalName: string;
@@ -158,6 +158,8 @@ export interface Practice {
 	npi: string;
 	ein: string;
 	ptan: string;
+	modified_at: Date;
+	created_at: Date;
 }
 
 export interface ProviderInput {
@@ -341,8 +343,8 @@ export interface SalesRep {
 	businessName: string;
 	email: string;
 	phone: string;
-	children: string[];
-	practices: string[];
+	children: string[] | null;
+	practices: string[] | null;
 	created_at: Date;
 	modified_at: Date;
 	parent_id: string | null;

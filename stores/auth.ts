@@ -10,6 +10,7 @@ export const useAuthStore = defineStore("auth", {
 		expiresIn: null as Number,
 		resettingPassword: false as Boolean,
 		isAdmin: false as boolean,
+		initialized: false as boolean,
 	}),
 	getters: {
 		getUser(state) {

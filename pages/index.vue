@@ -18,6 +18,8 @@ import { EligibilityResponse } from "~~/types/change";
 const eligibility = ref({});
 const benefitsInformation = ref([]);
 
+await useLoadContent();
+
 const cols = ref(["Name", "Email", "Phone", "Order", "Patient"]);
 
 const gridCols = ref("grid-cols-6");

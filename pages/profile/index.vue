@@ -5,9 +5,9 @@
 				{{ authStore.isAdmin ? "Profile Search" : "Profile" }}
 			</h3>
 			<transition name="fade" mode="out-in">
-				<ProfileAdmin v-if="authStore.isAdmin" />
-				<ProfileRep v-else-if="profileStore.profile?.type === 'salesRep'" />
-				<ProfilePractice v-else-if="profileStore.profile?.type === 'practice'" />
+				<ProfileAdmin v-if="profile?.admin" />
+				<ProfileRep v-else-if="profile?.type === 'salesRep'" />
+				<ProfilePractice v-else-if="profile?.type === 'practice'" />
 			</transition>
 		</div>
 	</div>
@@ -19,6 +19,10 @@ import { useProfileStore } from "~~/stores/profile";
 
 const authStore = useAuthStore();
 const profileStore = useProfileStore();
+const profile = ref(null);
+onBeforeMount(() => {
+	profile.value = profileStore.profile;
+});
 </script>
 
 <style scoped></style>

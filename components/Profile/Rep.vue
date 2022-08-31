@@ -7,9 +7,6 @@
 				<p>Email: {{ salesRep.email }}</p>
 				<p>Business Name: {{ salesRep.businessName }}</p>
 				<p>Phone: {{ salesRep.phone }}</p>
-				<!-- <p v-if="!!salesRep.children" v-for="child in salesRep.children">
-					{{ child }}
-				</p> -->
 			</div>
 			<p class="flex text-xl mt-20">
 				Please contact an admin to change your profile details

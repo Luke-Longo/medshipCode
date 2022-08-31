@@ -1,7 +1,10 @@
 <template>
 	<div class="mx-4">
-		<h3 class="header">Profile</h3>
-		<div class="grid grid-cols-"></div>
+		<div class="grid lg:grid-cols-4 sm:grid-cols-3 gap-5" v-if="!!practice">
+			<p v-for="field in fields" :key="field">
+				{{ field.camel2title() }}: {{ input[field].val }}
+			</p>
+		</div>
 	</div>
 </template>
 
@@ -91,6 +94,8 @@ const input: PracticeInput = reactive({
 	},
 });
 
+const fields = Object.keys(input);
+
 const practice = ref<Practice>({
 	user_id: "",
 	practiceName: "",
@@ -112,9 +117,15 @@ const practice = ref<Practice>({
 	created_at: null,
 });
 
-const setPractice = async () => {
-	practice.value = await profileStore.practice;
-};
+onBeforeMount(() => {
+	if (!!profileStore.practice) {
+		practice.value = profileStore.practice;
+		for (let key in input) {
+			input[key].val = practice.value[key];
+		}
+		console.log(input);
+	}
+});
 </script>
 
 <style scoped>

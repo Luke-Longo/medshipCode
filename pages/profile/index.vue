@@ -5,7 +5,7 @@
 				{{ authStore.isAdmin ? "Profile Search" : "Profile" }}
 			</h3>
 			<transition name="fade" mode="out-in">
-				<ProfileAdmin v-if="profile?.admin" />
+				<ProfileAdmin v-if="profile?.admin || authStore.isAdmin" />
 				<ProfileRep v-else-if="profile?.type === 'salesRep'" />
 				<ProfilePractice v-else-if="profile?.type === 'practice'" />
 			</transition>

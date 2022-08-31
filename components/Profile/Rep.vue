@@ -4,7 +4,9 @@
 			<p v-for="key in salesRep">{{ key }} : {{ salesRep }}</p>
 		</div>
 		<div class="flex justify-center items-center mt-36" v-else>
-			<p class="flex text-xl">Please contact an admin to setup your details</p>
+			<p class="flex text-xl">
+				Please contact an admin to setup your profile details
+			</p>
 		</div>
 	</div>
 </template>
@@ -14,6 +16,9 @@ import { useProfileStore } from "~~/stores/profile";
 import { SalesRep } from "~~/types/types";
 
 const profileStore = useProfileStore();
+
+console.log(profileStore.profile);
+console.log(profileStore.salesRep);
 
 const hasData = ref(false);
 if (!!profileStore.salesRep) {

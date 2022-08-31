@@ -22,9 +22,9 @@ export const useProfileStore = defineStore("profile", {
 	actions: {
 		async setProfile(profile: Profile) {
 			this.profile = profile;
-			if (profile.type === "salesRep") {
+			if (profile?.type === "salesRep") {
 				await this.setSalesRep(profile.rep_id);
-			} else if (profile.type === "practice") {
+			} else if (profile?.type === "practice") {
 				await this.setPractice(profile.practice_id);
 			}
 		},
@@ -168,7 +168,6 @@ export const useProfileStore = defineStore("profile", {
 					.from("sales_reps")
 					.select("*")
 					.eq("user_id", salesRep.user_id);
-				console.log(data[0]);
 				if (error) {
 					throw error;
 				}

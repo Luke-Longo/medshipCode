@@ -6,8 +6,8 @@
 			</h3>
 			<transition name="fade" mode="out-in">
 				<ProfileAdmin v-if="authStore.isAdmin" />
-				<ProfileRep v-else-if="profileStore.profile.type === 'salesRep'" />
-				<ProfilePractice v-else-if="profileStore.profile.type === 'practice'" />
+				<ProfileRep v-else-if="profileStore.profile?.type === 'salesRep'" />
+				<ProfilePractice v-else-if="profileStore.profile?.type === 'practice'" />
 			</transition>
 		</div>
 	</div>

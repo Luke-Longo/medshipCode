@@ -6,6 +6,8 @@ export default async function useLoadContent() {
 	const uiStore = useUiStore();
 	const authStore = useAuthStore();
 	const profileStore = useProfileStore();
+	uiStore.toggleAppLoading(true);
+	uiStore.toggleSidebar(true);
 	await profileStore.fetchProfile();
 	if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
 		uiStore.setTheme("dark");
@@ -14,9 +16,8 @@ export default async function useLoadContent() {
 		uiStore.setTheme("light");
 		document.body.classList.remove("dark:bg-black");
 	}
+	uiStore.toggleFunctionLoading(false);
 	if (authStore.isLoggedIn) {
-		uiStore.toggleAppLoading(true);
-		uiStore.toggleSidebar(true);
 		setTimeout(() => {
 			uiStore.toggleAppLoading(false);
 		}, 1000);

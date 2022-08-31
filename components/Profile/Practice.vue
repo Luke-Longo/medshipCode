@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import { PracticeInput } from "~/types/types";
+import { PracticeInput, SalesRep } from "~/types/types";
 import { useProfileStore } from "~/stores/profile";
 import { Practice } from "~/types/types";
 
@@ -91,15 +91,10 @@ const input: PracticeInput = reactive({
 	},
 });
 
-const practice: Practice = ref({
+const practice = ref<Practice>({
 	user_id: "",
 	practiceName: "",
 	legalName: "",
-	address1: "",
-	address2: "",
-	city: "",
-	state: "",
-	postalCode: "",
 	contactPhone: "",
 	contactEmail: "",
 	contactName: "",
@@ -109,9 +104,12 @@ const practice: Practice = ref({
 	clinicalContact: "",
 	clinicalEmail: "",
 	clinicalPhone: "",
-	groupNpi: "",
+	npi: "",
 	ein: "",
 	ptan: "",
+	address: { address1: "", address2: "", city: "", state: "", postalCode: "" },
+	modified_at: null,
+	created_at: null,
 });
 
 const setPractice = async () => {

@@ -1,7 +1,19 @@
 <template>
-	<div class="mx-4">
-		<div class="grid grid-cols-4 sm:grid-cols-3" v-if="hasData">
-			<p v-for="key in salesRep">{{ key }} : {{ salesRep }}</p>
+	<div class="mx-4 mt-10">
+		<div v-if="hasData" class="flex flex-col justify-center items-center">
+			<div class="grid lg:grid-cols-4 sm:grid-cols-3 gap-5">
+				<p>First Name: {{ salesRep.firstName }}</p>
+				<p>Last Name: {{ salesRep.lastName }}</p>
+				<p>Email: {{ salesRep.email }}</p>
+				<p>Business Name: {{ salesRep.businessName }}</p>
+				<p>Phone: {{ salesRep.phone }}</p>
+				<!-- <p v-if="!!salesRep.children" v-for="child in salesRep.children">
+					{{ child }}
+				</p> -->
+			</div>
+			<p class="flex text-xl mt-20">
+				Please contact an admin to change your profile details
+			</p>
 		</div>
 		<div class="flex justify-center items-center mt-36" v-else>
 			<p class="flex text-xl">
@@ -17,11 +29,11 @@ import { SalesRep } from "~~/types/types";
 
 const profileStore = useProfileStore();
 
-console.log(profileStore.profile);
-console.log(profileStore.salesRep);
+const salesRep: SalesRep = profileStore.salesRep;
 
 const hasData = ref(false);
-if (!!profileStore.salesRep) {
+
+if (!!salesRep) {
 	hasData.value = true;
 }
 

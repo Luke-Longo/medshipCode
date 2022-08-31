@@ -289,6 +289,24 @@ export const useProfileStore = defineStore("profile", {
 				}
 			}
 		},
+		// async getChildrenNames(children: string[]) {
+		// 	const { $supabase } = useNuxtApp();
+		// 	try {
+		// 		let childrenNames = [];
+		// 		children.forEach(async (child_id: string) => {
+
+		// 			const { data, error } = await $supabase
+		// 				.from("sales_reps")
+		// 				.select("")
+		// 			if (error) {
+		// 				throw error;
+		// 			}
+		// 		});
+		// 		return childrenNames;
+		// 	} catch (error) {
+		// 		console.log(error);
+		// 	}
+		// },
 		clearState() {
 			this.profile = null;
 			this.adminSelectedProfile = null;

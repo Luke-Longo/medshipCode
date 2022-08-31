@@ -1,6 +1,6 @@
 <template>
 	<div class="flex flex-col items-center">
-		<UiCard class="w-36">
+		<UiCard class="">
 			<div v-if="authStore.isAdmin">
 				<h3>Signup</h3>
 				<UiRadio :radioTypes="radioTypes" v-model="selectedRadio" :reverse="true" />
@@ -39,6 +39,10 @@
 						{{ authStore.authError }}
 					</p>
 				</div>
+			</div>
+			<div v-else>
+				<h3>Signup</h3>
+				<p class="" id="invalid">You must be an admin to signup a user.</p>
 			</div>
 		</UiCard>
 	</div>
@@ -85,7 +89,10 @@ const handleSubmit = async () => {
 		type: selectedRadio.value,
 	});
 	clearInput();
+
 	if (!authStore.isError && authStore.isLoggedIn) {
+		await authStore.signOut();
+		await useClearState();
 		router.push("/");
 		uiStore.toggleSidebar();
 	}

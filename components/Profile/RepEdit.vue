@@ -119,7 +119,9 @@ const reps = ref([] as SalesRep[]);
 const { formElements, resetValidity } = useFormElements(input);
 
 const setInputs = async () => {
-	const profile: Profile = profileStore.adminSelectedProfile;
+	const profile: Profile = !!profileStore.adminSelectedProfile
+		? profileStore.adminSelectedProfile
+		: profileStore.profile;
 	const rep: SalesRep = await profileStore.setSalesRep(profile.rep_id);
 	if (!!rep) {
 		if (authStore.isAdmin) {
@@ -168,12 +170,17 @@ const saveProfile = async () => {
 		uiStore.toggleFunctionLoading(true);
 		let children = [];
 		let parent_id = null;
+
 		if (!!selectedRep.value) {
-			console.log("selected");
-			parent_id = selectedRep.value.user_id;
+			// make sure the parent rep is not the same id as the user_id
+			if (selectedRep.value.user_id !== profileStore.adminSelectedProfile.rep_id) {
+				parent_id = selectedRep.value.user_id;
+			} else {
+				parent_id = null;
+			}
 		}
 
-		salesRep.children.forEach((child) => {
+		salesRep.children.forEach((child: string) => {
 			if (child !== salesRep.user_id && !!child && child !== parent_id) {
 				children.push(child);
 			}
@@ -198,10 +205,11 @@ const saveProfile = async () => {
 		await profileStore.adminAddSalesRep(updatedSalesRep);
 
 		if (!!selectedRep.value) {
-			console.log("adding child");
 			let child_id = updatedSalesRep.user_id;
 			let parent_id = selectedRep.value.user_id;
-			await profileStore.adminAddChildRep(parent_id, child_id);
+			if (child_id !== parent_id) {
+				await profileStore.adminAddChildRep(parent_id, child_id);
+			}
 		}
 
 		uiStore.toggleFunctionLoading(false);

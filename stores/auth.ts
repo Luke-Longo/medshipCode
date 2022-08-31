@@ -132,10 +132,14 @@ export const useAuthStore = defineStore("auth", {
 				}
 			}
 		},
-		clear() {
+		clearState() {
 			this.setUser(null);
 			this.setSession(null);
 			this.setError("");
+			this.setResettingPassword(false);
+			this.isAdmin = false;
+			this.authError = "";
+			this.expiresIn = null;
 		},
 		async resetPassword(email: string) {
 			const { $supabase } = useNuxtApp();

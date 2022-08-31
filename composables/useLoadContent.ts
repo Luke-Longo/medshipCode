@@ -1,9 +1,12 @@
 import { useUiStore } from "~/stores/ui";
 import { useAuthStore } from "~/stores/auth";
+import { useProfileStore } from "~/stores/profile";
 
 export default async function useLoadContent() {
 	const uiStore = useUiStore();
 	const authStore = useAuthStore();
+	const profileStore = useProfileStore();
+	await profileStore.fetchProfile();
 	if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
 		uiStore.setTheme("dark");
 		document.body.classList.add("dark:bg-black");

@@ -290,7 +290,7 @@ export const useProfileStore = defineStore("profile", {
 				}
 			}
 		},
-		clear() {
+		clearState() {
 			this.profile = null;
 			this.adminSelectedProfile = null;
 			this.salesRep = null;

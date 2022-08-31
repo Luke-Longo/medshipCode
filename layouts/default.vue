@@ -42,13 +42,10 @@ import { usePatientStore } from "~~/stores/patients";
 
 const { $supabase } = useNuxtApp();
 const uiStore = useUiStore();
-const authStore = useAuthStore();
-const patientStore = usePatientStore();
 
 $supabase.auth.onAuthStateChange(async (event, session) => {
 	if (event === "SIGNED_OUT") {
-		patientStore.clear();
-		authStore.clear();
+		useClearState();
 	}
 });
 

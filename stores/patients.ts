@@ -88,7 +88,7 @@ export const usePatientStore = defineStore("patients", {
 				}
 			}
 		},
-		clear() {
+		clearState() {
 			this.patients = [];
 			this.lastFetch = null;
 			this.selectedPatient = null;

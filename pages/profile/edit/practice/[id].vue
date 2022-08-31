@@ -3,7 +3,6 @@
 		<h3 class="header">Edit Profile</h3>
 		<transition name="fade" mode="out-in">
 			<ProfilePracticeEdit />
-			<!-- <ProfileRepEdit v-else-if="selectedRadio === 'salesRep'" /> -->
 		</transition>
 	</div>
 </template>

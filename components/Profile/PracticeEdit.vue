@@ -62,7 +62,7 @@
 </template>
 
 <script setup lang="ts">
-import { PracticeInput } from "~/types/types";
+import { PracticeInput, Practice } from "~/types/types";
 import { useAuthStore } from "~/stores/auth";
 import { useProfileStore } from "~/stores/profile";
 
@@ -175,11 +175,38 @@ onMounted(async () => {
 const createProfile = async () => {
 	validateInput();
 	if (formIsValid.value) {
+		let practice: Practice = {
+			user_id: profileStore.adminSelectedProfile.user_id,
+			practiceName: input.practiceName.val,
+			legalName: input.legalName.val,
+			address: {
+				address1: input.address1.val,
+				address2: input.address2.val,
+				city: input.city.val,
+				state: input.state.val,
+				postalCode: input.postalCode.val,
+			},
+			contactPhone: input.contactPhone.val,
+			contactEmail: input.contactEmail.val,
+			contactName: input.contactName.val,
+			accountsPayableContact: input.accountsPayableContact.val,
+			accountsPayableEmail: input.accountsPayableEmail.val,
+			accountsPayablePhone: input.accountsPayablePhone.val,
+			clinicalContact: input.clinicalContact.val,
+			clinicalEmail: input.clinicalEmail.val,
+			clinicalPhone: input.clinicalPhone.val,
+			npi: input.groupNpi.val,
+			ein: input.ein.val,
+			ptan: input.ptan.val,
+			modified_at: null,
+			created_at: new Date(),
+		};
+		await profileStore.adminAddPractice(practice);
 	}
 };
 
 const addRep = () => {
-	router.push("/profiles");
+	router.push("/profile");
 };
 </script>
 

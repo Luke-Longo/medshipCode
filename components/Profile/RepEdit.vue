@@ -70,6 +70,7 @@ import { useUiStore } from "~~/stores/ui";
 const profileStore = useProfileStore();
 const authStore = useAuthStore();
 const uiStore = useUiStore();
+const router = useRouter();
 
 const input = reactive({
 	firstName: {
@@ -94,9 +95,6 @@ const input = reactive({
 	},
 });
 
-const formIsValid = ref(true);
-const listTitles = ref(["firstName", "lastName", "phone", "businessName"]);
-
 const salesRep: SalesRep = reactive({
 	user_id: "",
 	firstName: "",
@@ -111,11 +109,14 @@ const salesRep: SalesRep = reactive({
 	modified_at: null,
 });
 
-const router = useRouter();
+const formIsValid = ref(true);
+const listTitles = ref(["firstName", "lastName", "phone", "businessName"]);
+const repSelected = ref(false);
+const repSearchInput = ref("");
+const selectedRep = ref(null as SalesRep | null);
+const reps = ref([] as SalesRep[]);
 
-onMounted(async () => {
-	await setInputs();
-});
+const { formElements, resetValidity } = useFormElements(input);
 
 const setInputs = async () => {
 	const profile: Profile = profileStore.adminSelectedProfile;
@@ -139,19 +140,14 @@ const setInputs = async () => {
 	}
 };
 
-const repSelected = ref(false);
-const repSearchInput = ref("");
+onMounted(async () => {
+	await setInputs();
+});
 
 const handleSearch = async () => {
 	console.log("searching");
 	reps.value = await profileStore.adminSearchReps(repSearchInput.value);
 };
-
-const selectedRep = ref(null as SalesRep | null);
-
-const { formElements, resetValidity } = useFormElements(input);
-
-const reps = ref([] as SalesRep[]);
 
 const validateRep = () => {
 	for (let key in input) {

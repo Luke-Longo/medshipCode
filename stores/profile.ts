@@ -122,7 +122,7 @@ export const useProfileStore = defineStore("profile", {
 				}
 			}
 		},
-		async adminFetchProfiles(input, filter?) {
+		async adminSearchProfiles(input, filter?) {
 			const { $supabase } = useNuxtApp();
 			if (input.split(" ").length > 1) {
 				let terms = input.split(" ");

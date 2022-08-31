@@ -84,7 +84,6 @@ const dropdownItems = ref([
 const handleItemClick = async (event, row) => {
 	if (event.id === "edit") {
 		await profileStore.setAdminSelectedProfile(row);
-
 		router.push(`/profile/edit/${row.type}/${row.user_id}`);
 	} else if (event.id === "key") {
 		console.log("key");
@@ -104,7 +103,7 @@ const searchProfiles = async () => {
 	// search by name
 
 	if (authStore.isAdmin) {
-		profiles.value = await profileStore.adminFetchProfiles(
+		profiles.value = await profileStore.adminSearchProfiles(
 			searchInput.value,
 			selectedRadio.value
 		);

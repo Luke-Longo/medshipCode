@@ -110,13 +110,18 @@ const salesRep: SalesRep = reactive({
 });
 
 const formIsValid = ref(true);
-const listTitles = ref(["firstName", "lastName", "phone", "businessName"]);
-const repSelected = ref(false);
-const repSearchInput = ref("");
-const selectedRep = ref(null as SalesRep | null);
-const reps = ref([] as SalesRep[]);
 
 const { formElements, resetValidity } = useFormElements(input);
+const {
+	reps,
+	repSelected,
+	repSearchInput,
+	selectedRep,
+	listTitles,
+	handleSearch,
+	changeRep,
+	handleSelected,
+} = useRepSearch();
 
 const setInputs = async () => {
 	const profile: Profile = !!profileStore.adminSelectedProfile
@@ -145,11 +150,6 @@ const setInputs = async () => {
 onMounted(async () => {
 	await setInputs();
 });
-
-const handleSearch = async () => {
-	console.log("searching");
-	reps.value = await profileStore.adminSearchReps(repSearchInput.value);
-};
 
 const validateRep = () => {
 	for (let key in input) {
@@ -216,15 +216,5 @@ const saveProfile = async () => {
 
 		router.push("/profile");
 	}
-};
-
-const changeRep = () => {
-	repSelected.value = false;
-	selectedRep.value = null;
-};
-
-const handleSelected = async (rep) => {
-	repSelected.value = true;
-	selectedRep.value = rep;
 };
 </script>

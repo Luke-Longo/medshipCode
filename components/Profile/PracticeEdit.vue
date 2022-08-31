@@ -24,7 +24,12 @@
 				</div>
 				<div v-else>
 					<p class="my-4 flex gap-4 items-center">
-						Selected Rep: {{ selectedRep !== null ? selectedRep.name : "None" }}
+						Selected Rep:
+						{{
+							selectedRep !== null
+								? selectedRep.firstName + " " + selectedRep.lastName
+								: "None"
+						}}
 						<span
 							class="p-2 rounded-md dark:hover:bg-darkBg cursor-pointer border border-darkBg trans hover:bg-darkSecondary"
 							@click="changeRep"
@@ -53,22 +58,17 @@
 				</div>
 			</transition>
 		</div>
-		<div v-else>
-			<div class="flex flex-col">
-				<h3 class="header">Profile</h3>
-				<p class="my-4">You must be an admin to create a profile.</p>
-			</div>
-		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { PracticeInput, SalesRep } from "~/types/types";
+import { PracticeInput } from "~/types/types";
 import { useAuthStore } from "~/stores/auth";
 import { useProfileStore } from "~/stores/profile";
 
 const authStore = useAuthStore();
 const profileStore = useProfileStore();
+const router = useRouter();
 
 const input: PracticeInput = reactive({
 	practiceName: {
@@ -148,57 +148,38 @@ const input: PracticeInput = reactive({
 		isValid: true,
 	},
 });
+const { formElements, resetValidity } = useFormElements(input);
 
-const reps = ref([] as SalesRep[]);
+const { validateInput, formIsValid } = useValidatePracticeInput(input);
+
+const {
+	reps,
+	repSelected,
+	repSearchInput,
+	selectedRep,
+	listTitles,
+	handleSearch,
+	changeRep,
+	handleSelected,
+} = useRepSearch();
 
 onMounted(async () => {
-	if (authStore.isAdmin) {
-		let practice = await profileStore.practice;
-		for (let key in input) {
-			input[key].val = practice[key];
-		}
-	} else {
-		let practice = await profileStore.practice;
+	let practice = await profileStore.practice;
+	if (!!practice) {
 		for (let key in input) {
 			input[key].val = practice[key];
 		}
 	}
 });
 
-const listTitles = ref(["name", "email"]);
-const repSelected = ref(false);
-const repSearchInput = ref("");
-const selectedRep = ref(null);
-
-const { formElements, resetValidity } = useFormElements(input);
-
-const changeRep = () => {
-	repSelected.value = false;
-	selectedRep.value = null;
-};
-
-const emit = defineEmits<{
-	(e: "toRep");
-}>();
-
-const { validateInput, formIsValid } = useValidatePracticeInput(input);
-
 const createProfile = async () => {
 	validateInput();
-	console.log(input);
+	if (formIsValid.value) {
+	}
 };
 
-const handleSearch = async () => {
-	// await salesRepStore.search(repSearchInput.value);
-};
-
-const handleSelected = async (rep) => {
-	repSelected.value = true;
-	selectedRep.value = rep;
-};
-
-const addRep = async () => {
-	emit("toRep");
+const addRep = () => {
+	router.push("/profiles");
 };
 </script>
 

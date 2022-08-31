@@ -1,9 +1,15 @@
 <template>
 	<div class="mx-4">
-		<div class="grid lg:grid-cols-4 sm:grid-cols-3 gap-5" v-if="!!practice">
+		<div
+			class="grid xl:grid-cols-3 sm:grid-cols-2 gap-5 mt-10"
+			v-if="!!profileStore.practice"
+		>
 			<p v-for="field in fields" :key="field">
 				{{ field.camel2title() }}: {{ input[field].val }}
 			</p>
+		</div>
+		<div v-else class="flex justify-center mt-20">
+			<p>Please contact an admin to setup your profile details</p>
 		</div>
 	</div>
 </template>
@@ -133,5 +139,9 @@ onBeforeMount(() => {
 	border: 1px solid #ccc;
 	border-radius: 3px;
 	@apply border shadow-sm border-slate-300 placeholder-slate-400 dark:bg-darkBg dark:focus:outline-darkPrimary;
+}
+
+p {
+	font-size: 1.1rem;
 }
 </style>

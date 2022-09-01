@@ -9,9 +9,9 @@ export default function useFormElements(input) {
 			let required = true;
 			let text = key.replace(/([A-Z])/g, " $1");
 			let title = text.charAt(0).toUpperCase() + text.slice(1);
-			if (key === "groupNpi") {
-				placeholder = "Group NPI";
-				title = "Group NPI";
+			if (key === "npi") {
+				placeholder = "NPI";
+				title = "NPI";
 			} else if (key === "ein" || key === "ptan") {
 				placeholder = key.toUpperCase();
 				title = key.toUpperCase();

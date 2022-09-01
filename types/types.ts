@@ -314,7 +314,7 @@ export interface PracticeInput {
 		val: "";
 		isValid: boolean;
 	};
-	groupNpi: {
+	npi: {
 		val: "";
 		isValid: boolean;
 	};

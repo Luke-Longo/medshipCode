@@ -135,7 +135,7 @@ const input: PracticeInput = reactive({
 		val: "",
 		isValid: true,
 	},
-	groupNpi: {
+	npi: {
 		val: "",
 		isValid: true,
 	},
@@ -148,6 +148,7 @@ const input: PracticeInput = reactive({
 		isValid: true,
 	},
 });
+
 const { formElements, resetValidity } = useFormElements(input);
 
 const { validateInput, formIsValid } = useValidatePracticeInput(input);
@@ -166,7 +167,9 @@ const {
 onMounted(async () => {
 	let practice = await profileStore.practice;
 	if (!!practice) {
+		console.log("practice", practice);
 		for (let key in input) {
+			console.log(key);
 			input[key].val = practice[key];
 		}
 	}

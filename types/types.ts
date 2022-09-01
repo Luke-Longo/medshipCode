@@ -158,6 +158,7 @@ export interface Practice {
 	npi: string;
 	ein: string;
 	ptan: string;
+	rep_id: string;
 	modified_at: Date;
 	created_at: Date;
 }
@@ -251,79 +252,79 @@ export interface Order {
 
 export interface PracticeInput {
 	practiceName: {
-		val: "";
+		val: string;
 		isValid: boolean;
 	};
 	legalName: {
-		val: "";
+		val: string;
 		isValid: boolean;
 	};
 	address1: {
-		val: "";
+		val: string;
 		isValid: boolean;
 	};
 	address2: {
-		val: "";
+		val: string;
 		isValid: boolean;
 	};
 	city: {
-		val: "";
+		val: string;
 		isValid: boolean;
 	};
 	state: {
-		val: "";
+		val: string;
 		isValid: boolean;
 	};
 	postalCode: {
-		val: "";
+		val: string;
 		isValid: boolean;
 	};
 	contactPhone: {
-		val: "";
+		val: string;
 		isValid: boolean;
 	};
 	contactEmail: {
-		val: "";
+		val: string;
 		isValid: boolean;
 	};
 	contactName: {
-		val: "";
+		val: string;
 		isValid: boolean;
 	};
 	accountsPayableContact: {
-		val: "";
+		val: string;
 		isValid: boolean;
 	};
 	accountsPayableEmail: {
-		val: "";
+		val: string;
 		isValid: boolean;
 	};
 	accountsPayablePhone: {
-		val: "";
+		val: string;
 		isValid: boolean;
 	};
 	clinicalContact: {
-		val: "";
+		val: string;
 		isValid: boolean;
 	};
 	clinicalEmail: {
-		val: "";
+		val: string;
 		isValid: boolean;
 	};
 	clinicalPhone: {
-		val: "";
+		val: string;
 		isValid: boolean;
 	};
 	npi: {
-		val: "";
+		val: string;
 		isValid: boolean;
 	};
 	ein: {
-		val: "";
+		val: string;
 		isValid: boolean;
 	};
 	ptan: {
-		val: "";
+		val: string;
 		isValid: boolean;
 	};
 }

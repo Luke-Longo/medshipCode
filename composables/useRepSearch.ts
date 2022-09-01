@@ -8,7 +8,7 @@ export default function useRepSearch() {
 
 	const repSelected = ref(false);
 	const repSearchInput = ref("");
-	const selectedRep = ref(null);
+	const selectedRep = ref(null as SalesRep);
 	const handleSearch = async () => {
 		console.log("searching");
 		reps.value = await profileStore.adminSearchReps(repSearchInput.value);

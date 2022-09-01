@@ -51,8 +51,8 @@
 						/>
 					</div>
 					<div class="flex justify-center">
-						<button class="w-2/3 mx-auto reverse" @click="createProfile">
-							Create Profile
+						<button class="w-2/3 mx-auto reverse" @click="saveProfile">
+							Save Profile
 						</button>
 					</div>
 				</div>
@@ -65,8 +65,10 @@
 import { PracticeInput, Practice } from "~/types/types";
 import { useAuthStore } from "~/stores/auth";
 import { useProfileStore } from "~/stores/profile";
+import { useUiStore } from "~~/stores/ui";
 
 const authStore = useAuthStore();
+const uiStore = useUiStore();
 const profileStore = useProfileStore();
 const router = useRouter();
 
@@ -169,15 +171,25 @@ onMounted(async () => {
 	if (!!practice) {
 		console.log("practice", practice);
 		for (let key in input) {
-			console.log(key);
-			input[key].val = practice[key];
+			if (
+				key === "address1" ||
+				key === "address2" ||
+				key === "city" ||
+				key === "state" ||
+				key === "postalCode"
+			) {
+				input[key].val = practice.address[key];
+			} else {
+				input[key].val = practice[key];
+			}
 		}
 	}
 });
 
-const createProfile = async () => {
+const saveProfile = async () => {
 	validateInput();
 	if (formIsValid.value) {
+		uiStore.toggleFunctionLoading(true);
 		let practice: Practice = {
 			user_id: profileStore.adminSelectedProfile.user_id,
 			practiceName: input.practiceName.val,
@@ -198,13 +210,16 @@ const createProfile = async () => {
 			clinicalContact: input.clinicalContact.val,
 			clinicalEmail: input.clinicalEmail.val,
 			clinicalPhone: input.clinicalPhone.val,
-			npi: input.groupNpi.val,
+			npi: input.npi.val,
 			ein: input.ein.val,
 			ptan: input.ptan.val,
 			modified_at: null,
 			created_at: new Date(),
+			rep_id: !!selectedRep.value.user_id ? selectedRep.value.user_id : null,
 		};
 		await profileStore.adminAddPractice(practice);
+		router.push("/profile");
+		uiStore.toggleFunctionLoading(false);
 	}
 };
 

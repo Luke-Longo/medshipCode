@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { PracticeInput, SalesRep } from "~/types/types";
+import { PracticeInput } from "~/types/types";
 import { useProfileStore } from "~/stores/profile";
 import { Practice } from "~/types/types";
 
@@ -86,7 +86,7 @@ const input: PracticeInput = reactive({
 		val: "",
 		isValid: true,
 	},
-	groupNpi: {
+	npi: {
 		val: "",
 		isValid: true,
 	},
@@ -102,26 +102,7 @@ const input: PracticeInput = reactive({
 
 const fields = Object.keys(input);
 
-const practice = ref<Practice>({
-	user_id: "",
-	practiceName: "",
-	legalName: "",
-	contactPhone: "",
-	contactEmail: "",
-	contactName: "",
-	accountsPayableContact: "",
-	accountsPayableEmail: "",
-	accountsPayablePhone: "",
-	clinicalContact: "",
-	clinicalEmail: "",
-	clinicalPhone: "",
-	npi: "",
-	ein: "",
-	ptan: "",
-	address: { address1: "", address2: "", city: "", state: "", postalCode: "" },
-	modified_at: null,
-	created_at: null,
-});
+const practice = ref(null as Practice);
 
 onBeforeMount(() => {
 	if (!!profileStore.practice) {
@@ -129,7 +110,6 @@ onBeforeMount(() => {
 		for (let key in input) {
 			input[key].val = practice.value[key];
 		}
-		console.log(input);
 	}
 });
 </script>

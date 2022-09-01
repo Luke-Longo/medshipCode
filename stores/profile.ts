@@ -90,6 +90,21 @@ export const useProfileStore = defineStore("profile", {
 				console.log(error);
 			}
 		},
+		async getPractices(rep_id: string) {
+			try {
+				const { $supabase } = useNuxtApp();
+				const { data, error } = await $supabase
+					.from("practices")
+					.select("*")
+					.eq("rep_id", rep_id);
+				if (error) {
+					throw error;
+				}
+				return data;
+			} catch (error) {
+				console.log(error);
+			}
+		},
 		async setAdminSelectedProfile(profile: Profile) {
 			await this.setProfile(profile);
 			this.adminSelectedProfile = profile;
@@ -214,6 +229,43 @@ export const useProfileStore = defineStore("profile", {
 						.from("sales_reps")
 						.update({ children: newChildren })
 						.eq("user_id", parent_id);
+				} catch (error) {
+					console.log(error);
+				}
+				if (error) {
+					throw error;
+				}
+				// this.setAdminSelectedProfile(data[0]);
+				// this.profile = data[0];
+			} catch (e) {
+				console.log(e);
+			}
+		},
+		async addPractice2Rep(practice_id: string, rep_id: string) {
+			const { $supabase } = useNuxtApp();
+			try {
+				const { data, error } = await $supabase
+					.from("sales_reps")
+					.select("practices[]")
+					.eq("user_id", rep_id);
+
+				let oldPractices = data[0].practices;
+
+				let newPractices;
+
+				if (oldPractices?.length > 0) {
+					// filter out the new child_id if it is already in the array
+					newPractices = oldPractices.filter((practice) => practice !== practice_id);
+					newPractices.push(practice_id);
+				} else {
+					newPractices = [practice_id];
+				}
+
+				try {
+					const { data, error } = await $supabase
+						.from("sales_reps")
+						.update({ practices: newPractices })
+						.eq("user_id", rep_id);
 				} catch (error) {
 					console.log(error);
 				}

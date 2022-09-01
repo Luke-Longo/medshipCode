@@ -168,6 +168,10 @@ const {
 
 onMounted(async () => {
 	let practice = await profileStore.practice;
+	let rep;
+	if (!!practice?.rep_id) {
+		rep = await profileStore.setSalesRep(practice.rep_id);
+	}
 	if (!!practice) {
 		console.log("practice", practice);
 		for (let key in input) {
@@ -183,6 +187,10 @@ onMounted(async () => {
 				input[key].val = practice[key];
 			}
 		}
+	}
+	if (!!rep) {
+		selectedRep.value = rep;
+		repSelected.value = true;
 	}
 });
 
@@ -217,6 +225,9 @@ const saveProfile = async () => {
 			created_at: new Date(),
 			rep_id: !!selectedRep.value.user_id ? selectedRep.value.user_id : null,
 		};
+		if (!!practice.rep_id) {
+			await profileStore.addPractice2Rep(practice.user_id, practice.rep_id);
+		}
 		await profileStore.adminAddPractice(practice);
 		router.push("/profile");
 		uiStore.toggleFunctionLoading(false);

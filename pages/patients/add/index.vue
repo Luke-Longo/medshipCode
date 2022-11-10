@@ -7,7 +7,7 @@
 				Find Insurance
 			</button>
 		</div>
-		<InsuranceList :input="input" />
+		<InsuranceList :insurance="insurance" v-if="insurance" />
 		<div class="flex justify-end my-4">
 			<button class="w-1/4 mr-4" @click="addPatient">Save Patient</button>
 		</div>
@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { Patient } from "~~/types/types";
+import { Patient, Insurance, PatientInput } from "~~/types/types";
 import { usePatientStore } from "~~/stores/patients";
 import { useUiStore } from "~~/stores/ui";
 import { useAuthStore } from "~~/stores/auth";
@@ -28,16 +28,16 @@ const checkedIns = ref(false);
 const router = useRouter();
 
 const { validateInput, input, formIsValid } = useValidatePatientInput();
+const insurance = reactive<Insurance>({
+	memberId: "",
+	isValid: false,
+	benefitsInformation: [],
+	planStatus: [],
+});
 
 const clearInputs = () => {
 	for (let key in input) {
-		if (key === "insurance") {
-			input.insurance.benefitsInformation = [];
-			input.insurance.planStatus = [];
-			input.insurance.memberId = "";
-		} else {
-			input[key].val = "";
-		}
+		input[key as keyof PatientInput]!.val = "";
 	}
 };
 
@@ -45,20 +45,23 @@ const insLookup = async () => {
 	validateInput();
 	if (formIsValid.value) {
 		let subscriber: Subscriber = {
-			memberId: input.memberId.val,
+			memberId: input.memberId!.val,
 			firstName: input.firstName.val,
 			lastName: input.lastName.val,
-			gender: input.gender.val,
+			gender: input.gender!.val,
 			dateOfBirth: input.dob.val,
 		};
 		uiStore.toggleFunctionLoading(true);
-		const res: EligibilityResponse = await $fetch("/api/changeEligibility", {
+		const res: EligibilityResponse = await $fetch("/api/insurance", {
 			method: "POST",
 			body: subscriber,
 		});
-		input.insurance.benefitsInformation = res.benefitsInformation;
-		input.insurance.planStatus = res.planStatus;
-		checkedIns.value = true;
+		if (res) {
+			insurance.benefitsInformation = res.benefitsInformation;
+			insurance.planStatus = res.planStatus;
+			checkedIns.value = true;
+			insurance.isValid = true;
+		}
 		uiStore.toggleFunctionLoading(false);
 	}
 };
@@ -67,22 +70,21 @@ const addPatient = async () => {
 	validateInput();
 	if (formIsValid.value) {
 		uiStore.toggleFunctionLoading(true);
-		input.insurance.memberId = input.memberId.val;
-		let patient: Patient = reactive({
-			firstName: input.firstName.val,
-			lastName: input.lastName.val,
+		let patient = reactive<Patient>({
+			first_name: input.firstName.val,
+			last_name: input.lastName.val,
 			address: {
-				address1: input.address1.val,
-				address2: input.address2.val,
-				city: input.city.val,
-				state: input.state.val,
-				postalCode: input.postalCode.val,
+				address1: input.address1!.val,
+				address2: input.address2!.val,
+				city: input.city!.val,
+				state: input.state!.val,
+				postalCode: input.postalCode!.val,
 			},
 			dob: input.dob.val,
-			gender: input.gender.val,
-			insurance: input.insurance,
+			gender: input.gender!.val,
+			insurance: insurance,
 			user_id: authStore.user_id,
-			patient_id: useUuid(),
+			id: useUuid(),
 			created_at: new Date(),
 			modified_at: new Date(),
 		});

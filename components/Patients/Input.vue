@@ -27,10 +27,10 @@
 				<label for="">Address 1 <span class="text-red-400">*</span></label>
 				<input
 					class=""
-					:class="{ 'invalid-input': !input.address1.isValid }"
+					:class="{ 'invalid-input': !input.address1!.isValid }"
 					:type="'text'"
 					:placeholder="'Address 1'"
-					v-model.trim="input.address1.val"
+					v-model.trim="input.address1!.val"
 					@blur="resetValidity('address1')"
 				/>
 			</div>
@@ -38,10 +38,10 @@
 				<label for="">Address 2</label>
 				<input
 					class="w-2/3"
-					:class="{ 'invalid-input': !input.address2.isValid }"
+					:class="{ 'invalid-input': !input.address2!.isValid }"
 					:type="'text'"
 					:placeholder="'ex: Suite 101'"
-					v-model.trim="input.address2.val"
+					v-model.trim="input.address2!.val"
 					@blur="resetValidity('address2')"
 				/>
 			</div>
@@ -50,33 +50,33 @@
 			<div class="form-group">
 				<label for="">City <span class="text-red-400">*</span></label>
 				<input
-					:class="{ 'invalid-input': !input.city.isValid }"
+					:class="{ 'invalid-input': !input.city!.isValid }"
 					:type="'text'"
 					:placeholder="'City'"
-					v-model.trim="input.city.val"
+					v-model.trim="input.city!.val"
 					@blur="resetValidity('city')"
 				/>
 			</div>
 			<div class="form-group">
 				<label for="">State <span class="text-red-400">*</span></label>
 				<input
-					:class="{ 'invalid-input': !input.state.isValid }"
+					:class="{ 'invalid-input': !input.state!.isValid }"
 					:type="'text'"
 					:placeholder="'State: ex (GA)'"
-					v-model.trim="input.state.val"
+					v-model.trim="input.state!.val"
 					@blur="resetValidity('state')"
 				/>
-				<p v-if="!input.state.isValid" class="invalid-text">
+				<p v-if="!input.state!.isValid" class="invalid-text">
 					Please enter a valid state abbreviation
 				</p>
 			</div>
 			<div class="form-group">
 				<label for="">Zip <span class="text-red-400">*</span></label>
 				<input
-					:class="{ 'invalid-input': !input.postalCode.isValid }"
+					:class="{ 'invalid-input': !input.postalCode!.isValid }"
 					:type="'text'"
 					:placeholder="'Zip'"
-					v-model.trim="input.postalCode.val"
+					v-model.trim="input.postalCode!.val"
 					@blur="resetValidity('postalCode')"
 				/>
 			</div>
@@ -98,22 +98,23 @@
 			<div class="form-group">
 				<label for="">Gender <span class="text-red-400">*</span></label>
 				<input
-					:class="{ 'invalid-input': !input.gender.isValid }"
+					:class="{ 'invalid-input': !input.gender!.isValid }"
 					:type="'text'"
 					:placeholder="'Gender: M or F'"
-					v-model.trim="input.gender.val"
+					v-model.trim="input.gender!.val"
 					@blur="resetValidity('gender')"
 				/>
-				<p v-if="!input.gender.isValid" class="invalid-text">Please enter M or F</p>
+				<p v-if="!input.gender!.isValid" class="invalid-text">
+					Please enter M or F
+				</p>
 			</div>
 			<div class="form-group">
 				<label for="">Member Id</label>
 				<input
 					type="text"
-					:class="{ 'invalid-input': !input.memberId.isValid }"
-					:type="'text'"
+					:class="{ 'invalid-input': !input.memberId!.isValid }"
 					:placeholder="'ex: 0001FQ2'"
-					v-model.trim="input.memberId.val"
+					v-model.trim="input.memberId!.val"
 					@blur="resetValidity('memberId')"
 				/>
 			</div>
@@ -126,8 +127,8 @@ import { PatientInput } from "~/types/types";
 
 const props = defineProps<{ input: PatientInput }>();
 
-const resetValidity = (key) => {
-	props.input[key].isValid = true;
+const resetValidity = (key: keyof PatientInput) => {
+	props.input[key as keyof PatientInput]!.isValid = true;
 };
 </script>
 

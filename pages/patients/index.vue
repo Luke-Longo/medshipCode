@@ -31,7 +31,7 @@
 			@close="handleClose"
 		>
 			<h3 class="text-center pb-3 trans">
-				Schedule Date: {{ selectedDate.toDateString() }}
+				Schedule Date: {{ selectedDate!.toDateString() }}
 			</h3>
 			<transition name="fade" mode="out-in">
 				<div v-if="!isProviderSelected">
@@ -42,13 +42,14 @@
 							v-for="provider in providers"
 							@click="selectProvider(provider)"
 						>
-							{{ provider.firstName }} {{ provider.lastName }}
+							{{ provider.first_name }} {{ provider.last_name }}
 						</p>
 					</div>
 				</div>
 				<div v-else class="flex gap-3 justify-center">
 					<h3 class="text-center pb-3 trans">
-						Provider: {{ selectedProvider.firstName }} {{ selectedProvider.lastName }}
+						Provider: {{ selectedProvider!.first_name }}
+						{{ selectedProvider!.last_name }}
 					</h3>
 					<p @click="changeProvider" class="hover:cursor-pointer hover:underline">
 						Change Provider
@@ -102,7 +103,7 @@ const actionProps: ActionProps[] = [
 		icon: IconCalendar,
 	},
 ];
-const isProviderSelected = ref(false);
+const isProviderSelected = ref<boolean>(false);
 const patientStore = usePatientStore();
 const authStore = useAuthStore();
 const scheduleStore = useScheduleStore();
@@ -111,16 +112,17 @@ const filteredPatients = ref([] as Patient[]);
 const selectedDate = ref(null as Date | null);
 const selectedProvider = ref(null as Provider | null);
 
-const providers = ref([
+const providers = ref<Provider[]>([
 	{
-		provider_id: "1",
-		firstName: "John",
-		lastName: "Doe",
-	},
-	{
-		provider_id: "2",
-		firstName: "Jim",
-		lastName: "John",
+		id: useUuid(),
+		first_name: "John",
+		last_name: "Doe",
+		npi: "",
+		dob: "",
+		date_added: new Date(),
+		user_id: authStore.user_id,
+		modified_at: new Date(),
+		practice_id: "",
 	},
 ]);
 
@@ -135,12 +137,15 @@ const handleAction = async (action: string) => {
 	}
 };
 const handleSearch = async () => {
-	let searchedPatients = await patientStore.searchPatient(searchInput.value);
-	filteredPatients.value = searchedPatients;
+	let searchedPatients: Patient[] = await patientStore.searchPatient(
+		searchInput.value
+	);
+	filteredPatients.value =
+		searchedPatients!.length > 0 ? searchedPatients : ([] as Patient[]);
 };
 const handleSelected = (patient: Patient) => {
 	patientStore.setSelectedPatient(patient);
-	router.push(`/patients/patient-profile/${patient.patient_id}`);
+	router.push(`/patients/patient-profile/${patient.id}`);
 };
 const handleClose = () => {
 	searching.value = false;
@@ -151,26 +156,27 @@ const dateSelected = (date: Date) => {
 	selectedDate.value = date;
 	showCalendar.value = false;
 };
-const selectProvider = (provider) => {
+const selectProvider = (provider: Provider) => {
 	selectedProvider.value = provider;
 	isProviderSelected.value = true;
 };
+
 const handleSchedule = (patient: Patient) => {
 	// patientStore.schedulePatient(patient, selectedDate.value);
 	let schedule: Schedule = {
 		patients: [
 			{
-				patient_id: patient.patient_id,
-				firstName: patient.firstName,
-				lastName: patient.lastName,
+				id: patient.id,
+				first_name: patient.first_name,
+				last_name: patient.last_name,
 			},
 		],
 		provider: {
-			npi: selectedProvider.value.npi,
-			firstName: selectedProvider.value.firstName,
-			lastName: selectedProvider.value.lastName,
+			npi: selectedProvider.value!.npi,
+			first_name: selectedProvider.value!.first_name,
+			last_name: selectedProvider.value!.last_name,
 		},
-		date: selectedDate.value.toISOString().split("T")[0],
+		date: selectedDate.value!.toISOString().split("T")[0],
 		user_id: authStore.user_id,
 		modified_at: new Date(),
 	};
@@ -178,7 +184,7 @@ const handleSchedule = (patient: Patient) => {
 	scheduling.value = false;
 };
 const changeProvider = () => {
-	isProviderSelected.value = null;
+	isProviderSelected.value = false;
 };
 </script>
 

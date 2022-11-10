@@ -28,6 +28,7 @@ export default defineEventHandler(async () => {
 			console.log(e);
 		}
 	};
+
 	if (
 		db.changeToken.access_token === "" ||
 		db.changeToken.expires_at < Date.now()

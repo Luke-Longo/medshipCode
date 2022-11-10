@@ -47,73 +47,37 @@ export interface Patient {
 	modified_at: Date;
 }
 
+export interface Input {
+	isValid: boolean;
+	val: string;
+}
 export interface PatientInput {
-	firstName: {
-		val: string;
-		isValid: boolean;
-	};
-	lastName: {
-		val: string;
-		isValid: boolean;
-	};
-	address1?: {
-		val: string;
-		isValid: boolean;
-	};
-	address2?: {
-		val: string;
-		isValid: boolean;
-	};
-	city?: {
-		val: string;
-		isValid: boolean;
-	};
-	state?: {
-		val: string;
-		isValid: boolean;
-	};
-	postalCode?: {
-		val: string;
-		isValid: boolean;
-	};
-	dob: {
-		val: string;
-		isValid: boolean;
-	};
-	gender?: {
-		val: string;
-		isValid: boolean;
-	};
-	phone?: {
-		val: string;
-		isValid: boolean;
-	};
-	memberId?: {
-		val: string;
-		isValid: boolean;
-	};
-	ssn?: {
-		val: string;
-		isValid: boolean;
-	};
-	insurance?: Insurance;
-	dateAdded?: Date;
-	user_id?: string;
-	id?: string;
+	firstName: Input;
+	lastName: Input;
+	address1?: Input;
+	address2?: Input;
+	city?: Input;
+	state?: Input;
+	postalCode?: Input;
+	dob: Input;
+	gender?: Input;
+	phone?: Input;
+	memberId?: Input;
+	ssn?: Input;
 }
 
 export interface Schedule {
 	patients: [
 		{
-			patient_id: string;
-			firstName: string;
-			lastName: string;
+			id: string;
+			first_name: string;
+			last_name: string;
 		}
 	];
 	provider: {
 		npi: string;
-		firstName: string;
-		lastName: string;
+		first_name: string;
+		last_name: string;
 	};
 	date: string;
 	user_id: string;
@@ -131,8 +95,9 @@ export interface ActionProps {
 }
 
 export interface Provider {
-	firstName: string;
-	lastName: string;
+	id: string;
+	first_name: string;
+	last_name: string;
 	npi: string;
 	dob: string;
 	date_added: Date;
@@ -165,23 +130,10 @@ export interface Practice {
 }
 
 export interface ProviderInput {
-	firstName: {
-		val: string;
-		isValid: boolean;
-	};
-	lastName: {
-		val: string;
-		isValid: boolean;
-	};
-	npi: {
-		val: string;
-
-		isValid: boolean;
-	};
-	dob: {
-		val: string;
-		isValid: boolean;
-	};
+	firstName: Input;
+	lastName: Input;
+	npi: Input;
+	dob: Input;
 }
 
 export interface Delivery {

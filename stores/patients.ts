@@ -44,8 +44,8 @@ export const usePatientStore = defineStore("patients", {
 				const { data, error } = await $supabase
 					.from("patients")
 					.select("*")
-					.eq("firstName", patient.firstName)
-					.eq("lastName", patient.lastName)
+					.eq("first_name", patient.first_name)
+					.eq("last_name", patient.last_name)
 					.eq("dob", patient.dob)
 					.eq("user_id", patient.user_id);
 				if (error) {
@@ -58,7 +58,7 @@ export const usePatientStore = defineStore("patients", {
 					}
 				} else {
 					console.log("upserting patient");
-					patient.patient_id = data[0].patient_id;
+					patient.id = data[0].id;
 					patient.modified_at = new Date();
 					patient.created_at = data[0].created_at;
 					const { error } = await $supabase.from("patients").upsert(patient);
@@ -101,33 +101,29 @@ export const usePatientStore = defineStore("patients", {
 					.from("patients")
 					.select("*")
 					.or(
-						`firstName.in.(${terms}),lastName.in.(${terms}),firstName.like.%${terms[0]}%,firstName.like.%${terms[1]}%,lastName.like.%${terms[0]}%,lastName.like.%${terms[1]}%`
+						`first_name.in.(${terms}),last_name.in.(${terms}),first_name.like.%${terms[0]}%,first_name.like.%${terms[1]}%,last_name.like.%${terms[0]}%,last_name.like.%${terms[1]}%`
 					)
-					.order("lastName", { ascending: true });
+					.order("last_name", { ascending: true });
 				if (error) {
 					throw error;
 				}
-				return data;
+				return data ? (data as Patient[]) : [];
 			} catch (e) {
 				console.log(e);
+				return [];
 			}
 		},
 		setSelectedPatient(patient: Patient) {
 			this.selectedPatient = patient;
 		},
-		async deletePatient(patient_id: string) {
+		async deletePatient(id: string) {
 			const { $supabase } = useNuxtApp();
 			try {
-				const { error } = await $supabase
-					.from("patients")
-					.delete()
-					.eq("patient_id", patient_id);
+				const { error } = await $supabase.from("patients").delete().eq("id", id);
 				if (error) {
 					throw error;
 				}
-				const index = this.patients.findIndex(
-					(patient) => patient.patient_id === patient_id
-				);
+				const index = this.patients.findIndex((patient) => patient.id === id);
 				if (index > -1) {
 					this.patients.splice(index, 1);
 				}

@@ -1,7 +1,7 @@
 import { PatientInput, Insurance } from "~/types/types";
 
 export default function useValidatePatientInput() {
-	const input: PatientInput = reactive({
+	const input = reactive<PatientInput>({
 		firstName: {
 			val: "",
 			isValid: true,
@@ -41,12 +41,6 @@ export default function useValidatePatientInput() {
 		memberId: {
 			val: "",
 			isValid: true,
-		},
-		insurance: <Insurance>{
-			memberId: "",
-			isValid: false,
-			planStatus: [],
-			benefitsInformation: [],
 		},
 	});
 	const formIsValid = ref(true);

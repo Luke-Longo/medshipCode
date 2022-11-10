@@ -15,7 +15,7 @@ const route = useRoute();
 
 const profileStore = useProfileStore();
 
-const profile: Profile = reactive({
+const profile = reactive<Profile>({
 	user_id: "",
 	username: "",
 	email: "",
@@ -23,15 +23,15 @@ const profile: Profile = reactive({
 	admin: false,
 	practice_id: "",
 	rep_id: "",
-	created_at: null,
-	modified_at: null,
+	created_at: new Date(),
+	modified_at: new Date(),
 });
 
 onMounted(async () => {
 	let id = route.params.id;
 	let selectedProfile = await profileStore.fetchProfile(id);
 	for (let key in profile) {
-		profile[key] = selectedProfile[key];
+		profile[key as keyof Profile] = selectedProfile[key as keyof Profile];
 	}
 });
 </script>

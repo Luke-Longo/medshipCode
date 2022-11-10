@@ -33,15 +33,15 @@ export interface Insurance {
 }
 
 export interface Patient {
-	firstName: string;
-	lastName: string;
+	first_name: string;
+	last_name: string;
 	dob: string;
 	address?: Address;
 	phone?: string;
 	ssn?: string;
 	gender?: string;
 	user_id: string;
-	patient_id: string;
+	id: string;
 	insurance: Insurance;
 	created_at: Date;
 	modified_at: Date;
@@ -141,20 +141,21 @@ export interface Provider {
 	practice_id: string;
 }
 
+export interface Contact {
+	name: string;
+	phone: string;
+	email: string;
+}
+
 export interface Practice {
 	user_id: string;
 	practiceName: string;
 	address: Address;
 	legalName: string;
-	contactPhone: string;
-	contactEmail: string;
-	contactName: string;
-	accountsPayableContact: string;
-	accountsPayableEmail: string;
-	accountsPayablePhone: string;
-	clinicalContact: string;
-	clinicalEmail: string;
-	clinicalPhone: string;
+	dba?: string | null;
+	contact: Contact;
+	accountsPayableContact: Contact | null;
+	clinicalContact: Contact | null;
 	npi: string;
 	ein: string;
 	ptan: string;
@@ -339,9 +340,9 @@ export interface FormElement {
 
 export interface SalesRep {
 	user_id: string;
-	firstName: string;
-	lastName: string;
-	businessName: string;
+	first_name: string;
+	last_name: string;
+	business: string;
 	email: string;
 	phone: string;
 	children: string[] | null;
@@ -349,6 +350,10 @@ export interface SalesRep {
 	created_at: Date;
 	modified_at: Date;
 	parent_id: string | null;
+	bank_info: {
+		account_number: string;
+		routing_number: string;
+	} | null;
 }
 
 export interface Profile {

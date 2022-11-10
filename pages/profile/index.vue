@@ -16,10 +16,11 @@
 <script setup lang="ts">
 import { useAuthStore } from "~~/stores/auth";
 import { useProfileStore } from "~~/stores/profile";
+import { Profile } from "~~/types/types";
 
 const authStore = useAuthStore();
 const profileStore = useProfileStore();
-const profile = ref(null);
+const profile = ref<Profile>();
 onBeforeMount(() => {
 	profile.value = profileStore.profile;
 });

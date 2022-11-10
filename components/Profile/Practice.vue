@@ -5,7 +5,7 @@
 			v-if="!!profileStore.practice"
 		>
 			<p v-for="field in fields" :key="field">
-				{{ field.camel2title() }}: {{ input[field].val }}
+				{{ field.camel2title() }}: {{ input[field as keyof typeof input].val }}
 			</p>
 		</div>
 		<div v-else class="flex justify-center mt-20">
@@ -102,13 +102,15 @@ const input: PracticeInput = reactive({
 
 const fields = Object.keys(input);
 
-const practice = ref(null as Practice);
+const practice = ref<Practice>();
 
 onBeforeMount(() => {
 	if (!!profileStore.practice) {
 		practice.value = profileStore.practice;
 		for (let key in input) {
-			input[key].val = practice.value[key];
+			// error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'PracticeInput'.
+			input[key as keyof typeof input].val =
+				practice.value[key as keyof typeof input];
 		}
 	}
 });

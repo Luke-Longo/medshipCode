@@ -20,10 +20,6 @@ const authStore = useAuthStore();
 const uiStore = useUiStore();
 const router = useRouter();
 
-// definePageMeta({
-// 	middleware: ["page-load"],
-// });
-
 if (!authStore.isLoggedIn) {
 	await authStore.checkRefresh();
 }

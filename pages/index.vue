@@ -15,6 +15,7 @@
 
 <script setup lang="ts">
 import { EligibilityResponse } from "~~/types/change";
+
 const eligibility = ref({});
 const benefitsInformation = ref([]);
 
@@ -101,7 +102,7 @@ const dropdownItems = ref([
 	},
 ]);
 
-const handleItemClick = (item, row) => {
+const handleItemClick = (item, row): void => {
 	console.log(item, row);
 };
 // const searchChangeHealth = async () => {

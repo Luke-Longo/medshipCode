@@ -12,19 +12,23 @@
 						v-model="input.email"
 					/>
 				</div>
-				<div class="form-group">
-					<label for="password">Password</label>
-					<input
-						v-model="input.password"
-						type="password"
-						placeholder="password"
-						class="w-sm mx-auto border shadow-sm border-slate-300 placeholder-slate-400 dark:focus:outline-darkPrimary dark:bg-darkBg"
-					/>
-				</div>
+				<transition name="fade" mode="out-in">
+					<div class="form-group" v-if="!reset">
+						<label for="password">Password</label>
+						<input
+							v-model="input.password"
+							type="password"
+							placeholder="password"
+							class="w-sm mx-auto border shadow-sm border-slate-300 placeholder-slate-400 dark:focus:outline-darkPrimary dark:bg-darkBg"
+						/>
+					</div>
+				</transition>
 				<div class="flex flex-col gap-4">
-					<UiButton class="mt-7" @click="handleSubmit" mode="reverse">
-						Login
-					</UiButton>
+					<transition name="fade" mode="out-in">
+						<UiButton class="mt-7" @click="handleSubmit" mode="reverse" v-if="!reset">
+							Login
+						</UiButton>
+					</transition>
 					<p class="m-2" id="invalid" v-if="authStore.authError !== ''">
 						{{ authStore.authError }}
 					</p>

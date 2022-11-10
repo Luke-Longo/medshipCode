@@ -15,7 +15,7 @@
 					>
 						Practices
 					</h3>
-					<div class="grid grid-cols-4" v-if="practices.length > 0">
+					<div class="grid grid-cols-4" v-if="practices!.length > 0">
 						<p v-for="practice in practices">
 							{{ practice.practiceName }}
 						</p>
@@ -43,7 +43,7 @@ const profileStore = useProfileStore();
 
 const salesRep: SalesRep = profileStore.salesRep;
 
-const practices = ref(null as Practice[]);
+const practices = ref<Practice[]>();
 
 practices.value = await profileStore.getPractices(salesRep.user_id);
 

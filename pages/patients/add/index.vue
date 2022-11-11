@@ -7,7 +7,7 @@
 				Find Insurance
 			</button>
 		</div>
-		<InsuranceList :insurance="insurance" v-if="insurance" />
+		<InsuranceList :insurance="insurance" v-if="insurance.isValid" />
 		<div class="flex justify-end my-4">
 			<button class="w-1/4 mr-4" @click="addPatient">Save Patient</button>
 		</div>
@@ -60,7 +60,7 @@ const insLookup = async () => {
 			insurance.benefitsInformation = res.benefitsInformation;
 			insurance.planStatus = res.planStatus;
 			checkedIns.value = true;
-			insurance.isValid = true;
+			insurance.isValid;
 		}
 		uiStore.toggleFunctionLoading(false);
 	}

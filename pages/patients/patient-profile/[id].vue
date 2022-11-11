@@ -7,7 +7,7 @@
 				Find Insurance
 			</button>
 		</div>
-		<InsuranceList :input="input" />
+		<InsuranceList :insurance="insurance" v-if="!insurance.isValid" />
 		<div class="flex justify-between my-4 mx-2">
 			<button class="w-1/4 mr-4 reverse" @click="deletePatient">
 				Delete Patient
@@ -18,47 +18,59 @@
 </template>
 
 <script setup lang="ts">
-import { Patient } from "~~/types/types";
+import { Insurance, Patient, PatientInput } from "~~/types/types";
 import { EligibilityResponse, Subscriber } from "~~/types/change";
 import { usePatientStore } from "~~/stores/patients";
 import { useUiStore } from "~~/stores/ui";
 import { useAuthStore } from "~~/stores/auth";
+import { PatientsInput, InsuranceList } from "~~/.nuxt/components";
+import { Address } from "cluster";
 
 const patientStore = usePatientStore();
 const uiStore = useUiStore();
 const authStore = useAuthStore();
 const checkedIns = ref(false);
 const router = useRouter();
+const id = useRoute().params.id as string;
 const { validateInput, input, formIsValid } = useValidatePatientInput();
 
-const patient = patientStore.selectedPatient;
+const patient = await patientStore.getPatientById(id);
 
 const deletePatient = async () => {
 	uiStore.toggleAppLoading(true);
-	await patientStore.deletePatient(patient.patient_id);
+	await patientStore.deletePatient(patient.id);
 	router.push("/patients");
 	uiStore.toggleAppLoading(false);
 };
 
 const setInput = () => {
-	for (let key in input) {
-		if (key === "insurance") {
-			input[key] = patient.insurance;
-		} else {
-			input[key] = {
-				val: patient[key],
-				isValid: true,
-			};
+	if (!patient) return;
+	for (let key in patient) {
+		if (input[key as keyof PatientInput]!.val) {
+			input[key as keyof PatientInput]!.val = patient[
+				key as keyof Patient
+			] as string;
+		} else if (key === "first_name") {
+			input.firstName.val = patient[key];
+		} else if (key === "last_name") {
+			input.lastName.val = patient[key];
 		}
 	}
 	for (let key in patient.address) {
 		input[key] = {
-			val: patient.address[key],
+			val: patient.address[key as keyof typeof patient.address],
 			isValid: true,
 		};
 	}
-	input.memberId.val = patient.insurance.memberId;
+	input.memberId!.val = patient.insurance.memberId;
 };
+
+const insurance = reactive<Insurance>({
+	memberId: "",
+	isValid: false,
+	benefitsInformation: [],
+	planStatus: [],
+});
 
 onMounted(() => {
 	setInput();
@@ -80,20 +92,23 @@ const insLookup = async () => {
 	validateInput();
 	if (formIsValid.value) {
 		let subscriber: Subscriber = {
-			memberId: input.memberId.val,
+			memberId: input.memberId!.val,
 			firstName: input.firstName.val,
 			lastName: input.lastName.val,
-			gender: input.gender.val,
+			gender: input.gender!.val,
 			dateOfBirth: input.dob.val,
 		};
 		uiStore.toggleFunctionLoading(true);
-		const res: EligibilityResponse = await $fetch("/api/changeEligibility", {
+		const res: EligibilityResponse = await $fetch("/api/insurance", {
 			method: "POST",
 			body: subscriber,
 		});
-		input.insurance.benefitsInformation = res.benefitsInformation;
-		input.insurance.planStatus = res.planStatus;
-		checkedIns.value = true;
+		if (res) {
+			insurance.benefitsInformation = res.benefitsInformation;
+			insurance.planStatus = res.planStatus;
+			checkedIns.value = true;
+			insurance.isValid = true;
+		}
 		uiStore.toggleFunctionLoading(false);
 	}
 };
@@ -102,22 +117,22 @@ const addPatient = async () => {
 	validateInput();
 	if (formIsValid.value) {
 		uiStore.toggleFunctionLoading(true);
-		input.insurance.memberId = input.memberId.val;
+		insurance.memberId = input.memberId!.val;
 		let patient: Patient = reactive({
-			firstName: input.firstName.val,
-			lastName: input.lastName.val,
+			first_name: input.firstName.val,
+			last_name: input.lastName.val,
 			address: {
-				address1: input.address1.val,
-				address2: input.address2.val,
-				city: input.city.val,
-				state: input.state.val,
-				postalCode: input.postalCode.val,
+				address1: input.address1!.val,
+				address2: input.address2!.val,
+				city: input.city!.val,
+				state: input.state!.val,
+				postalCode: input.postalCode!.val,
 			},
 			dob: input.dob.val,
-			gender: input.gender.val,
-			insurance: input.insurance,
+			gender: input.gender!.val,
+			insurance: insurance,
 			user_id: authStore.user_id,
-			patient_id: useUuid(),
+			id: useUuid(),
 			created_at: new Date(),
 			modified_at: new Date(),
 		});

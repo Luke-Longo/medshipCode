@@ -10,14 +10,14 @@
 			<div
 				v-if="paginatedPatients.length > 0"
 				v-for="patient in paginatedPatients"
-				:key="patient.patient_id"
+				:key="patient.id"
 				class="text-primary dark:text-darkSecondary grid grid-cols-4 rounded hover:bg-darkSecondary dark:hover:bg-black w-full p-2 cursor-pointer trans"
 				@click="emits('selected', patient)"
 			>
-				<div class="">{{ patient.lastName.toTitle() }}</div>
-				<div class="">{{ patient.firstName.toTitle() }}</div>
+				<div class="">{{ patient.last_name.toTitle() }}</div>
+				<div class="">{{ patient.first_name.toTitle() }}</div>
 				<div class="">{{ patient.dob }}</div>
-				<div class="">{{ patient.insurance.memberId }}</div>
+				<div class="">{{ patient.insurance?.memberId }}</div>
 			</div>
 			<div
 				v-else
@@ -63,6 +63,7 @@ const checkPatients = computed(() => {
 });
 const page = ref(1);
 const perPage = ref(11);
+
 watch(
 	() => props.patients.length,
 	() => {

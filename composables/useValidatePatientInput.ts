@@ -1,4 +1,4 @@
-import { PatientInput, Insurance } from "~/types/types";
+import { PatientInput } from "~/types/types";
 
 export default function useValidatePatientInput() {
 	const input = reactive<PatientInput>({
@@ -48,7 +48,10 @@ export default function useValidatePatientInput() {
 	const validateInput = async () => {
 		formIsValid.value = true;
 		for (let key in input) {
-			input[key].val = input[key].val?.toString().toLowerCase();
+			input[key as keyof PatientInput].val = input[key as keyof PatientInput].val
+
+				?.toString()
+				.toLowerCase();
 			if (
 				key === "firstName" ||
 				key === "lastName" ||
@@ -92,53 +95,3 @@ export default function useValidatePatientInput() {
 		input,
 	};
 }
-
-// export default function useValidatePatientInput(
-// 	input: PatientInput,
-// 	formIsValid
-// ) {
-// 	const validateInput = async () => {
-// 		formIsValid.value = true;
-// 		for (let key in input) {
-// 			input[key].val = input[key].val?.toString().toLowerCase();
-// 			if (
-// 				key === "firstName" ||
-// 				key === "lastName" ||
-// 				key === "address1" ||
-// 				key === "city"
-// 			) {
-// 				if (input[key].val?.length === 0) {
-// 					input[key].isValid = false;
-// 					formIsValid.value = false;
-// 				}
-// 			}
-// 		}
-// 		if (input.state.val.length !== 2) {
-// 			input.state.isValid = false;
-// 			formIsValid.value = false;
-// 		}
-// 		if (input.postalCode.val.length !== 5) {
-// 			input.postalCode.isValid = false;
-// 			formIsValid.value = false;
-// 		}
-// 		if (
-// 			input.gender.val.length !== 1 ||
-// 			!(input.gender.val === "m" || input.gender.val === "f")
-// 		) {
-// 			input.gender.isValid = false;
-// 			formIsValid.value = false;
-// 		}
-// 		const dobIsValid = (dob) => {
-// 			let dobRe = /[0-9]{2}\/[0-9]{2}\/[0-9]{4}/;
-// 			return dobRe.test(dob);
-// 		};
-
-// 		if (!dobIsValid(input.dob.val)) {
-// 			input.dob.isValid = false;
-// 			formIsValid.value = false;
-// 		}
-// 	};
-// 	return {
-// 		validateInput,
-// 	};
-// }

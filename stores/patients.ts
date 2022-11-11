@@ -88,6 +88,21 @@ export const usePatientStore = defineStore("patients", {
 				}
 			}
 		},
+		async getPatientById(id: string) {
+			const { $supabase } = useNuxtApp();
+			try {
+				const { data, error } = await $supabase
+					.from("patients")
+					.select("*")
+					.eq("id", id);
+				if (error) {
+					throw error;
+				}
+				return data[0] as Patient;
+			} catch (e) {
+				console.log(e);
+			}
+		},
 		clearState() {
 			this.patients = [];
 			this.lastFetch = null;

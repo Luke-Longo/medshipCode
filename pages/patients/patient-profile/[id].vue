@@ -7,7 +7,7 @@
 				Find Insurance
 			</button>
 		</div>
-		<InsuranceList :insurance="insurance" v-if="!insurance.isValid" />
+		<InsuranceList :insurance="insurance" v-if="insurance.isValid" />
 		<div class="flex justify-between my-4 mx-2">
 			<button class="w-1/4 mr-4 reverse" @click="deletePatient">
 				Delete Patient
@@ -23,46 +23,48 @@ import { EligibilityResponse, Subscriber } from "~~/types/change";
 import { usePatientStore } from "~~/stores/patients";
 import { useUiStore } from "~~/stores/ui";
 import { useAuthStore } from "~~/stores/auth";
-import { PatientsInput, InsuranceList } from "~~/.nuxt/components";
-import { Address } from "cluster";
 
 const patientStore = usePatientStore();
 const uiStore = useUiStore();
 const authStore = useAuthStore();
 const checkedIns = ref(false);
 const router = useRouter();
+
 const id = useRoute().params.id as string;
+
 const { validateInput, input, formIsValid } = useValidatePatientInput();
 
 const patient = await patientStore.getPatientById(id);
 
 const deletePatient = async () => {
 	uiStore.toggleAppLoading(true);
-	await patientStore.deletePatient(patient.id);
+	await patientStore.deletePatient(patient!.id);
 	router.push("/patients");
 	uiStore.toggleAppLoading(false);
 };
 
 const setInput = () => {
 	if (!patient) return;
-	for (let key in patient) {
-		if (input[key as keyof PatientInput]!.val) {
-			input[key as keyof PatientInput]!.val = patient[
-				key as keyof Patient
-			] as string;
-		} else if (key === "first_name") {
-			input.firstName.val = patient[key];
-		} else if (key === "last_name") {
-			input.lastName.val = patient[key];
-		}
-	}
-	for (let key in patient.address) {
-		input[key] = {
-			val: patient.address[key as keyof typeof patient.address],
-			isValid: true,
-		};
-	}
+	input.dob.val =
+		patient.dob.split("-")[1] +
+		"/" +
+		patient.dob.split("-")[2] +
+		"/" +
+		patient.dob.split("-")[0];
+	input.firstName.val = patient.first_name;
+	input.lastName.val = patient.last_name;
+	input.gender!.val = patient.gender!;
+	input.address1!.val = patient.address?.address1!;
+	input.address2!.val = patient.address?.address2!;
+	input.city!.val = patient.address?.city!;
+	input.state!.val = patient.address?.state!;
+	input.postalCode!.val = patient.address?.postalCode!;
 	input.memberId!.val = patient.insurance.memberId;
+	insurance.memberId = patient.insurance.memberId;
+	insurance.isValid = true;
+	insurance.planStatus = patient.insurance.planStatus;
+	insurance.benefitsInformation = patient.insurance.benefitsInformation;
+	updateIns.value++;
 };
 
 const insurance = reactive<Insurance>({
@@ -72,20 +74,17 @@ const insurance = reactive<Insurance>({
 	planStatus: [],
 });
 
-onMounted(() => {
+onBeforeMount(() => {
 	setInput();
 });
 
 const clearInputs = () => {
 	for (let key in input) {
-		if (key === "insurance") {
-			input.insurance.benefitsInformation = [];
-			input.insurance.planStatus = [];
-			input.insurance.memberId = "";
-		} else {
-			input[key].val = "";
-		}
+		input[key].val = "";
 	}
+	insurance.benefitsInformation = [];
+	insurance.planStatus = [];
+	insurance.memberId = "";
 };
 
 const insLookup = async () => {

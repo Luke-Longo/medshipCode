@@ -56,11 +56,15 @@ const insLookup = async () => {
 			method: "POST",
 			body: subscriber,
 		});
+		console.log(res);
 		if (res) {
 			insurance.benefitsInformation = res.benefitsInformation;
 			insurance.planStatus = res.planStatus;
 			checkedIns.value = true;
-			insurance.isValid;
+			insurance.isValid = true;
+			insurance.planDateInformation = res.planDateInformation;
+			insurance.planInformation = res.planInformation;
+			insurance.memberId = input.memberId!.val;
 		}
 		uiStore.toggleFunctionLoading(false);
 	}

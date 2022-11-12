@@ -64,23 +64,20 @@ const setInput = () => {
 	insurance.isValid = true;
 	insurance.planStatus = patient.insurance.planStatus;
 	insurance.benefitsInformation = patient.insurance.benefitsInformation;
-	updateIns.value++;
 };
 
 const insurance = reactive<Insurance>({
 	memberId: "",
 	isValid: false,
-	benefitsInformation: [],
 	planStatus: [],
+	benefitsInformation: [],
 });
 
-onBeforeMount(() => {
-	setInput();
-});
+if (patient) setInput();
 
 const clearInputs = () => {
 	for (let key in input) {
-		input[key].val = "";
+		input[key as keyof PatientInput]!.val = "";
 	}
 	insurance.benefitsInformation = [];
 	insurance.planStatus = [];
@@ -102,11 +99,15 @@ const insLookup = async () => {
 			method: "POST",
 			body: subscriber,
 		});
+		console.log(res);
 		if (res) {
 			insurance.benefitsInformation = res.benefitsInformation;
 			insurance.planStatus = res.planStatus;
 			checkedIns.value = true;
 			insurance.isValid = true;
+			insurance.planDateInformation = res.planDateInformation;
+			insurance.planInformation = res.planInformation;
+			insurance.memberId = input.memberId!.val;
 		}
 		uiStore.toggleFunctionLoading(false);
 	}

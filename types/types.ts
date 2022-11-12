@@ -5,31 +5,40 @@ export interface InsurancePlan {
 }
 
 export interface BenefitsInformation {
-	benefitsAdditionalInformation: {
-		planNumber: "";
-		drugFormularyNumber: "";
-		planNetworkIdNumber: "";
+	benefitsAdditionalInformation?: {
+		planNumber: string;
+		drugFormularyNumber: string;
+		planNetworkIdNumber: string;
 	};
-	benefitsDateInformation: { plan: "" };
-	code: "";
-	name: "";
-	planCoverage: "";
+	benefitsDateInformation?: { plan: string };
+	benefitAmount?: string;
+	code: string;
+	name: string;
+	inPlanNetworkIndicator?: string;
+	inPlanNetworkIndicatorCode?: string;
+	insuranceType?: string;
+	insuranceTypeCode?: string;
+	timeQualifier?: string;
+	timeQualifierCode?: string;
+	planCoverage: string;
 	serviceTypeCodes: string[];
 	serviceTypes: string[];
 }
 
 export interface PlanStatus {
-	planDetails: "";
+	planDetails: string;
 	serviceTypeCodes: string[];
-	status: "";
-	statusCode: "";
+	status: string;
+	statusCode: string;
 }
 
 export interface Insurance {
 	memberId: string;
 	isValid: boolean;
-	benefitsInformation?: BenefitsInformation[];
-	planStatus?: PlanStatus[];
+	benefitsInformation: BenefitsInformation[] | null;
+	planStatus: PlanStatus[] | null;
+	planDateInformation: { plan: string };
+	planInformation: { policyNumber: string };
 }
 
 export interface Patient {
@@ -37,14 +46,32 @@ export interface Patient {
 	last_name: string;
 	dob: string;
 	address?: Address;
-	phone?: string;
-	ssn?: string;
 	gender?: string;
 	user_id: string;
 	id: string;
 	insurance: Insurance;
 	created_at: Date;
 	modified_at: Date;
+}
+
+export interface FormInput {
+	label: string;
+	id: string;
+	val: string;
+	isValid: boolean;
+}
+
+export interface PatientForm {
+	first_name: FormInput;
+	last_name: FormInput;
+	address1: FormInput;
+	address2: FormInput;
+	city: FormInput;
+	state: FormInput;
+	postalCode: FormInput;
+	dob: FormInput;
+	gender: FormInput;
+	memberId: FormInput;
 }
 
 export interface Input {
